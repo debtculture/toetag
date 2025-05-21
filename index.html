@@ -9,13 +9,15 @@
     <meta property="og:description" content="Unleashing raw talent in Valorant. Toe Tag Esports is here to disrupt the scene.">
     <meta property="og:url" content="https://toetag.xyz">
     <meta name="twitter:card" content="summary_large_image">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Toe Tag Esports</title>
     <link rel="icon" type="image/png" href="https://via.placeholder.com/32?text=T2">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: #eee; line-height: 1.6; overflow-x: hidden; }
         canvas#matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
-        .navbar { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(8px); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-radius: 8px; border: 1px solid #ff5555; box-shadow: 0 0 15px rgba(255, 85, 85, 0.3); }
+        .navbar { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(8px); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-radius: 8px; border: 1px solid #ff5555; box-shadow: 0 0 15px rgba(255, 85, 85, 0.3); animation: neon-pulse 2s infinite; }
+        @keyframes neon-pulse { 0%, 100% { box-shadow: 0 0 15px rgba(255, 85, 85, 0.3); } 50% { box-shadow: 0 0 25px rgba(255, 85, 85, 0.6); } }
         .navbar-logo { height: 40px; }
         .navbar-links { display: flex; gap: 20px; }
         .navbar-links a { color: #eee; text-decoration: none; font-size: 1rem; transition: color 0.3s ease; position: relative; }
@@ -32,19 +34,46 @@
         .section { padding: 80px 20px; text-align: center; opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .section.visible { opacity: 1; transform: translateY(0); }
         h1 { font-size: 3rem; color: #ff5555; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        .hero h1 { font-size: 4rem; text-shadow: 0 0 10px #ff5555; animation: glitch 2s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+            100% { transform: translate(0); }
+        }
         p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 20px; }
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(255, 85, 85, 0.2), transparent); }
-        .hero h1 { font-size: 4rem; text-shadow: 0 0 10px #ff5555; }
         .hero p { font-size: 1.5rem; }
-        .cta-button { background: #ff5555; color: #eee; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2rem; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; }
-        .cta-button:hover { background: #ff7777; transform: scale(1.05); }
+        .cta-button { background: #ff5555; color: #eee; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2rem; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; box-shadow: 0 0 10px rgba(255, 85, 85, 0.5); animation: neon-pulse 2s infinite; }
+        .cta-button:hover { background: #ff7777; transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 85, 85, 0.8); }
         .team-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .team-member { width: 200px; text-align: center; }
-        .team-bubble { width: 150px; height: 150px; background: #333; border-radius: 50%; overflow: hidden; margin: 0 auto; border: 2px solid #ff5555; transition: transform 0.3s ease; }
+        .team-member { width: 200px; text-align: center; position: relative; }
+        .team-bubble { width: 150px; height: 150px; background: #333; border-radius: 50%; overflow: hidden; margin: 0 auto; border: 2px solid #ff5555; transition: transform 0.3s ease; position: relative; }
         .team-bubble img { width: 100%; height: 100%; object-fit: cover; }
         .team-bubble:hover { transform: scale(1.1); }
+        .team-bubble:hover::after {
+            content: '+';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 85, 85, 0.5);
+            border: 2px solid #ff5555;
+            border-radius: 50%;
+            font-size: 2rem;
+            color: #eee;
+            line-height: 50px;
+            text-align: center;
+            pointer-events: none;
+        }
         .team-member h3 { font-size: 1.2rem; margin: 10px 0 5px; }
         .team-member p { font-size: 0.9rem; color: #ccc; }
+        .highlights { background: #222; padding: 40px 20px; border: 1px solid #ff5555; border-radius: 8px; max-width: 800px; margin: 0 auto; }
+        .highlights iframe { width: 100%; max-width: 560px; height: 315px; border: 2px solid #ff5555; box-shadow: 0 0 15px rgba(255, 85, 85, 0.3); }
         .roadmap-container { max-width: 800px; margin: 0 auto; }
         .phase { background: #222; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ff5555; opacity: 0; transform: translateX(-50px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .phase.visible { opacity: 1; transform: translateX(0); }
@@ -64,6 +93,8 @@
             .hero p { font-size: 1.2rem; }
             .team-member { width: 150px; }
             .team-bubble { width: 100px; height: 100px; }
+            .team-bubble:hover::after { width: 40px; height: 40px; line-height: 40px; font-size: 1.5rem; }
+            .highlights iframe { height: 200px; }
             .phase { padding: 15px; }
             .phase h2 { font-size: 1.5rem; }
             .phase li { font-size: 1rem; }
@@ -77,6 +108,7 @@
         <div class="navbar-links">
             <a href="#home">Home</a>
             <a href="#team">Team</a>
+            <a href="#highlights">Highlights</a>
             <a href="#roadmap">Roadmap</a>
             <a href="#join">Join</a>
         </div>
@@ -87,57 +119,66 @@
     <div class="mobile-menu" id="mobileMenu">
         <a href="#home" onclick="closeMenu()">Home</a>
         <a href="#team" onclick="closeMenu()">Team</a>
+        <a href="#highlights" onclick="closeMenu()">Highlights</a>
         <a href="#roadmap" onclick="closeMenu()">Roadmap</a>
         <a href="#join" onclick="closeMenu()">Join</a>
     </div>
 
     <section id="home" class="section hero">
         <h1>Toe Tag Esports</h1>
-        <p>Talent Factory. Rising from the ashes to dominate Valorant. 2025 is ours.</p>
+        <p>Tagging bodies, chasing glory. Your Valorant underdogs grinding for Tier 1.</p>
         <button class="cta-button" onclick="scrollToSection('#join')">Join the Rebellion</button>
     </section>
 
     <section id="team" class="section">
-    <h1>Our Squad</h1>
-    <p>Meet the five rebels ready to shake up the Valorant scene.</p>
-    <div class="team-container">
-        <div class="team-member">
-            <div class="team-bubble">
-                <img src="https://via.placeholder.com/150?text=Player1" alt="RebelX Profile Picture">
+        <h1>Our Squad</h1>
+        <p>Meet the five rebels ready to shake up the Valorant scene.</p>
+        <div class="team-container">
+            <div class="team-member">
+                <div class="team-bubble">
+                    <img src="https://via.placeholder.com/150?text=Player1" alt="RebelX Profile Picture">
+                </div>
+                <h3>RebelX</h3>
+                <p>IGL / Duelist</p>
             </div>
-            <h3>RebelX</h3>
-            <p>IGL / Duelist</p>
-        </div>
-        <div class="team-member">
-            <div class="team-bubble">
-                <img src="https://via.placeholder.com/150?text=Player2" alt="NeonSlayer Profile Picture">
+            <div class="team-member">
+                <div class="team-bubble">
+                    <img src="https://via.placeholder.com/150?text=Player2" alt="NeonSlayer Profile Picture">
+                </div>
+                <h3>NeonSlayer</h3>
+                <p>Fragger / Duelist</p>
             </div>
-            <h3>NeonSlayer</h3>
-            <p>Fragger / Duelist</p>
-        </div>
-        <div class="team-member">
-            <div class="team-bubble">
-                <img src="https://via.placeholder.com/150?text=Player3" alt="VoidShot Profile Picture">
+            <div class="team-member">
+                <div class="team-bubble">
+                    <img src="https://via.placeholder.com/150?text=Player3" alt="VoidShot Profile Picture">
+                </div>
+                <h3>VoidShot</h3>
+                <p>Controller</p>
             </div>
-            <h3>VoidShot</h3>
-            <p>Controller</p>
-        </div>
-        <div class="team-member">
-            <div class="team-bubble">
-                <img src="https://via.placeholder.com/150?text=Player4" alt="GhostPulse Profile Picture">
+            <div class="team-member">
+                <div class="team-bubble">
+                    <img src="https://via.placeholder.com/150?text=Player4" alt="GhostPulse Profile Picture">
+                </div>
+                <h3>GhostPulse</h3>
+                <p>Sentinel</p>
             </div>
-            <h3>GhostPulse</h3>
-            <p>Sentinel</p>
-        </div>
-        <div class="team-member">
-            <div class="team-bubble">
-                <img src="https://via.placeholder.com/150?text=Player5" alt="BlazeViper Profile Picture">
+            <div class="team-member">
+                <div class="team-bubble">
+                    <img src="https://via.placeholder.com/150?text=Player5" alt="BlazeViper Profile Picture">
+                </div>
+                <h3>BlazeViper</h3>
+                <p>Initiator</p>
             </div>
-            <h3>BlazeViper</h3>
-            <p>Initiator</p>
         </div>
-    </div>
-</section>
+    </section>
+
+    <section id="highlights" class="section">
+        <h1>Highlight Reel</h1>
+        <p>Watch our squad clutch, ace, and dominate.</p>
+        <div class="highlights">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Toe Tag Esports Highlight Reel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section>
 
     <section id="roadmap" class="section">
         <h1>Roadmap</h1>
@@ -188,7 +229,7 @@
     </section>
 
     <footer class="footer">
-        <p>© 2025 Toe Tag Esports. All rights reserved.</p>
+        <p>© 2025 Toe Tag Esports. Powered by <a href="https://debtculture.xyz" target="_blank" style="color: #ff5555; text-decoration: none;">Debt Culture</a>.</p>
     </footer>
 </body>
 <script>
