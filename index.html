@@ -33,6 +33,7 @@
         .mobile-menu a:hover { color: #ff5555; }
         .section { padding: 80px 20px; text-align: center; opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .section.visible { opacity: 1; transform: translateY(0); }
+        body.js-loaded .section, body.js-loaded .phase { opacity: 1; transform: translateY(0); }
         h1 { font-size: 3rem; color: #ff5555; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
         .hero h1 { font-size: 4rem; text-shadow: 0 0 10px #ff5555; animation: glitch 2s infinite; }
         @keyframes glitch {
@@ -353,7 +354,7 @@ function initializeMatrix() {
         ctx.font = `${fontSize}px monospace`;
 
         for (let i = 0; i < drops.length; i++) {
-            const text = chars.charAt(Math.floor(Math.random * * chars.length));
+            const text = chars.charAt(Math.floor(Math.random() * chars.length));
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
@@ -366,6 +367,7 @@ function initializeMatrix() {
 }
 
 window.addEventListener('load', () => {
+    document.body.classList.add('js-loaded');
     initializeMatrix();
     closeMenu();
     window.dispatchEvent(new Event('scroll'));
