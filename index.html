@@ -256,7 +256,7 @@
             <div class="riot-id-container">
                 <input type="text" id="ign" name="ign" required placeholder="RebelX" style="flex: 2;">
                 <div class="tagline-wrapper">
-                    <input type="text" id="tagline" name="tagline" required placeholder="NA1" pattern="[A-Za-z0-9]{3,5}" title="Tagline must be 3-5 letters or numbers (e.g., NA1)">
+                    <input type="text" id="tagline" name="tagline" required placeholder="NA1" pattern="[A-Za-z0-9]{3,5}" title="Tagline must be 3-5 letters or numbers (e.g., NA1, EU12, 12345)">
                 </div>
             </div>
             <label for="main-rank">Current Rank</label>
@@ -274,8 +274,8 @@
                     <option value="Radiant">Radiant</option>
                 </select>
                 <div class="subrank-container">
-                    <select id="subrank" name="subrank">
-                        <option value="" disabled selected>Subrank (optional)</option>
+                    <select id="subrank" name="subrank" required>
+                        <option value="" disabled selected>Select subrank</option>
                         <option value="I">I</option>
                         <option value="II">II</option>
                         <option value="III">III</option>
@@ -421,9 +421,11 @@ window.addEventListener('load', () => {
     mainRank.addEventListener('change', () => {
         if (mainRank.value === 'Radiant') {
             subrankContainer.classList.add('hidden');
+            subrank.removeAttribute('required');
             subrank.value = ''; // Clear subrank
         } else {
             subrankContainer.classList.remove('hidden');
+            subrank.setAttribute('required', '');
         }
     });
 
