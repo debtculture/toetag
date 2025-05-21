@@ -28,8 +28,8 @@
         .hamburger.active div:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .hamburger.active div:nth-child(2) { opacity: 0; }
         .hamburger.active div:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-        .mobile-menu { display: none; position: fixed; top: 60px; left: 10px; width: 200px; background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(8px); border: 1px solid #ff5555; border-radius: 8px; padding: 10px; z-index: 999; }
-        .mobile-menu a { display: block; color: #eee; padding: 10px; text-decoration: none; text-align: center; }
+        .mobile-menu { display: none; position: fixed; top: 60px; left: 10px; width: 100px; background: rgba(26, 26, 26, 0.8); backdrop-filter: blur(8px); border: 1px solid #ff5555; border-radius: 8px; padding: 5px; z-index: 999; }
+        .mobile-menu a { display: block; color: #eee; padding: 8px; text-decoration: none; text-align: center; font-size: 0.9rem; }
         .mobile-menu a:hover { color: #ff5555; }
         .section { padding: 80px 20px; text-align: center; opacity: 0; transform: translateY(50px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .section.visible { opacity: 1; transform: translateY(0); }
@@ -88,7 +88,7 @@
         @media (max-width: 768px) {
             .navbar { display: none; }
             .hamburger { display: flex; position: fixed; top: 10px; left: 10px; z-index: 1001; }
-            .mobile-menu { display: block; }
+            .mobile-menu { display: none; }
             .hero h1 { font-size: 2.5rem; }
             .hero p { font-size: 1.2rem; }
             .team-member { width: 150px; }
@@ -215,11 +215,11 @@
         <h1>Join the Fight</h1>
         <p>Got what it takes? Try out or support the rebellion.</p>
         <div class="social-container">
-            <a href="https://x.com/toetaghq" target="_blank" class="social-icon" aria-label="Toe Tag Esports X profile">
+            <a href="https://x.com/toetagesports" target="_blank" class="social-icon" aria-label="Toe Tag Esports X profile">
                 <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1746723033/X_olwxar.png" alt="X icon">
             </a>
-            <a href="https://www.twitch.tv/autopsyt2" target="_blank" class="social-icon" aria-label="Toe Tag Esports Twitch">
-                <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747850305/twitch_ddeol6.png" alt="Twitch icon">
+            <a href="https://t.me/toetagesports" target="_blank" class="social-icon" aria-label="Toe Tag Esports Telegram">
+                <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1746723031/Telegram_mvvdgw.png" alt="Telegram icon">
             </a>
             <a href="https://discord.gg/toetagesports" target="_blank" class="social-icon" aria-label="Toe Tag Esports Discord">
                 <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747849195/Discord_png_c2mrt7.png" alt="Discord icon">
@@ -242,8 +242,9 @@ function toggleMenu() {
 
 function closeMenu() {
     const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
     menu.style.display = 'none';
-    document.querySelector('.hamburger').classList.remove('active');
+    hamburger.classList.remove('active');
 }
 
 function scrollToSection(selector) {
@@ -318,6 +319,7 @@ function initializeMatrix() {
 
 window.addEventListener('load', () => {
     initializeMatrix();
+    closeMenu(); // Ensure mobile menu is closed on load
     window.dispatchEvent(new Event('scroll'));
 });
 </script>
