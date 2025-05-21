@@ -47,7 +47,13 @@
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(255, 85, 85, 0.2), transparent); }
         .hero p { font-size: 1.5rem; }
         .cta-button { background: #ff5555; color: #eee; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2rem; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; box-shadow: 0 0 10px rgba(255, 85, 85, 0.5); animation: neon-pulse 2s infinite; }
-        .cta-button:hover { background: #ff7777; transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 85, 85, 0.8); }
+        .cta-button:hover { background: #ff7777; transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 85, 85, 0.8); animation: shake 0.3s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            50% { transform: translateX(2px); }
+            75% { transform: translateX(-2px); }
+        }
         .team-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: 0 auto; }
         .team-member { width: 200px; text-align: center; position: relative; }
         .team-bubble { width: 150px; height: 150px; background: #333; border-radius: 50%; overflow: hidden; margin: 0 auto; border: 2px solid #ff5555; transition: transform 0.3s ease; position: relative; }
@@ -84,6 +90,11 @@
         .social-icon { width: 50px; height: 50px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; }
         .social-icon img { width: 70%; height: 70%; object-fit: contain; }
         .social-icon:hover { transform: scale(1.2); }
+        .tryout-form { max-width: 500px; margin: 20px auto; background: #222; padding: 20px; border: 1px solid #ff5555; border-radius: 8px; animation: neon-pulse 2s infinite; }
+        .tryout-form label { display: block; margin: 10px 0 5px; font-size: 1rem; }
+        .tryout-form input, .tryout-form select { width: 100%; padding: 10px; background: #333; border: 1px solid #ff5555; border-radius: 5px; color: #eee; font-size: 1rem; }
+        .tryout-form input:focus, .tryout-form select:focus { outline: none; box-shadow: 0 0 10px rgba(255, 85, 85, 0.5); }
+        .tryout-form button { margin-top: 20px; width: 100%; }
         .footer { background: #111; padding: 20px; text-align: center; border-top: 1px solid #ff5555; }
         @media (max-width: 768px) {
             .navbar { display: none; }
@@ -98,6 +109,8 @@
             .phase { padding: 15px; }
             .phase h2 { font-size: 1.5rem; }
             .phase li { font-size: 1rem; }
+            .tryout-form { padding: 15px; }
+            .tryout-form input, .tryout-form select { padding: 8px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -225,7 +238,36 @@
                 <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747849195/Discord_png_c2mrt7.png" alt="Discord icon">
             </a>
         </div>
-        <button class="cta-button">Apply Now</button>
+        <form class="tryout-form" action="" method="post">
+            <label for="ign">In-Game Name (IGN)</label>
+            <input type="text" id="ign" name="ign" required placeholder="Enter your IGN">
+            <label for="rank">Current Rank</label>
+            <select id="rank" name="rank" required>
+                <option value="" disabled selected>Select your rank</option>
+                <option value="Iron">Iron</option>
+                <option value="Bronze">Bronze</option>
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+                <option value="Diamond">Diamond</option>
+                <option value="Ascendant">Ascendant</option>
+                <option value="Immortal">Immortal</option>
+                <option value="Radiant">Radiant</option>
+            </select>
+            <label for="role">Primary Role</label>
+            <select id="role" name="role" required>
+                <option value="" disabled selected>Select your role</option>
+                <option value="Duelist">Duelist</option>
+                <option value="Controller">Controller</option>
+                <option value="Sentinel">Sentinel</option>
+                <option value="Initiator">Initiator</option>
+            </select>
+            <label for="clip">Highlight Clip Link (YouTube/Twitch)</label>
+            <input type="url" id="clip" name="clip" placeholder="https://www.twitch.tv/clip/..." required>
+            <label for="email">Email (Optional)</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com">
+            <button type="submit" class="cta-button">Submit Tryout</button>
+        </form>
     </section>
 
     <footer class="footer">
@@ -319,7 +361,7 @@ function initializeMatrix() {
 
 window.addEventListener('load', () => {
     initializeMatrix();
-    closeMenu(); // Ensure mobile menu is closed on load
+    closeMenu();
     window.dispatchEvent(new Event('scroll'));
 });
 </script>
