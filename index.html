@@ -255,7 +255,7 @@
                     <input type="text" id="tagline" name="tagline" required placeholder="NA1" pattern="[A-Za-z0-9]{3,5}" title="Tagline must be 3-5 letters or numbers (e.g., NA1)">
                 </div>
             </div>
-            <label for="rank">Current Rank</label>
+            <label for="main-rank">Current Rank</label>
             <div class="rank-container">
                 <select id="main-rank" name="main-rank" required>
                     <option value="" disabled selected>Select your rank</option>
@@ -419,6 +419,48 @@ window.addEventListener('load', () => {
             subrank.disabled = false;
         }
     });
+
+    // Primary/Secondary role logic
+    const primaryRole = document.getElementById('primary-role');
+    const secondaryRole = document.getElementById('secondary-role');
+    const allRoles = ['Duelist', 'Controller', 'Sentinel', 'Initiator'];
+
+    function updateRoleOptions() {
+        const primaryValue = primaryRole.value;
+        const secondaryValue = secondaryRole.value;
+
+        // Update secondary role options
+        secondaryRole.innerHTML = '<option value="" disabled selected>Select secondary role (optional)</option>';
+        allRoles.forEach(role => {
+            if (role !== primaryValue) {
+                const option = document.createElement('option');
+                option.value = role;
+                option.text = role;
+                if (role === secondaryValue) option.selected = true;
+                secondaryRole.appendChild(option);
+            }
+        });
+
+        // Update primary role options
+        primaryRole.innerHTML = '<option value="" disabled>Select your primary role</option>';
+        allRoles.forEach(role => {
+            if (role !== secondaryValue || !secondaryValue) {
+                const option = document.createElement('option');
+                option.value = role;
+                option.text = role;
+                if (role === primaryValue) option.selected = true;
+                primaryRole.appendChild(option);
+            }
+        });
+
+        // If secondary role matches primary, clear secondary
+        if (secondaryValue && secondaryValue === primaryValue) {
+            secondaryRole.value = '';
+        }
+    }
+
+    primaryRole.addEventListener('change', updateRoleOptions);
+    secondaryRole.addEventListener('change', updateRoleOptions);
 });
 </script>
 </html>
