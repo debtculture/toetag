@@ -102,7 +102,8 @@
         .tagline-wrapper input { padding-left: 20px; }
         .tagline-wrapper::before { content: '#'; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #ff5555; font-size: 1rem; }
         .rank-container select:first-child { flex: 2; }
-        .rank-container select:last-child { flex: 1; }
+        .subrank-container { flex: 1; }
+        .subrank-container.hidden { display: none; }
         .footer { background: #111; padding: 20px; text-align: center; border-top: 1px solid #ff5555; }
         @media (max-width: 768px) {
             .navbar { display: none; }
@@ -110,7 +111,10 @@
             .mobile-menu { display: none; }
             .hero h1 { font-size: 2.5rem; }
             .hero p { font-size: 1.2rem; }
+            .team-container { flex-direction: row; justify-content: center; gap: 20px; }
             .team-member { width: 150px; }
+            .team-member.captain { order: -1; width: 150px; margin: 0 auto; }
+            .team-member:not(.captain) { width: 150px; }
             .team-bubble { width: 100px; height: 100px; }
             .team-bubble:hover::after { width: 40px; height: 40px; line-height: 40px; font-size: 1.5rem; }
             .highlights iframe { height: 200px; }
@@ -156,7 +160,7 @@
         <h1>Our Squad</h1>
         <p>Meet the five rebels ready to shake up the Valorant scene.</p>
         <div class="team-container">
-            <div class="team-member">
+            <div class="team-member captain">
                 <div class="team-bubble">
                     <img src="https://via.placeholder.com/150?text=Player1" alt="RebelX Profile Picture">
                 </div>
@@ -269,12 +273,14 @@
                     <option value="Immortal">Immortal</option>
                     <option value="Radiant">Radiant</option>
                 </select>
-                <select id="subrank" name="subrank">
-                    <option value="" disabled selected>Subrank (optional)</option>
-                    <option value="I">I</option>
-                    <option value="II">II</option>
-                    <option value="III">III</option>
-                </select>
+                <div class="subrank-container">
+                    <select id="subrank" name="subrank">
+                        <option value="" disabled selected>Subrank (optional)</option>
+                        <option value="I">I</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                    </select>
+                </div>
             </div>
             <label for="primary-role">Primary Role</label>
             <select id="primary-role" name="primary-role" required>
@@ -410,13 +416,14 @@ window.addEventListener('load', () => {
 
     // Rank and subrank logic
     const mainRank = document.getElementById('main-rank');
+    const subrankContainer = document.querySelector('.subrank-container');
     const subrank = document.getElementById('subrank');
     mainRank.addEventListener('change', () => {
         if (mainRank.value === 'Radiant') {
-            subrank.disabled = true;
+            subrankContainer.classList.add('hidden');
             subrank.value = ''; // Clear subrank
         } else {
-            subrank.disabled = false;
+            subrankContainer.classList.remove('hidden');
         }
     });
 
