@@ -47,12 +47,13 @@
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(255, 85, 85, 0.2), transparent); }
         .hero p { font-size: 1.5rem; }
         .cta-button { background: #ff5555; color: #eee; padding: 15px 30px; border: none; border-radius: 5px; font-size: 1.2rem; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; box-shadow: 0 0 10px rgba(255, 85, 85, 0.5); animation: neon-pulse 2s infinite; }
-        .cta-button:hover { background: #ff7777; transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 85, 85, 0.8); animation: shake 0.3s; }
+        .cta-button:hover { background: #ff7777; transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 85, 85, 0.8); animation: shake 0.4s; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            50% { transform: translateX(2px); }
-            75% { transform: translateX(-2px); }
+            20% { transform: translateX(-3px); }
+            40% { transform: translateX(3px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
         }
         .team-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: 0 auto; }
         .team-member { width: 200px; text-align: center; position: relative; }
@@ -92,6 +93,7 @@
         .social-icon:hover { transform: scale(1.2); }
         .tryout-form { max-width: 500px; margin: 20px auto; background: #222; padding: 20px; border: 1px solid #ff5555; border-radius: 8px; animation: neon-pulse 2s infinite; }
         .tryout-form label { display: block; margin: 10px 0 5px; font-size: 1rem; }
+        .riot-id-container { display: flex; gap: 10px; }
         .tryout-form input, .tryout-form select { width: 100%; padding: 10px; background: #333; border: 1px solid #ff5555; border-radius: 5px; color: #eee; font-size: 1rem; }
         .tryout-form input:focus, .tryout-form select:focus { outline: none; box-shadow: 0 0 10px rgba(255, 85, 85, 0.5); }
         .tryout-form button { margin-top: 20px; width: 100%; }
@@ -111,6 +113,7 @@
             .phase li { font-size: 1rem; }
             .tryout-form { padding: 15px; }
             .tryout-form input, .tryout-form select { padding: 8px; font-size: 0.9rem; }
+            .riot-id-container { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
@@ -239,8 +242,11 @@
             </a>
         </div>
         <form class="tryout-form" action="" method="post">
-            <label for="ign">In-Game Name (IGN)</label>
-            <input type="text" id="ign" name="ign" required placeholder="Enter your IGN">
+            <label for="riot-id">Riot ID</label>
+            <div class="riot-id-container">
+                <input type="text" id="ign" name="ign" required placeholder="RebelX" style="flex: 2;">
+                <input type="text" id="tagline" name="tagline" required placeholder="#NA1" pattern="^#[A-Za-z0-9]{3,5}$" title="Tagline must start with # followed by 3-5 letters or numbers (e.g., #NA1)" style="flex: 1;">
+            </div>
             <label for="rank">Current Rank</label>
             <select id="rank" name="rank" required>
                 <option value="" disabled selected>Select your rank</option>
@@ -347,7 +353,7 @@ function initializeMatrix() {
         ctx.font = `${fontSize}px monospace`;
 
         for (let i = 0; i < drops.length; i++) {
-            const text = chars.charAt(Math.floor(Math.random() * chars.length));
+            const text = chars.charAt(Math.floor(Math.random * * chars.length));
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
