@@ -94,10 +94,15 @@
         .social-icon:hover { transform: scale(1.2); }
         .tryout-form { max-width: 500px; margin: 20px auto; background: #222; padding: 20px; border: 1px solid #ff5555; border-radius: 8px; animation: neon-pulse 2s infinite; }
         .tryout-form label { display: block; margin: 10px 0 5px; font-size: 1rem; }
-        .riot-id-container { display: flex; gap: 10px; }
+        .riot-id-container, .rank-container { display: flex; gap: 10px; align-items: center; }
         .tryout-form input, .tryout-form select { width: 100%; padding: 10px; background: #333; border: 1px solid #ff5555; border-radius: 5px; color: #eee; font-size: 1rem; }
         .tryout-form input:focus, .tryout-form select:focus { outline: none; box-shadow: 0 0 10px rgba(255, 85, 85, 0.5); }
         .tryout-form button { margin-top: 20px; width: 100%; }
+        .tagline-wrapper { position: relative; flex: 1; }
+        .tagline-wrapper input { padding-left: 20px; }
+        .tagline-wrapper::before { content: '#'; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #ff5555; font-size: 1rem; }
+        .rank-container select:first-child { flex: 2; }
+        .rank-container select:last-child { flex: 1; }
         .footer { background: #111; padding: 20px; text-align: center; border-top: 1px solid #ff5555; }
         @media (max-width: 768px) {
             .navbar { display: none; }
@@ -114,7 +119,7 @@
             .phase li { font-size: 1rem; }
             .tryout-form { padding: 15px; }
             .tryout-form input, .tryout-form select { padding: 8px; font-size: 0.9rem; }
-            .riot-id-container { flex-direction: column; gap: 5px; }
+            .riot-id-container, .rank-container { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
@@ -246,40 +251,34 @@
             <label for="riot-id">Riot ID</label>
             <div class="riot-id-container">
                 <input type="text" id="ign" name="ign" required placeholder="RebelX" style="flex: 2;">
-                <input type="text" id="tagline" name="tagline" required placeholder="#NA1" pattern="^#[A-Za-z0-9]{3,5}$" title="Tagline must start with # followed by 3-5 letters or numbers (e.g., #NA1)" style="flex: 1;">
+                <div class="tagline-wrapper">
+                    <input type="text" id="tagline" name="tagline" required placeholder="NA1" pattern="[A-Za-z0-9]{3,5}" title="Tagline must be 3-5 letters or numbers (e.g., NA1)">
+                </div>
             </div>
             <label for="rank">Current Rank</label>
-            <select id="rank" name="rank" required>
-                <option value="" disabled selected>Select your rank</option>
-                <option value="Iron I">Iron I</option>
-                <option value="Iron II">Iron II</option>
-                <option value="Iron III">Iron III</option>
-                <option value="Bronze I">Bronze I</option>
-                <option value="Bronze II">Bronze II</option>
-                <option value="Bronze III">Bronze III</option>
-                <option value="Silver I">Silver I</option>
-                <option value="Silver II">Silver II</option>
-                <option value="Silver III">Silver III</option>
-                <option value="Gold I">Gold I</option>
-                <option value="Gold II">Gold II</option>
-                <option value="Gold III">Gold III</option>
-                <option value="Platinum I">Platinum I</option>
-                <option value="Platinum II">Platinum II</option>
-                <option value="Platinum III">Platinum III</option>
-                <option value="Diamond I">Diamond I</option>
-                <option value="Diamond II">Diamond II</option>
-                <option value="Diamond III">Diamond III</option>
-                <option value="Ascendant I">Ascendant I</option>
-                <option value="Ascendant II">Ascendant II</option>
-                <option value="Ascendant III">Ascendant III</option>
-                <option value="Immortal I">Immortal I</option>
-                <option value="Immortal II">Immortal II</option>
-                <option value="Immortal III">Immortal III</option>
-                <option value="Radiant">Radiant</option>
-            </select>
-            <label for="role">Primary Role</label>
-            <select id="role" name="role" required>
-                <option value="" disabled selected>Select your role</option>
+            <div class="rank-container">
+                <select id="main-rank" name="main-rank" required>
+                    <option value="" disabled selected>Select your rank</option>
+                    <option value="Iron">Iron</option>
+                    <option value="Bronze">Bronze</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Platinum">Platinum</option>
+                    <option value="Diamond">Diamond</option>
+                    <option value="Ascendant">Ascendant</option>
+                    <option value="Immortal">Immortal</option>
+                    <option value="Radiant">Radiant</option>
+                </select>
+                <select id="subrank" name="subrank">
+                    <option value="" disabled selected>Subrank (optional)</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                </select>
+            </div>
+            <label for="primary-role">Primary Role</label>
+            <select id="primary-role" name="primary-role" required>
+                <option value="" disabled selected>Select your primary role</option>
                 <option value="Duelist">Duelist</option>
                 <option value="Controller">Controller</option>
                 <option value="Sentinel">Sentinel</option>
@@ -293,8 +292,8 @@
                 <option value="Sentinel">Sentinel</option>
                 <option value="Initiator">Initiator</option>
             </select>
-            <label for="clip">Highlight Clip Link (YouTube/Twitch)</label>
-            <input type="url" id="clip" name="clip" placeholder="https://www.twitch.tv/clip/..." required>
+            <label for="clip">Highlight Clip Link (Optional)</label>
+            <input type="url" id="clip" name="clip" placeholder="https://twitch.tv/clip/... (optional)">
             <label for="email">Email (Optional)</label>
             <input type="email" id="email" name="email" placeholder="your@email.com">
             <button type="submit" class="cta-button">Submit Tryout</button>
@@ -395,6 +394,31 @@ window.addEventListener('load', () => {
     initializeMatrix();
     closeMenu();
     window.dispatchEvent(new Event('scroll'));
+
+    // Tagline auto-# logic
+    const taglineInput = document.getElementById('tagline');
+    taglineInput.addEventListener('input', () => {
+        let value = taglineInput.value.replace(/#/g, ''); // Strip all #
+        taglineInput.value = value; // Update input without #
+        taglineInput.dataset.fullValue = `#${value}`; // Store full value (#NA1)
+    });
+    // On form submit, use full value
+    const form = document.querySelector('.tryout-form');
+    form.addEventListener('submit', (e) => {
+        taglineInput.value = taglineInput.dataset.fullValue || `#${taglineInput.value}`;
+    });
+
+    // Rank and subrank logic
+    const mainRank = document.getElementById('main-rank');
+    const subrank = document.getElementById('subrank');
+    mainRank.addEventListener('change', () => {
+        if (mainRank.value === 'Radiant') {
+            subrank.disabled = true;
+            subrank.value = ''; // Clear subrank
+        } else {
+            subrank.disabled = false;
+        }
+    });
 });
 </script>
 </html>
