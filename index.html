@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSP Meta Tag -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://esm.sh;
+        connect-src 'self' https://api.mainnet-beta.solana.com https://phantom.app;
+        style-src 'self' 'unsafe-inline';
+    ">
     <title>Solana Phantom Wallet Connect</title>
     <style>
         body {
@@ -41,10 +48,10 @@
     <p id="wallet-status">Wallet not connected</p>
     <p id="token-balance">Token balance: 0</p>
 
-    <script src="https://unpkg.com/@solana/web3.js@1.95.3/dist/index.iife.js"></script>
-    <script src="https://unpkg.com/@solana/spl-token@0.4.8/lib/index.iife.js"></script>
-    <script>
-        const { solanaWeb3, splToken } = window;
+    <script type="module">
+        import { Connection, PublicKey, clusterApiUrl } from 'https://esm.sh/@solana/web3.js@1.95.3';
+        import { getAssociatedTokenAddress, getAccount, TOKEN_PROGRAM_ID } from 'https://esm.sh/@solana/spl-token@0.4.8';
+
         const walletStatus = document.getElementById('wallet-status');
         const tokenBalance = document.getElementById('token-balance');
         const connectButton = document.getElementById('connect-wallet');
@@ -54,28 +61,30 @@
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         async function getPhantomProvider() {
-            // Check multiple possible Phantom provider locations
             const providers = [
                 window.solana,
                 window.phantom?.solana,
-                window.solanaWeb3?.solana
             ];
-            return providers.find(provider => provider && provider.isPhantom) || null;
+            const provider = providers.find(p => p && p.isPhantom) || null;
+            if (!provider) {
+                console.log('Phantom provider not found. Available globals:', Object.keys(window).filter(k => k.includes('solana') || k.includes('phantom')));
+            }
+            return provider;
         }
 
         async function getTokenBalance(connection, publicKey) {
             try {
-                const mint = new solanaWeb3.PublicKey(TOKEN_MINT_ADDRESS);
-                const tokenAccounts = await connection.getTokenAccountsByOwner(
-                    publicKey,
-                    { mint }
-                );
-                let balance = 0;
-                for (const account of tokenAccounts.value) {
-                    const accountInfo = await connection.getTokenAccountBalance(account.pubkey);
-                    balance += accountInfo.value.uiAmount || 0;
+                const mint = new PublicKey(TOKEN_MINT_ADDRESS);
+                const associatedTokenAddress = await getAssociatedTokenAddress(mint, publicKey);
+                try {
+                    const account = await getAccount(connection, associatedTokenAddress);
+                    return account.amount / BigInt(10 ** 9); // Assuming 9 decimals for the token
+                } catch (error) {
+                    if (error.message.includes('TokenAccountNotFound')) {
+                        return 0; // No token account exists
+                    }
+                    throw error;
                 }
-                return balance;
             } catch (error) {
                 console.error('Error fetching token balance:', error);
                 return 0;
@@ -87,7 +96,7 @@
                 if (isMobile) {
                     // Mobile: Construct Phantom deep link
                     const redirectUri = encodeURIComponent(window.location.href);
-                    const deepLink = `https://phantom.app/ul/v1/connect?app_url=${redirectUri}&dapp_encryption_public_key=${TOKEN_MINT_ADDRESS}`;
+                    const deepLink = `https://phantom.app/ul/v1/connect?app_url=${redirectUri}&redirect_uri=${redirectUri}`;
                     walletStatus.textContent = 'Redirecting to Phantom app...';
                     
                     // Open Phantom app
@@ -118,17 +127,14 @@
                 walletStatus.textContent = `Connected: ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
 
                 // Get Solana connection
-                const connection = new solanaWeb3.Connection(
-                    solanaWeb3.clusterApiUrl('mainnet-beta'),
-                    'confirmed'
-                );
+                const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
 
                 // Get SOL balance
-                const solBalance = await connection.getBalance(response.publicKey);
-                console.log(`SOL balance: ${solBalance / solanaWeb3.LAMPORTS_PER_SOL} SOL`);
+                const solBalance = await connection.getBalance(new PublicKey(publicKey));
+                console.log(`SOL balance: ${solBalance / 1_000_000_000} SOL`);
 
                 // Get token balance
-                const tokenBal = await getTokenBalance(connection, response.publicKey);
+                const tokenBal = await getTokenBalance(connection, new PublicKey(publicKey));
                 tokenBalance.textContent = `Token balance: ${tokenBal.toFixed(2)}`;
 
             } catch (error) {
@@ -150,17 +156,12 @@
                     const publicKey = provider.publicKey.toString();
                     walletStatus.textContent = `Connected: ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
 
-                    const connection = new solanaWeb3.Connection(
-                        solanaWeb3.clusterApiUrl('mainnet-beta'),
-                        'confirmed'
-                    );
-                    const tokenBal = await getTokenBalance(connection, provider.publicKey);
+                    const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+                    const tokenBal = await getTokenBalance(connection, new PublicKey(publicKey));
                     tokenBalance.textContent = `Token balance: ${tokenBal.toFixed(2)}`;
                 } catch (error) {
                     console.log('No trusted connection found:', error);
                 }
-            } else {
-                console.log('No Phantom provider detected on load');
             }
         });
 
@@ -173,16 +174,15 @@
                         const publicKey = provider.publicKey.toString();
                         walletStatus.textContent = `Connected: ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
 
-                        const connection = new solanaWeb3.Connection(
-                            solanaWeb3.clusterApiUrl('mainnet-beta'),
-                            'confirmed'
-                        );
-                        const tokenBal = await getTokenBalance(connection, provider.publicKey);
+                        const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+                        const tokenBal = await getTokenBalance(connection, new PublicKey(publicKey));
                         tokenBalance.textContent = `Token balance: ${tokenBal.toFixed(2)}`;
                     } catch (error) {
                         console.error('Error after redirect:', error);
                         walletStatus.textContent = 'Failed to connect after redirect';
                     }
+                } else {
+                    console.log('No provider or connection after redirect');
                 }
             }
         });
