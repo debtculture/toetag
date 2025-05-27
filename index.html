@@ -2,57 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connect Solana Wallet</title>
+  <title>Solana Wallet Connect</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
       text-align: center;
-      margin-top: 100px;
+      margin-top: 50px;
     }
-    #connectButton {
+    button {
       padding: 12px 24px;
       font-size: 16px;
-      cursor: pointer;
-      background-color: #512da8;
+      background: #512da8;
       color: white;
       border: none;
       border-radius: 8px;
+      cursor: pointer;
+    }
+    #balance {
+      margin-top: 20px;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Connect Your Solana Wallet</h1>
-  <button id="connectButton">Connect Wallet</button>
-  <p id="walletAddress" style="margin-top: 20px;"></p>
+  <h1>Connect Phantom Wallet</h1>
+  <button id="connect">Connect Wallet</button>
+  <div id="walletAddress"></div>
+  <div id="balance"></div>
+
+  <!-- Load Solana Web3.js -->
+  <script src="https://unpkg.com/@solana/web3.js@1.95.2/lib/index.iife.min.js"></script>
 
   <script>
-    const connectButton = document.getElementById('connectButton');
-    const walletAddress = document.getElementById('walletAddress');
+    const connectButton = document.getElementById("connect");
+    const walletAddressDiv = document.getElementById("walletAddress");
+    const balanceDiv = document.getElementById("balance");
 
-    // Check if Phantom is installed
+    const TOKEN_MINT = "9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump; // Replace with your token mint address
+    const TOKEN_DECIMALS = 9; // Replace with your token's decimals (usually 6 or 9)
+
     const getProvider = () => {
       if ("solana" in window) {
         const provider = window.solana;
-        if (provider.isPhantom) {
-          return provider;
-        }
+        if (provider.isPhantom) return provider;
       }
-      window.open("https://phantom.app/", "_blank");
+      alert("Please install Phantom Wallet!");
+      return null;
     };
 
-    connectButton.addEventListener("click", async () => {
+    async function connectWallet() {
       const provider = getProvider();
       if (!provider) return;
 
       try {
         const resp = await provider.connect();
-        walletAddress.innerText = `Connected: ${resp.publicKey.toString()}`;
+        const publicKey = resp.publicKey.toString();
+        walletAddressDiv.innerText = `Connected: ${publicKey}`;
+        await fetchTokenBalance(resp.publicKey);
       } catch (err) {
-        console.error("Connection failed", err);
+        console.error("Connection Error:", err);
       }
-    });
+    }
+
+    async function fetchTokenBalance(publicKey) {
+      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"), "confirmed");
+      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
+        programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+      });
+
+      const tokenAccount = tokenAccounts.value.find((account) => {
+        return account.account.data.parsed.info.mint === TOKEN_MINT;
+      });
+
+      if (tokenAccount) {
+        const amount = tokenAccount.account.data.parsed.info.tokenAmount.uiAmount;
+        balanceDiv.innerText = `Token Balance: ${amount}`;
+      } else {
+        balanceDiv.innerText = "Token not found in wallet.";
+      }
+    }
+
+    connectButton.addEventListener("click", connectWallet);
   </script>
 </body>
 </html>
