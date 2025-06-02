@@ -40,26 +40,31 @@
     <script>
     // Function to check if Phantom is available
     async function isPhantomAvailable() {
-        // Check for Phantom in browser (desktop or mobile)
-        if (window.solana && (window.solana.isPhantom || window.solana.isMobile)) {
-            return true;
-        }
-        // Additional check for mobile deep linking
-        if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-            return window.solana !== undefined;
-        }
-        return false;
+        return new Promise((resolve) => {
+            // Check for Phantom in browser
+            if (window.solana && (window.solana.isPhantom || window.solana.isMobile)) {
+                return resolve(true);
+            }
+            // Mobile-specific check
+            if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+                return resolve(!!window.solana);
+            }
+            // Timeout to avoid hanging
+            setTimeout(() => resolve(false), 1000);
+        });
     }
 
     // Function to connect to Phantom wallet
     async function connectWallet() {
         try {
+            console.log("Attempting to connect wallet...");
             // Check if Phantom is available
-            if (!(await isPhantomAvailable())) {
+            const phantomAvailable = await isPhantomAvailable();
+            if (!phantomAvailable) {
                 const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
                 const message = isMobile
-                    ? "Phantom app not detected. Ensure Phantom is installed and try again."
-                    : "Phantom wallet not installed. Please install the Phantom browser extension.";
+                    ? "Phantom app not detected. Ensure Phantom is installed and try opening this page in a browser connected to Phantom."
+                    : "Phantom wallet not detected. Ensure the Phantom browser extension is installed and unlocked.";
                 alert(message);
                 if (!isMobile) {
                     window.open("https://phantom.app", "_blank");
@@ -69,8 +74,10 @@
 
             // Connect to Phantom wallet
             const provider = window.solana;
-            await provider.connect();
+            console.log("Connecting to Phantom...");
+            await provider.connect({ onlyIfTrusted: false });
             const publicKey = provider.publicKey.toString();
+            console.log("Connected wallet public key:", publicKey);
             
             // Display wallet address
             document.getElementById("connect-wallet").classList.add("hidden");
@@ -81,13 +88,14 @@
             await showTokenBalance(publicKey);
         } catch (err) {
             console.error("Error connecting wallet:", err);
-            alert(`Failed to connect wallet: ${err.message || "Unknown error"}. Please try again.`);
+            alert(`Failed to connect wallet: ${err.message || "Unknown error"}. Check console for details.`);
         }
     }
 
     // Function to fetch and display SPL-404 token balance
     async function showTokenBalance(publicKey) {
         try {
+            console.log("Fetching token balance for:", publicKey);
             // Connect to Solana mainnet
             const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"), "confirmed");
             
@@ -115,7 +123,10 @@
     }
 
     // Add event listener to the connect wallet button
-    document.getElementById("connect-wallet").addEventListener("click", connectWallet);
+    document.getElementById("connect-wallet").addEventListener("click", () => {
+        console.log("Connect wallet button clicked");
+        connectWallet();
+    });
 </script>
 </body>
 </html>
