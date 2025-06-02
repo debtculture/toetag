@@ -38,65 +38,84 @@
     <div id="token-balance" class="hidden"></div>
 
     <script>
-        // Function to connect to Phantom wallet
-        async function connectWallet() {
-            try {
-                // Check if Phantom is installed
-                const isPhantomInstalled = window.solana && window.solana.isPhantom;
-                if (!isPhantomInstalled) {
-                    alert("Phantom wallet is not installed. Please install the Phantom browser extension.");
+    // Function to check if Phantom is available
+    async function isPhantomAvailable() {
+        // Check for Phantom in browser (desktop or mobile)
+        if (window.solana && (window.solana.isPhantom || window.solana.isMobile)) {
+            return true;
+        }
+        // Additional check for mobile deep linking
+        if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+            return window.solana !== undefined;
+        }
+        return false;
+    }
+
+    // Function to connect to Phantom wallet
+    async function connectWallet() {
+        try {
+            // Check if Phantom is available
+            if (!(await isPhantomAvailable())) {
+                const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+                const message = isMobile
+                    ? "Phantom app not detected. Ensure Phantom is installed and try again."
+                    : "Phantom wallet not installed. Please install the Phantom browser extension.";
+                alert(message);
+                if (!isMobile) {
                     window.open("https://phantom.app", "_blank");
-                    return;
                 }
-
-                // Connect to Phantom wallet
-                const response = await window.solana.connect();
-                const publicKey = response.publicKey.toString();
-                
-                // Display wallet address
-                document.getElementById("connect-wallet").classList.add("hidden");
-                document.getElementById("wallet-address").classList.remove("hidden");
-                document.getElementById("wallet-address").innerHTML = `<b>Connected Wallet:</b> ${publicKey.substring(0, 5)}...${publicKey.substring(publicKey.length - 5)}`;
-
-                // Get token balance
-                await showTokenBalance(publicKey);
-            } catch (err) {
-                console.error("Error connecting wallet:", err);
-                alert("Failed to connect wallet. Please try again.");
+                return;
             }
+
+            // Connect to Phantom wallet
+            const provider = window.solana;
+            await provider.connect();
+            const publicKey = provider.publicKey.toString();
+            
+            // Display wallet address
+            document.getElementById("connect-wallet").classList.add("hidden");
+            document.getElementById("wallet-address").classList.remove("hidden");
+            document.getElementById("wallet-address").innerHTML = `<b>Connected Wallet:</b> ${publicKey.substring(0, 5)}...${publicKey.substring(publicKey.length - 5)}`;
+
+            // Get token balance
+            await showTokenBalance(publicKey);
+        } catch (err) {
+            console.error("Error connecting wallet:", err);
+            alert(`Failed to connect wallet: ${err.message || "Unknown error"}. Please try again.`);
         }
+    }
 
-        // Function to fetch and display SPL-404 token balance
-        async function showTokenBalance(publicKey) {
-            try {
-                // Connect to Solana mainnet
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"), "confirmed");
-                
-                // Token mint address for the SPL-404 token
-                const tokenMintAddress = new solanaWeb3.PublicKey("9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump");
-                
-                // Get the associated token account
-                const associatedTokenAddress = await splToken.getAssociatedTokenAddress(
-                    tokenMintAddress,
-                    new solanaWeb3.PublicKey(publicKey)
-                );
+    // Function to fetch and display SPL-404 token balance
+    async function showTokenBalance(publicKey) {
+        try {
+            // Connect to Solana mainnet
+            const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"), "confirmed");
+            
+            // Token mint address for the SPL-404 token
+            const tokenMintAddress = new solanaWeb3.PublicKey("9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump");
+            
+            // Get the associated token account
+            const associatedTokenAddress = await splToken.getAssociatedTokenAddress(
+                tokenMintAddress,
+                new solanaWeb3.PublicKey(publicKey)
+            );
 
-                // Fetch token balance
-                const tokenAccountInfo = await connection.getTokenAccountBalance(associatedTokenAddress);
-                const balance = tokenAccountInfo.value.uiAmount;
+            // Fetch token balance
+            const tokenAccountInfo = await connection.getTokenAccountBalance(associatedTokenAddress);
+            const balance = tokenAccountInfo.value.uiAmount || 0;
 
-                // Display token balance
-                document.getElementById("token-balance").classList.remove("hidden");
-                document.getElementById("token-balance").innerHTML = `<b>SPL-404 Token Balance:</b> ${balance} Tokens`;
-            } catch (err) {
-                console.error("Error fetching token balance:", err);
-                document.getElementById("token-balance").classList.remove("hidden");
-                document.getElementById("token-balance").innerHTML = `<b>Error:</b> Could not fetch token balance. Ensure you have this token in your wallet.`;
-            }
+            // Display token balance
+            document.getElementById("token-balance").classList.remove("hidden");
+            document.getElementById("token-balance").innerHTML = `<b>SPL-404 Token Balance:</b> ${balance} Tokens`;
+        } catch (err) {
+            console.error("Error fetching token balance:", err);
+            document.getElementById("token-balance").classList.remove("hidden");
+            document.getElementById("token-balance").innerHTML = `<b>Error:</b> Could not fetch token balance. Ensure the token is in your wallet.`;
         }
+    }
 
-        // Add event listener to the connect wallet button
-        document.getElementById("connect-wallet").addEventListener("click", connectWallet);
-    </script>
+    // Add event listener to the connect wallet button
+    document.getElementById("connect-wallet").addEventListener("click", connectWallet);
+</script>
 </body>
 </html>
