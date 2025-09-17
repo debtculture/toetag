@@ -7,6 +7,9 @@
     <meta name="keywords" content="Debt Culture, $DEBT, community, crypto, memecoin, Solana, Hall of Fame">
     <meta name="author" content="Autopsy">
     <title>Debt Culture - Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
     <style>
         * {
@@ -17,7 +20,7 @@
         body {
             background: #121212;
             color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', Arial, sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
@@ -59,8 +62,7 @@
             color: #fff;
             text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555;
             margin-bottom: 40px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: 700;
+            font-weight: 900;
             animation: neon-flicker 1.5s infinite alternate;
         }
         @keyframes neon-flicker {
@@ -136,6 +138,7 @@
         @media (max-width: 768px) { .hof-row-desktop { display: none; } .hof-row-mobile { gap: 10px; } }
         .hof-member { position: relative; width: 100px; height: 100px; }
         .hof-bubble { width: 100%; height: 100%; background-color: #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; border: 2px solid #555; cursor: pointer; position: relative; }
+        .hof-bubble.active-member { border: 2px solid #ff5555; box-shadow: 0 0 15px #ff5555; transform: scale(1.1); }
         .hof-inner-bubble { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .hof-inner-bubble img { width: 100%; height: 100%; object-fit: cover; }
         .hof-title { font-size: 0.8rem; color: #fff; margin-top: 5px; text-shadow: 0 0 3px #ff5555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 100%; font-weight: bold; }
@@ -149,16 +152,52 @@
         .trading-card { background: linear-gradient(145deg, #f0e6d2 0%, #d9c9a3 100%); border: 5px solid #ffd700; border-radius: 10px; width: 210px; height: 294px; margin: 0 auto; padding: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
         .trading-card:hover { transform: scale(1.05); box-shadow: 0 0 20px #ff5555, 0 0 30px #ff5555; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .card-level { background: #ff5555; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 5px; font-weight: bold; font-family: 'Arial', sans-serif; line-height: 1; }
-        .card-pfp-square { width: 147px; height: 147px; margin: 0 auto; border: 3px solid #000; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); flex-shrink: 0; }
-        .pfp-link { display: block; width: 100%; height: 100%; }
-        .card-pfp-square img { width: 100%; height: 100%; object-fit: cover; }
-        .card-stats { text-align: center; margin-top: 5px; display: flex; flex-direction: column; flex-grow: 1; padding-bottom: 5px; }
-        .hof-name { font-size: 18px; font-weight: bold; color: #000; font-family: 'Arial', sans-serif; }
-        .divider { width: 80%; height: 1px; background: #000; margin: 0 auto; margin-top: auto; }
-        .special-ability { margin-top: 5px; }
-        .ability-title { font-size: 12px; font-weight: bold; color: #000; font-family: 'Arial', sans-serif; text-align: center; }
-        .ability-content { font-size: 12px; color: #333; font-family: 'Arial', sans-serif; text-align: center; min-height: 15px; }
+        .card-level { background: #ff5555; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 5px; font-weight: 700; font-family: 'Inter', sans-serif; line-height: 1; }
+        .card-pfp-square { width: 147px; height: 147px; margin: 0 auto; border: 3px solid #000; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); flex-shrink: 0; }
+        .pfp-link { display: block; width: 100%; height: 100%; }
+        .card-pfp-square img { width: 100%; height: 100%; object-fit: cover; }
+        .card-stats { text-align: center; margin-top: 5px; display: flex; flex-direction: column; flex-grow: 1; padding-bottom: 5px; }
+        .hof-name { font-size: 18px; font-weight: 700; color: #000; font-family: 'Inter', sans-serif; }
+        .divider { width: 80%; height: 1px; background: #000; margin: 0 auto; margin-top: auto; }
+        .special-ability { margin-top: 5px; }
+        .ability-title { font-size: 12px; font-weight: 700; color: #000; font-family: 'Inter', sans-serif; text-align: center; }
+        .ability-content { font-size: 12px; color: #333; font-family: 'Inter', sans-serif; text-align: center; min-height: 15px; }
+        .card-info-icon { font-size: 16px; color: #000; cursor: pointer; font-weight: bold; line-height: 1; }
+        .badge-info-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            color: #eee;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 1001;
+            border: 1px solid #ff5555;
+            box-shadow: 0 0 20px #ff5555;
+            max-width: 90%;
+            width: 300px;
+        }
+        .badge-info-popup h4 {
+            margin-bottom: 10px;
+            color: #ff5555;
+        }
+        .badge-info-popup ul {
+            list-style: none;
+        }
+        .badge-info-popup li {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        .badge-info-popup .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
         
         /* Badge Styles */
         .hof-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 5px 0; flex-grow: 1; overflow-y: auto; }
@@ -241,6 +280,11 @@
 <body>
     <canvas id="matrix-bg"></canvas>
     <canvas id="matrix-rain"></canvas>
+    <div id="badge-info-popup" class="badge-info-popup" role="dialog" aria-modal="true">
+        <span class="close-btn" onclick="hideBadgeInfo()" title="Close" aria-label="Close">&times;</span>
+        <h4 id="badge-info-title"></h4>
+        <ul id="badge-info-list"></ul>
+    </div>
     <div class="content-wrapper">
         <div class="back-home-container">
             <a class="back-home" href="index.html" aria-label="Back to Home">
@@ -257,6 +301,7 @@
                         <div class="card-header">
                             <div class="hof-name"></div>
                             <div class="card-level">Lv. 99</div>
+                                <div class="card-info-icon">ⓘ</div>
                         </div>
                         <div class="card-pfp-square">
                             <a href="#" target="_blank" class="pfp-link">
@@ -359,27 +404,59 @@
             { name: 'Denzel', holderSince: '05/10/2024', xLink: 'https://x.com/0xDnxl', img: 'https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032699/Denzel_bmt4td.jpg', badges: [{ type: 'spaces', tier: 'silver' }, { type: 'holding', tier: 'bronze' }] },
             { name: 'Tree', holderSince: '05/10/2024', xLink: 'https://x.com/TheresaWeik', img: 'https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032771/Tree_bggo4f.jpg', badges: [{ type: 'spaces', tier: 'silver' }, { type: 'holding', tier: 'bronze' }] }
         ];
+        const badgeDescriptions = {
+            spaces: {
+                bronze: 'Orbiter: Consistently shows up to X Spaces.',
+                silver: 'Cosmonaut: Regularly engages in Spaces conversations.',
+                gold: 'Star Commander: Leads conversations in $DEBT Spaces.',
+                amethyst: 'Supernova: Hosts $DEBT-focused X Spaces.'
+            },
+            burn: {
+                bronze: 'Pyro: Burned 100,000+ $DEBT.',
+                silver: 'Arsonist: Burned 1,000,000+ $DEBT.',
+                gold: 'Inferno: Burned 10,000,000+ $DEBT.',
+                amethyst: 'Ashbringer: Burned 100,000,000+ $DEBT.'
+            },
+            holding: {
+                bronze: 'Cold Wallet: Held $DEBT for 1+ month.',
+                silver: 'Iron Grip: Held $DEBT for 3+ months.',
+                gold: 'Steel Reserve: Held $DEBT for 6+ months, solid stack.',
+                amethyst: 'Diamond Hands: Held $DEBT for 1 year+, unshakeable holder.'
+            },
+            shiller: { single: 'Cold Blooded Shiller: Hardcore $DEBT promoter on social media.' },
+            meme: { single: 'Meme Machine: Creates dank $DEBT memes.' },
+            year1: { single: 'Year 1: Heavily involved in the project during its first year.' }
+        };
 
         function updateCommunityCarousel() {
-            const featuredCard = document.querySelector('#hof-featured .trading-card');
-            const memberData = members[currentCommunityIndex];
-            
-            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
-            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
-            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
-            featuredCard.querySelector('.hof-name').textContent = memberData.name;
-            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
+            const featuredCard = document.querySelector('#hof-featured .trading-card');
+            const memberData = members[currentCommunityIndex];
+            
+            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
+            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
+            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
+            featuredCard.querySelector('.hof-name').textContent = memberData.name;
+            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
 
-            const badgesContainer = featuredCard.querySelector('.hof-badges');
-            badgesContainer.innerHTML = '';
-            if (memberData.badges && memberData.badges.length > 0) {
-                memberData.badges.forEach(badge => {
-                    const badgeEl = document.createElement('div');
-                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
-                    badgesContainer.appendChild(badgeEl);
-                });
-            }
-        }
+            const badgesContainer = featuredCard.querySelector('.hof-badges');
+            badgesContainer.innerHTML = '';
+            if (memberData.badges && memberData.badges.length > 0) {
+                memberData.badges.forEach(badge => {
+                    const badgeEl = document.createElement('div');
+                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
+                    badgesContainer.appendChild(badgeEl);
+                });
+            }
+
+            // Highlight the active member bubble
+            document.querySelectorAll('.hof-member .hof-bubble').forEach(bubble => {
+                bubble.classList.remove('active-member');
+            });
+            const activeMemberEl = document.querySelector(`.hof-member[data-index="${currentCommunityIndex}"] .hof-bubble`);
+            if (activeMemberEl) {
+                activeMemberEl.classList.add('active-member');
+            }
+        }
 
         function rotateHof(direction) {
             if (direction === 'right') { currentCommunityIndex = (currentCommunityIndex + 1) % totalNamedCommunityMembers; } 
@@ -403,20 +480,58 @@
             else { content.style.maxHeight = '0'; content.style.padding = '0 15px'; }
         }
 
-        window.addEventListener('load', () => {
-            initializeMatrix();
-            startMatrixRain();
-            updateCommunityCarousel();
-            resetCommunityAutoRotate();
-            
-            document.querySelectorAll('.hof-member').forEach(memberEl => {
-                memberEl.addEventListener('click', () => {
-                    currentCommunityIndex = parseInt(memberEl.dataset.index);
-                    updateCommunityCarousel();
-                    resetCommunityAutoRotate();
-                });
-            });
-        });
+        function showBadgeInfo() {
+            const member = members[currentCommunityIndex];
+            const popup = document.getElementById('badge-info-popup');
+            const title = document.getElementById('badge-info-title');
+            const list = document.getElementById('badge-info-list');
+
+            title.textContent = `${member.name}'s Badges`;
+            list.innerHTML = '';
+
+            if (member.badges && member.badges.length > 0) {
+                member.badges.forEach(badge => {
+                    const description = badgeDescriptions[badge.type]?.[badge.tier] || 'No description available.';
+                    const listItem = document.createElement('li');
+                    listItem.textContent = description;
+                    list.appendChild(listItem);
+                });
+            } else {
+                list.innerHTML = '<li>This member has no badges yet.</li>';
+            }
+            popup.style.display = 'block';
+        }
+
+        function hideBadgeInfo() {
+            const popup = document.getElementById('badge-info-popup');
+            popup.style.display = 'none';
+        }
+        
+        window.addEventListener('load', () => {
+            initializeMatrix();
+            startMatrixRain();
+            updateCommunityCarousel();
+            resetCommunityAutoRotate();
+            
+            document.querySelectorAll('.hof-member').forEach(memberEl => {
+                memberEl.addEventListener('click', () => {
+                    currentCommunityIndex = parseInt(memberEl.dataset.index);
+                    updateCommunityCarousel();
+                    resetCommunityAutoRotate();
+                });
+            });
+
+            document.querySelector('.card-info-icon').addEventListener('click', showBadgeInfo);
+
+            // Hide popup if clicking outside of it
+            document.addEventListener('click', function(event) {
+                const popup = document.getElementById('badge-info-popup');
+                const infoIcon = document.querySelector('.card-info-icon');
+                if (popup.style.display === 'block' && !popup.contains(event.target) && !infoIcon.contains(event.target)) {
+                    hideBadgeInfo();
+                }
+            });
+        });
     </script>
 </body>
 </html>
