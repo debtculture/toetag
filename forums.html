@@ -188,9 +188,9 @@
             </ul>
     </main>
 
-    <footer class="footer">© 2025 by <a href="https://x.com/AutopsyT2" target="_blank">Autopsy</a></footer>
+    <footer class="footer">© 2025 by <a href="https://x.com/AutopsyT2" target="_blank" class="footer-link">Autopsy</a>. All rights reserved.</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
     // --- Supabase Connection ---
@@ -308,7 +308,6 @@
             postBtn.textContent = 'Post';
             postBtn.disabled = false;
         } else {
-            // The real-time listener will handle displaying the new post
             input.value = "";
             postBtn.textContent = 'Post';
         }
@@ -320,7 +319,6 @@
         const sanitizedText = post.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         const postTime = new Date(post.created_at).toLocaleString();
 
-        // Use the username from the joined 'profiles' table
         const username = post.profiles ? post.profiles.username : 'Unknown User';
 
         el.innerHTML = `
@@ -331,3 +329,5 @@
 
     document.addEventListener('DOMContentLoaded', initializeForum);
 </script>
+</body>
+</html>
