@@ -210,6 +210,8 @@
         .future-phase.visible { filter: blur(3px); opacity: 0.6; transform: translateX(0); }
         .future-phase.active { filter: blur(0); opacity: 1; }
     }
+.hero-video-container { max-width: 700px; margin: 30px auto; border: 3px solid #ff5555; border-radius: 10px; box-shadow: 0 0 15px rgba(255, 85, 85, 0.7); animation: neonPulse 2s infinite ease-in-out; overflow: hidden; /* Ensures the video corners are rounded */ }
+.hero-video-container video { display: block; width: 100%; height: auto; }
 
     /* Debt Clock Widget Styles */
     .debt-clock-container { margin: 20px auto; width: 280px; height: 75px; background-color: #1e1e1e; border-radius: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; position: relative; cursor: pointer; }
@@ -1130,7 +1132,19 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
 
         <section id="hero" class="section">
             <h1>$DEBT: Don’t Ever Believe Them</h1>
-            <p class="typewriter">For the 99%: Smash debt, defy lies. The elite’s reign ends NOW.</p>
+
+            <div class="hero-video-container">
+                <video src="https://res.cloudinary.com/dpvptjn4t/video/upload/v1758095395/Pandemic_compressed_rzwz8z.mp4" 
+                       autoplay 
+                       muted 
+                       loop 
+                       playsinline 
+                       width="1280" 
+                       height="720">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <p class="typewriter">They forged a world in chains of debt and called it progress. They built a digital prison for the masses and sold it as a dream. We are the glitch in their machine, the key to our own cells. This is more than a token; it's the crowbar to pry open the system and the fire to burn their empire to ash. Shatter your chains. The great default is here.</p>
             <button onclick="scrollToSection('#how-to-buy')" style="background: #ff5555; color: #fff; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-weight: 700; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;" onmouseover="this.style.transform='scale(1.15)'; this.style.boxShadow='0 0 20px #ff5555, 0 0 30px #ff5555'; this.style.background='#ff7777';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'; this.style.background='#ff5555';" aria-label="Scroll to How to Buy section">How to Buy</button>
         </section>
 
