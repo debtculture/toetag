@@ -1214,7 +1214,6 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
 <script defer src="https://unpkg.com/@solana/wallet-adapter-react@0.15.35/dist/umd/index.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.3/lib/index.iife.js"></script>
 <script defer src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script type="application/ld+json">
 {
@@ -1564,7 +1563,7 @@ window.onload = fetchTokenomicsData;
                     <span class="buy-step-icon">📱</span>
                     <div class="step-content">
                         <h4>1. Get a Solana Wallet</h4>
-                        <p>Download <a href="https://phantom.app/" id="phantomLink" target="_blank" rel="noopener noreferrer">Phantom</a> or your preferred Solana wallet. **Save your seed phrase securely!**</p>
+                        <p>Download <a href="https://phantom.app/" id="phantomLink" target="_blank" rel="noopener noreferrer">Phantom</a> or your preferred Solana wallet. <b>Save your seed phrase securely!</b></p>
                     </div>
                 </div>
                 <div class="buy-step">
@@ -1704,11 +1703,6 @@ window.onload = fetchTokenomicsData;
 </style>
 
 <script>
-    // Initialize Supabase
-    const supabaseUrl = 'https://ewptttudghjpxrqfznlh.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3cHR0dHVkZ2hqcHhycWZ6bmxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMTM4MTYsImV4cCI6MjA3MzY4OTgxNn0.jvS3pjMDdPR1npVaJikAIW07w8_lOqWL2mqek5KEdyY';
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
-
 window.ethereum = undefined;
 
 function toggleMenu() {
@@ -1948,7 +1942,6 @@ async function connectWallet(walletId) {
     closeWalletModal();
 
     try {
-        // --- YOUR ORIGINAL WALLET PROVIDER LOGIC (PRESERVED) ---
         let provider = null;
         let walletName = 'Unknown Wallet';
         const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
@@ -1968,7 +1961,8 @@ async function connectWallet(walletId) {
         if (isMobile && !isInAppBrowser) {
             const wallet = wallets.find(w => w.id === walletId);
             const deepLink = deepLinks[walletId];
-            if (confirm(`Connect with ${wallet.name}?`)) {
+            const prompt = `Connect with ${wallet.name}?`;
+            if (confirm(prompt)) {
                 window.location.href = deepLink;
                 setTimeout(() => {
                     if (document.hasFocus()) {
@@ -1990,99 +1984,69 @@ async function connectWallet(walletId) {
             walletName = 'Backpack';
         } else {
             const wallet = wallets.find(w => w.id === walletId);
-            if (confirm(`No ${wallet.name} detected. Install it now?`)) {
+            const prompt = `No ${wallet.name} detected. Install it now?`;
+            if (confirm(prompt)) {
                 window.open(downloadUrls[walletId], '_blank');
             }
             return;
         }
 
-        if (!provider.connected) {
-            await provider.connect();
-        }
-        const publicKey = provider.publicKey.toString();
-
-        // --- NEW SUPABASE AUTHENTICATION LOGIC (ADDED) ---
-        let { data: authData, error: signInError } = await supabaseClient.auth.signInWithPassword({
-            email: publicKey,
-            password: publicKey,
-        });
-
-        if (signInError && signInError.message === 'Invalid login credentials') {
-            const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
-                email: publicKey,
-                password: publicKey,
-            });
-            if (signUpError) {
-                throw new Error("Could not sign up user: " + signUpError.message);
-            }
-            authData = signUpData;
-        } else if (signInError) {
-            throw new Error("Could not sign in user: " + signInError.message);
-        }
-
-        const user = authData.user;
-        if (!user) {
-            throw new Error("Authentication failed, user not found.");
-        }
-
-        // --- YOUR ORIGINAL PROFILE HANDLING LOGIC (MODIFIED TO USE SECURE ID) ---
-        let { data: profile, error: profileError } = await supabaseClient
-            .from('profiles')
-            .select('username')
-            .eq('id', user.id)
-            .single();
-
-        if (profileError && profileError.code !== 'PGRST116') {
-            throw new Error('Could not check for profile: ' + profileError.message);
-        }
-
-        if (!profile) {
-            const username = prompt("Welcome! Please choose a username:");
-            if (username && username.trim() !== '') {
-                const { data: newProfile, error: insertError } = await supabaseClient
-                    .from('profiles')
-                    .insert([{ id: user.id, wallet_address: publicKey, username: username }])
-                    .select()
-                    .single();
-                if (insertError) {
-                    alert('Could not create profile. The username might be taken.');
-                    await supabaseClient.auth.signOut();
-                    return;
-                }
-                profile = newProfile;
-                alert(`Profile created! Welcome, ${profile.username}!`);
+        let publicKey;
+        try {
+            if (walletId === 'solflare') {
+                await provider.connect();
+                publicKey = provider.publicKey?.toString();
+            } else if (walletId === 'backpack') {
+                await provider.connect();
+                publicKey = provider.publicKey?.toString();
             } else {
-                alert("Profile creation cancelled.");
-                await supabaseClient.auth.signOut();
-                return;
+                await provider.connect();
+                publicKey = provider.publicKey?.toString();
             }
+        } catch (err) {
+            throw new Error(`${walletName} connection failed: ${err.message}`);
         }
 
-        // --- YOUR ORIGINAL UI UPDATE LOGIC (PRESERVED) ---
+        if (!publicKey) {
+            throw new Error(`Failed to retrieve public key from ${walletName}`);
+        }
+
         if (mobileButton) {
-            mobileButton.textContent = profile.username;
+            mobileButton.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
             mobileButton.classList.add('connected');
         }
         if (desktopBubble) {
             desktopBubble.classList.add('connected');
             const span = desktopBubble.querySelector('span');
-            span.textContent = profile.username;
+            span.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
         }
 
         walletAddressEl.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
         walletInfo.style.display = 'block';
 
-        // --- YOUR ORIGINAL LOCALSTORAGE AND BALANCE LOGIC (PRESERVED) ---
         localStorage.setItem('walletAddress', publicKey);
         localStorage.setItem('walletType', walletId);
-        localStorage.setItem('username', profile.username);
 
         const balance = await getDebtBalance(publicKey);
         debtBalanceEl.textContent = balance;
 
+        console.log(`${walletName} connected:`, publicKey);
+
+        provider.on('accountChanged', async (newPublicKey) => {
+            if (newPublicKey) {
+                const newKey = newPublicKey.toString();
+                walletAddressEl.textContent = `${newKey.slice(0, 4)}...${newKey.slice(-4)}`;
+                localStorage.setItem('walletAddress', newKey);
+                const balance = await getDebtBalance(newKey);
+                debtBalanceEl.textContent = balance;
+                console.log(`${walletName} account changed:`, newKey);
+            } else {
+                disconnectWallet();
+            }
+        });
     } catch (error) {
         console.error(`Error connecting ${walletId} wallet:`, error);
-        alert(`Failed to connect wallet: ${error.message}`);
+        alert(`Failed to connect ${walletId}. Ensure your wallet is unlocked and try again.`);
     }
 }
 function hideWalletInfo() {
