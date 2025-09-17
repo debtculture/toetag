@@ -193,126 +193,122 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-    // --- Supabase Connection ---
-    const supabaseUrl = 'https://ewptttudghjpxrqfznlh.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3cHR0dHVkZ2hqcHhycWZ6bmxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMTM4MTYsImV4cCI6MjA3MzY4OTgxNn0.jvS3pjMDdPR1npVaJikAIW07w8_lOqWL2mqek5KEdyY';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Supabase Connection (MOVED INSIDE and RENAMED) ---
+        const supabaseUrl = 'https://ewptttudghjpxrqfznlh.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3cHR0dHVkZ2hqcHhycWZ6bmxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMTM4MTYsImV4cCI6MjA3MzY4OTgxNn0.jvS3pjMDdPR1npVaJikAIW07w8_lOqWL2mqek5KEdyY';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // --- Get references to NEW HTML elements ---
-    const postCreatorSection = document.getElementById('post-creator');
-    const loginPromptSection = document.getElementById('login-prompt');
-    const postsList = document.getElementById('posts-list');
-    const welcomeMessage = document.getElementById('welcome-message');
-    const postInput = document.getElementById('post-input');
-    const submitPostBtn = document.getElementById('submit-post-btn');
+        // --- Get references to NEW HTML elements ---
+        const postCreatorSection = document.getElementById('post-creator');
+        const loginPromptSection = document.getElementById('login-prompt');
+        const postsList = document.getElementById('posts-list');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const postInput = document.getElementById('post-input');
+        const submitPostBtn = document.getElementById('submit-post-btn');
 
-    let currentUserProfile = null;
+        let currentUserProfile = null;
 
-    async function initializePage() {
-        // Always fetch and display posts for everyone to see
-        await fetchAndDisplayPosts();
+        async function initializePage() {
+            // Always fetch and display posts for everyone to see
+            await fetchAndDisplayPosts();
 
-        // Check if a user is logged in
-        const { data: { session } } = await supabase.auth.getSession();
+            // Check if a user is logged in
+            const { data: { session } } = await supabaseClient.auth.getSession();
 
-        if (session) {
-            // If logged in, get their profile
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', session.user.id)
-                .single();
-            
-            if (profile) {
-                currentUserProfile = profile;
-                setupLoggedInView(profile.username);
+            if (session) {
+                // If logged in, get their profile
+                const { data: profile } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (profile) {
+                    currentUserProfile = profile;
+                    setupLoggedInView(profile.username);
+                }
             }
         }
-    }
 
-    function setupLoggedInView(username) {
-        // Show the post creator and hide the login prompt
-        loginPromptSection.style.display = 'none';
-        postCreatorSection.style.display = 'block';
-        
-        // Update welcome message
-        welcomeMessage.innerHTML = `Posting as: <strong style="color:#ff7777;">${username}</strong>`;
+        function setupLoggedInView(username) {
+            loginPromptSection.style.display = 'none';
+            postCreatorSection.style.display = 'block';
+            welcomeMessage.innerHTML = `Posting as: <strong style="color:#ff7777;">${username}</strong>`;
 
-        // Enable button only when there is text
-        postInput.addEventListener('input', () => {
-            submitPostBtn.disabled = postInput.value.trim().length === 0;
-        });
-
-        // Add click listener for posting
-        submitPostBtn.addEventListener('click', submitForumPost);
-    }
-
-    async function fetchAndDisplayPosts() {
-        const { data: posts, error } = await supabase
-            .from('posts')
-            .select(`*, profiles(username)`)
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            console.error("Error fetching posts:", error);
-            postsList.innerHTML = '<li>Error loading posts.</li>';
-            return;
-        }
-
-        postsList.innerHTML = ""; // Clear the list
-        if (posts.length > 0) {
-            posts.forEach(post => {
-                const postElement = document.createElement('li');
-                postElement.className = 'post';
-
-                const authorName = post.profiles ? post.profiles.username : 'Anonymous';
-                const postDate = new Date(post.created_at).toLocaleString();
-                const sanitizedContent = post.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-                postElement.innerHTML = `
-                    <div class="post-header">
-                        <a href="#" class="post-author">${authorName}</a>
-                        <span>${postDate}</span>
-                    </div>
-                    <p class="post-content">${sanitizedContent}</p>
-                `;
-                postsList.appendChild(postElement);
+            postInput.addEventListener('input', () => {
+                submitPostBtn.disabled = postInput.value.trim().length === 0;
             });
-        }
-    }
 
-    async function submitForumPost() {
-        const content = postInput.value.trim();
-        if (!content || !currentUserProfile) return;
-
-        submitPostBtn.disabled = true;
-        submitPostBtn.textContent = 'Posting...';
-
-        const { error } = await supabase
-            .from('posts')
-            .insert([{ content: content, author_id: currentUserProfile.id }]);
-
-        if (error) {
-            alert('Error posting message: ' + error.message);
-        } else {
-            postInput.value = '';
-            await fetchAndDisplayPosts(); // Refresh the posts list
+            submitPostBtn.addEventListener('click', submitForumPost);
         }
 
-        submitPostBtn.disabled = false;
-        submitPostBtn.textContent = 'Post to Ledger';
-    }
-    
-    // Listen for new posts in real-time and refresh the list
-    supabase
-        .channel('public:posts')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
-            fetchAndDisplayPosts();
-        })
-        .subscribe();
+        async function fetchAndDisplayPosts() {
+            const { data: posts, error } = await supabaseClient
+                .from('posts')
+                .select(`*, profiles(username)`)
+                .order('created_at', { ascending: false });
 
-    // Run the main function when the page loads
-    document.addEventListener('DOMContentLoaded', initializePage);
+            if (error) {
+                console.error("Error fetching posts:", error);
+                postsList.innerHTML = '<li>Error loading posts.</li>';
+                return;
+            }
+
+            postsList.innerHTML = "";
+            if (posts.length > 0) {
+                posts.forEach(post => {
+                    const postElement = document.createElement('li');
+                    postElement.className = 'post';
+                    const authorName = post.profiles ? post.profiles.username : 'Anonymous';
+                    const postDate = new Date(post.created_at).toLocaleString();
+                    const sanitizedContent = post.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                    postElement.innerHTML = `
+                        <div class="post-header">
+                            <a href="#" class="post-author">${authorName}</a>
+                            <span>${postDate}</span>
+                        </div>
+                        <p class="post-content">${sanitizedContent}</p>
+                    `;
+                    postsList.appendChild(postElement);
+                });
+            }
+        }
+
+        async function submitForumPost() {
+            const content = postInput.value.trim();
+            if (!content || !currentUserProfile) return;
+
+            submitPostBtn.disabled = true;
+            submitPostBtn.textContent = 'Posting...';
+
+            const { error } = await supabaseClient
+                .from('posts')
+                .insert([{ content: content, author_id: currentUserProfile.id }]);
+
+            if (error) {
+                alert('Error posting message: ' + error.message);
+            } else {
+                postInput.value = '';
+                // The real-time listener will handle the refresh
+            }
+
+            submitPostBtn.disabled = false;
+            submitPostBtn.textContent = 'Post to Ledger';
+        }
+
+        // Listen for new posts in real-time and refresh the list
+        supabaseClient
+            .channel('public:posts')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
+                fetchAndDisplayPosts();
+            })
+            .subscribe();
+
+        // Run the main function
+        initializePage();
+    });
 </script>
 </body>
 </html>
