@@ -846,6 +846,31 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
     text-decoration: underline;
     color: #ff7777;
 }
+.cta-button {
+    /* --- Size & Spacing --- */
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 20px;
+
+    /* --- Appearance --- */
+    background: #ff5555;
+    color: #fff;
+    border: 2px solid #ff7777;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* --- Effects --- */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.cta-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #ff5555, 0 0 50px #ff5555;
+}
 
 @media (max-width: 768px) {
     .x-space-schedule {
@@ -1149,7 +1174,7 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
                 </video>
             </div>
             
-            <button onclick="scrollToSection('#how-to-buy')" style="background: #ff5555; color: #fff; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-weight: 700; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;" onmouseover="this.style.transform='scale(1.15)'; this.style.boxShadow='0 0 20px #ff5555, 0 0 30px #ff5555'; this.style.background='#ff7777';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'; this.style.background='#ff5555';" aria-label="Scroll to How to Buy section">How to Buy</button>
+            <button onclick="scrollToSection('#how-to-buy')" class="cta-button">Buy $DEBT Now</button>
         </section>
 
         <div class="contract-address" style="animation: pulseGlow 2s infinite ease-in-out;">
