@@ -191,6 +191,7 @@
     <footer class="footer">© 2025 by <a href="https://x.com/AutopsyT2" target="_blank">Autopsy</a></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
     // --- Supabase Connection ---
     const supabaseUrl = 'https://ewptttudghjpxrqfznlh.supabase.co';
@@ -210,6 +211,12 @@
         // Check for an active Supabase session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
+        if (sessionError) {
+            console.error("Error getting session:", sessionError);
+            showAccessDenied();
+            return;
+        }
+
         if (!session) {
             // If user is not logged in, show an access denied message
             showAccessDenied();
@@ -223,7 +230,7 @@
 
             if (profileError || !profile) {
                 console.error("Could not find user profile:", profileError);
-                showAccessDenied();
+                showAccessDenied("Profile not found. Please re-connect on the main page.");
                 return;
             }
 
@@ -241,12 +248,13 @@
         }
     }
 
-    function showAccessDenied() {
+    function showAccessDenied(message = null) {
+        const defaultMessage = `You must have a profile to post.<br>
+                            <a href="index.html" style="color: #ff5555; text-decoration: underline;">Connect your wallet on the main page</a> to log in or create a profile.`;
         forumSection.innerHTML = `
             <h2>🗣️ Access Denied</h2>
             <p class="description" style="color: #ffcc00; text-align: center; font-size: 1.1rem; line-height: 1.5;">
-                You must have a profile to post.<br>
-                <a href="index.html" style="color: #ff5555; text-decoration: underline;">Connect your wallet on the main page</a> to log in or create a profile.
+                ${message || defaultMessage}
             </p>
         `;
     }
@@ -263,10 +271,10 @@
         // Fetch posts and JOIN with profiles table to get the username
         const { data: posts, error } = await supabase
             .from('posts')
-            .select(`
+            .select(\`
                 *,
                 profiles ( username )
-            `)
+            \`)
             .order('created_at', { ascending: false });
 
         if (error) {
@@ -315,11 +323,11 @@
         // Use the username from the joined 'profiles' table
         const username = post.profiles ? post.profiles.username : 'Unknown User';
 
-        el.innerHTML = `
+        el.innerHTML = \`
             <p><strong>${username}</strong> <em>[${postTime}]</em><br>${sanitizedText}</p>
-        `;
+        \`;
         forumDiv.appendChild(el);
     }
 
-    window.onload = initializeForum;
+    document.addEventListener('DOMContentLoaded', initializeForum);
 </script>
