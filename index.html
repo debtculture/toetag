@@ -871,6 +871,43 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
     transform: scale(1.1);
     box-shadow: 0 0 25px #ff5555, 0 0 50px #ff5555;
 }
+.ca-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 15px 0;
+}
+
+.ca-label {
+    font-size: 0.9rem;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.copyable-address-sleek {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #ff5555;
+    background-color: #1a1a1a;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.copyable-address-sleek:hover {
+    background-color: #444;
+}
+
+.copyable-address-sleek .address-text {
+    margin-right: 8px;
+}
 
 @media (max-width: 768px) {
     .x-space-schedule {
@@ -1187,6 +1224,13 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
     
     <div class="tokenomics">
         <h2>Tokenomics</h2>
+        <div class="ca-container">
+        <span class="ca-label">Contract Address</span>
+        <span class="copyable-address-sleek" onclick="copyAddress(this)" title="Click to copy">
+            <span class="address-text">9NQc...W82pump</span>
+            <span class="copy-icon">&#128203;</span>
+        </span>
+    </div>
         <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"><li>&#9989; Contract Renounced</li><li>&#9989; Deflationary by Design</li><li>&#9989; LP Torched</li><li>&#9989; Immutable Supply</li></ul>
 
 
@@ -1286,13 +1330,6 @@ window.onload = fetchTokenomicsData;
   </div>
 </div>
     </div>
-<div style="margin-top: 30px; margin-bottom: 20px;">
-     <h3>Contract Address</h3>
-     <span class="copyable-address" onclick="copyAddress(this)" tabindex="0" role="button" aria-label="Copy contract address" onkeydown="if(event.key === 'Enter') copyAddress(this)" aria-live="polite">
-         <span class="address-text">9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump</span>
-         <span class="copied-message" style="display: none;">Copied!</span>
-     </span>
-</div>
     
     <div class="x-space-schedule">
     <h2>Weekly X Spaces</h2>
