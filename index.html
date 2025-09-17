@@ -1940,176 +1940,122 @@ function closeWalletModal() {
 }
 
 async function connectWallet(walletId) {
-    const mobileButton = document.getElementById('connectWalletMobile');
-    const desktopBubble = document.getElementById('connectWalletDesktop');
-    const walletInfo = document.getElementById('walletInfo');
-    const walletAddressEl = document.getElementById('walletAddress').querySelector('span');
-    const debtBalanceEl = document.getElementById('debtBalance').querySelector('span');
-    closeWalletModal();
+    const mobileButton = document.getElementById('connectWalletMobile');
+    const desktopBubble = document.getElementById('connectWalletDesktop');
+    closeWalletModal();
 
-    try {
-        let provider = null;
-        let walletName = 'Unknown Wallet';
-        const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-        const isInAppBrowser = navigator.userAgent.includes('Phantom') || navigator.userAgent.includes('Solflare') || navigator.userAgent.includes('Backpack');
+    try {
+        // --- Step 1: Connect to the wallet provider ---
+        let provider = null;
+        if (walletId === 'phantom' && window.solana) {
+            provider = window.solana;
+        } else if (walletId === 'solflare' && window.solflare) {
+            provider = window.solflare;
+        } else if (walletId === 'backpack' && window.backpack) {
+            provider = window.backpack;
+        } else {
+            alert('No wallet provider found. Please install a wallet.');
+            return;
+        }
 
-        const deepLinks = {
-            phantom: 'phantom://',
-            solflare: 'solflare://',
-            backpack: 'backpack://'
-        };
-        const downloadUrls = {
-            phantom: 'https://phantom.app/download',
-            solflare: 'https://solflare.com/download',
-            backpack: 'https://backpack.app/download'
-        };
+        if (!provider.connected) {
+            await provider.connect();
+        }
+        const publicKey = provider.publicKey;
+        const walletAddress = publicKey.toString();
 
-        if (isMobile && !isInAppBrowser) {
-            const wallet = wallets.find(w => w.id === walletId);
-            const deepLink = deepLinks[walletId];
-            if (confirm(`Connect with ${wallet.name}?`)) {
-                window.location.href = deepLink;
-                setTimeout(() => {
-                    if (document.hasFocus()) {
-                        window.open(downloadUrls[walletId], '_blank');
-                    }
-                }, 1000);
-            }
-            return;
-        }
+        // --- Step 2: Supabase Web3 Login ---
+        // This part is a placeholder for a more advanced signature-based login.
+        // For now, we will proceed with the profile check directly.
+        console.log("Wallet connected, checking profile...");
 
-        if (walletId === 'phantom' && (window.solana?.isPhantom || (isInAppBrowser && navigator.userAgent.includes('Phantom')))) {
-            provider = window.solana;
-            walletName = 'Phantom';
-        } else if (walletId === 'solflare' && (window.solflare?.isSolflare || (isInAppBrowser && navigator.userAgent.includes('Solflare')))) {
-            provider = window.solflare;
-            walletName = 'Solflare';
-        } else if (walletId === 'backpack' && window.backpack) {
-            provider = window.backpack;
-            walletName = 'Backpack';
-        } else {
-            const wallet = wallets.find(w => w.id === walletId);
-            if (confirm(`No ${wallet.name} detected. Install it now?`)) {
-                window.open(downloadUrls[walletId], '_blank');
-            }
-            return;
-        }
+        // --- Step 3: Check for a Profile & Update UI ---
+        let { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('username')
+            .eq('wallet_address', walletAddress)
+            .single();
 
-        if (!provider.connected) {
-            await provider.connect();
-        }
-        const publicKey = provider.publicKey.toString();
+        if (!profile) {
+            const username = prompt("Welcome! It looks like you're new here. Please choose a username:");
+            if (username && username.trim() !== '') {
+                const { data: newProfile, error: insertError } = await supabaseClient
+                    .from('profiles')
+                    .insert({ wallet_address: walletAddress, username: username })
+                    .select()
+                    .single();
+                if (insertError) throw new Error('Could not create profile. The username may be taken.');
+                profile = newProfile;
+            } else {
+                alert("Profile creation cancelled.");
+                return;
+            }
+        }
+        
+        // --- UI & Local Storage Update ---
+        if (mobileButton) {
+            mobileButton.textContent = profile.username;
+            mobileButton.classList.add('connected');
+        }
+        if (desktopBubble) {
+            desktopBubble.classList.add('connected');
+            desktopBubble.querySelector('span').textContent = profile.username;
+        }
+        localStorage.setItem('walletAddress', walletAddress);
+        localStorage.setItem('username', profile.username);
+        
+        // You can add back the balance check and other UI updates here if needed
 
-        // --- NEW SUPABASE LOGIC STARTS HERE ---
-
-        // 1. Check if a profile exists for this wallet
-        let { data: profile, error } = await supabaseClient
-            .from('profiles')
-            .select('username')
-            .eq('wallet_address', publicKey)
-            .single(); // .single() gets one record or null
-
-        if (error && error.code !== 'PGRST116') { // PGRST116 means "no rows found", which is a normal outcome
-            console.error('Error checking profile:', error);
-            throw new Error('Could not check profile.');
-        }
-
-        // 2. If no profile exists, create one
-        if (!profile) {
-            const username = prompt("Welcome! It looks like you're new here. Please choose a username:");
-            if (username && username.trim() !== '') { // If user provides a username and doesn't cancel
-                const { data: newProfile, error: insertError } = await supabaseClient
-                    .from('profiles')
-                    .insert([{ wallet_address: publicKey, username: username }])
-                    .select()
-                    .single();
-
-                if (insertError) {
-                    console.error('Error creating profile:', insertError);
-                    alert('Could not create profile. The username might be taken, or it may be too short.');
-                    return; // Stop execution
-                }
-                profile = newProfile;
-                alert(`Profile created! Welcome, ${profile.username}!`);
-            } else {
-                // User cancelled the prompt or entered an empty username
-                alert("Profile creation cancelled. You can connect your wallet again to create a profile.");
-                return; // Stop execution if they cancel
-            }
-        }
-        
-        // --- UI UPDATE LOGIC ---
-        
-        console.log(`User ${profile.username} logged in.`);
-
-        if (mobileButton) {
-            mobileButton.textContent = profile.username; // Display username
-            mobileButton.classList.add('connected');
-        }
-        if (desktopBubble) {
-            desktopBubble.classList.add('connected');
-            const span = desktopBubble.querySelector('span');
-            span.textContent = profile.username; // Display username
-        }
-
-        walletAddressEl.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
-        walletInfo.style.display = 'block';
-
-        localStorage.setItem('walletAddress', publicKey);
-        localStorage.setItem('walletType', walletId);
-        localStorage.setItem('username', profile.username);
-
-        const balance = await getDebtBalance(publicKey);
-        debtBalanceEl.textContent = balance;
-
-    } catch (error) {
-        console.error(`Error connecting ${walletId} wallet:`, error);
-        alert(`Failed to connect wallet. Please ensure your wallet is unlocked and try again.`);
-    }
+    } catch (error) {
+        console.error('Connection/Login Error:', error);
+        alert('An error occurred during connection. Please try again.');
+    }
 }
 function hideWalletInfo() {
     const walletInfo = document.getElementById('walletInfo');
     walletInfo.style.display = 'none';
 }
 async function disconnectWallet() {
-    const mobileButton = document.getElementById('connectWalletMobile');
-    const desktopBubble = document.getElementById('connectWalletDesktop');
-    const walletInfo = document.getElementById('walletInfo');
-    const walletType = localStorage.getItem('walletType');
+    const mobileButton = document.getElementById('connectWalletMobile');
+    const desktopBubble = document.getElementById('connectWalletDesktop');
+    const walletInfo = document.getElementById('walletInfo');
+    const walletType = localStorage.getItem('walletType');
 
-    try {
-        let provider = null;
-        if (walletType === 'phantom' && window.solana?.isPhantom) {
-            provider = window.solana;
-        } else if (walletType === 'solflare' && window.solflare?.isSolflare) {
-            provider = window.solflare;
-        } else if (walletType === 'backpack' && window.backpack) {
-            provider = window.backpack;
-        }
+    try {
+        let provider = null;
+        if (walletType === 'phantom' && window.solana?.isPhantom) {
+            provider = window.solana;
+        } else if (walletType === 'solflare' && window.solflare?.isSolflare) {
+            provider = window.solflare;
+        } else if (walletType === 'backpack' && window.backpack) {
+            provider = window.backpack;
+        }
 
-        if (provider && provider.disconnect) {
-            await provider.disconnect();
-        }
+        if (provider && provider.disconnect) {
+            await provider.disconnect();
+        }
 
-        if (mobileButton) {
-            mobileButton.textContent = 'Select Wallet';
-            mobileButton.classList.remove('connected');
-        }
-        if (desktopBubble) {
-            desktopBubble.classList.remove('connected');
-            const span = desktopBubble.querySelector('span');
-            span.textContent = 'Select Wallet';
-        }
-        walletInfo.style.display = 'none';
-        localStorage.removeItem('walletAddress');
-        localStorage.removeItem('walletType');
-        console.log('Wallet disconnected');
-    } catch (error) {
-        console.error('Error disconnecting wallet:', error);
-        alert('Failed to disconnect wallet. Please try again.');
-    }
+        if (mobileButton) {
+            mobileButton.textContent = 'Select Wallet';
+            mobileButton.classList.remove('connected');
+        }
+        if (desktopBubble) {
+            desktopBubble.classList.remove('connected');
+            desktopBubble.querySelector('span').textContent = 'Select Wallet';
+        }
+        walletInfo.style.display = 'none';
+        
+        // Clear all session data
+        localStorage.removeItem('walletAddress');
+        localStorage.removeItem('walletType');
+        localStorage.removeItem('username'); // Make sure to clear the username
+        console.log('Wallet disconnected');
+
+    } catch (error) {
+        console.error('Error disconnecting wallet:', error);
+        alert('Failed to disconnect wallet. Please try again.');
+    }
 }
-
 async function getDebtBalance(publicKey) {
     try {
         const apiKey = 'c57c8d55-3e55-4160-9d8c-00df2c3fb22e';
