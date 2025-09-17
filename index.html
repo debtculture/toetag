@@ -384,6 +384,89 @@
     border-radius: 50%;
     transform: scale(0.6);
 }
+/* --- New How-to-Buy Styles --- */
+.buy-step {
+    align-items: flex-start; /* Aligns icon and text to the top */
+}
+
+.buy-step-icon {
+    font-size: 2.5rem; /* Makes icons bigger */
+    margin-right: 20px;
+    margin-top: -5px;
+    color: #ff5555;
+}
+
+.buy-step h4 {
+    font-size: 1.3rem;
+    color: #eee;
+    margin: 0 0 5px 0;
+}
+
+.buy-step p {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+/* Inline Contract Address Style */
+.copy-ca-inline {
+    display: inline-flex;
+    align-items: center;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #ff5555;
+    background-color: #1a1a1a;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.copy-ca-inline:hover {
+    background-color: #444;
+}
+
+.copy-ca-inline.copied {
+    background-color: #1e4620;
+    color: #55ff55;
+}
+
+.copy-ca-inline .address-text-short {
+    margin-right: 8px;
+}
+
+
+/* Swap Buttons */
+.swap-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap; /* Allows buttons to stack on smaller screens */
+}
+
+.swap-button {
+    text-decoration: none;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: 700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.swap-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.swap-button.raydium {
+    background-color: #AC56D8;
+}
+
+.swap-button.jupiter {
+    background-color: #FBA42E;
+}
 body:has(.social-bubbles.active)::before {
     content: '';
     position: fixed;
@@ -1477,30 +1560,44 @@ window.onload = fetchTokenomicsData;
 
         <section id="how-to-buy" class="section">
             <h1>How to Buy</h1>
-            <div class="buy-container" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.01)'; this.style.boxShadow='0 0 15px #ff5555';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+            <div class="buy-container">
                 <div class="buy-step">
-                    <div class="step-number" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';">1</div>
+                    <span class="buy-step-icon"> wallets </span>
                     <div class="step-content">
-                        <p>Download <a href="https://phantom.app/" id="phantomLink" target="_blank" rel="noopener noreferrer" style="transition: transform 0.3s ease, text-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'; this.style.textShadow='0 0 10px #ff5555';" onmouseout="this.style.transform='scale(1)'; this.style.textShadow='none';">Phantom</a> and save your recovery phrase.</p>
+                        <h4>1. Get a Solana Wallet</h4>
+                        <p>Download <a href="https://phantom.app/" id="phantomLink" target="_blank" rel="noopener noreferrer">Phantom</a> or your preferred Solana wallet. **Save your seed phrase securely!**</p>
                     </div>
                 </div>
                 <div class="buy-step">
-                    <div class="step-number" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';">2</div>
+                    <span class="buy-step-icon">⛽️</span>
                     <div class="step-content">
-                        <p>Buy SOL directly in Phantom or transfer from an exchange.</p>
+                        <h4>2. Fund Your Wallet with SOL</h4>
+                        <p>Buy SOL directly within your wallet or transfer it from a major exchange like Coinbase or Kraken.</p>
                     </div>
                 </div>
                 <div class="buy-step">
-                    <div class="step-number" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';">3</div>
+                    <span class="buy-step-icon">🔄</span>
                     <div class="step-content">
-                        <p>Go to Swap, paste <span class="copyable-address" onclick="copyAddress(this)" tabindex="0" role="button" aria-label="Copy contract address" onkeydown="if(event.key === 'Enter') copyAddress(this)" aria-live="polite"><span class="address-text">9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump</span><span class="copied-message" style="display: none; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #00ff00; color: #000; padding: 5px 10px; border-radius: 5px; font-size: 12px; z-index: 1000;">Copied!</span></span>, and trade SOL for it.</p>
+                        <h4>3. Swap SOL for $DEBT</h4>
+                        <p>Use a trusted exchange below or paste the Contract Address into your wallet's swapper.</p>
+                        <div class="copy-ca-inline" onclick="copySleekAddress(this)" title="Click to copy">
+                            <span class="address-text-short">9NQc...W82pump</span>
+                            <span class="copy-icon">&#128203;</span>
+                            <span class="full-address-text" style="display: none;">9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump</span>
+                        </div>
                     </div>
                 </div>
                 <div class="buy-step">
-                    <div class="step-number" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)';" onmouseout="this.style.transform='scale(1)';">4</div>
+                    <span class="buy-step-icon">✅</span>
                     <div class="step-content">
-                        <p>You're now in $DEBT!</p>
+                        <h4>4. Join the Rebellion</h4>
+                        <p>Welcome to the Culture. Hold your $DEBT and fight the system.</p>
                     </div>
+                </div>
+
+                <div class="swap-buttons-container">
+                    <a href="https://raydium.io/swap/?inputMint=So11111111111111111111111111111111111111112&outputMint=9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump" target="_blank" rel="noopener noreferrer" class="swap-button raydium">Buy on Raydium</a>
+                    <a href="https://jup.ag/swap/SOL-DEBT_9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump" target="_blank" rel="noopener noreferrer" class="swap-button jupiter">Buy on Jupiter</a>
                 </div>
             </div>
         </section>
