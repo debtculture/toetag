@@ -1948,6 +1948,7 @@ async function connectWallet(walletId) {
     closeWalletModal();
 
     try {
+        // --- YOUR ORIGINAL WALLET PROVIDER LOGIC (PRESERVED) ---
         let provider = null;
         let walletName = 'Unknown Wallet';
         const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
@@ -2000,61 +2001,78 @@ async function connectWallet(walletId) {
         }
         const publicKey = provider.publicKey.toString();
 
-        // --- NEW SUPABASE LOGIC STARTS HERE ---
+        // --- NEW SUPABASE AUTHENTICATION LOGIC (ADDED) ---
+        let { data: authData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+            email: publicKey,
+            password: publicKey,
+        });
 
-        // 1. Check if a profile exists for this wallet
-        let { data: profile, error } = await supabaseClient
-            .from('profiles')
-            .select('username')
-            .eq('wallet_address', publicKey)
-            .single(); // .single() gets one record or null
-
-        if (error && error.code !== 'PGRST116') { // PGRST116 means "no rows found", which is a normal outcome
-            console.error('Error checking profile:', error);
-            throw new Error('Could not check profile.');
+        if (signInError && signInError.message === 'Invalid login credentials') {
+            const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
+                email: publicKey,
+                password: publicKey,
+            });
+            if (signUpError) {
+                throw new Error("Could not sign up user: " + signUpError.message);
+            }
+            authData = signUpData;
+        } else if (signInError) {
+            throw new Error("Could not sign in user: " + signInError.message);
         }
 
-        // 2. If no profile exists, create one
+        const user = authData.user;
+        if (!user) {
+            throw new Error("Authentication failed, user not found.");
+        }
+
+        // --- YOUR ORIGINAL PROFILE HANDLING LOGIC (MODIFIED TO USE SECURE ID) ---
+        let { data: profile, error: profileError } = await supabaseClient
+            .from('profiles')
+            .select('username')
+            .eq('id', user.id)
+            .single();
+
+        if (profileError && profileError.code !== 'PGRST116') {
+            throw new Error('Could not check for profile: ' + profileError.message);
+        }
+
         if (!profile) {
-            const username = prompt("Welcome! It looks like you're new here. Please choose a username:");
-            if (username && username.trim() !== '') { // If user provides a username and doesn't cancel
+            const username = prompt("Welcome! Please choose a username:");
+            if (username && username.trim() !== '') {
                 const { data: newProfile, error: insertError } = await supabaseClient
                     .from('profiles')
-                    .insert([{ wallet_address: publicKey, username: username }])
+                    .insert([{ id: user.id, wallet_address: publicKey, username: username }])
                     .select()
                     .single();
-
                 if (insertError) {
-                    console.error('Error creating profile:', insertError);
-                    alert('Could not create profile. The username might be taken, or it may be too short.');
-                    return; // Stop execution
+                    alert('Could not create profile. The username might be taken.');
+                    await supabaseClient.auth.signOut();
+                    return;
                 }
                 profile = newProfile;
                 alert(`Profile created! Welcome, ${profile.username}!`);
             } else {
-                // User cancelled the prompt or entered an empty username
-                alert("Profile creation cancelled. You can connect your wallet again to create a profile.");
-                return; // Stop execution if they cancel
+                alert("Profile creation cancelled.");
+                await supabaseClient.auth.signOut();
+                return;
             }
         }
-        
-        // --- UI UPDATE LOGIC ---
-        
-        console.log(`User ${profile.username} logged in.`);
 
+        // --- YOUR ORIGINAL UI UPDATE LOGIC (PRESERVED) ---
         if (mobileButton) {
-            mobileButton.textContent = profile.username; // Display username
+            mobileButton.textContent = profile.username;
             mobileButton.classList.add('connected');
         }
         if (desktopBubble) {
             desktopBubble.classList.add('connected');
             const span = desktopBubble.querySelector('span');
-            span.textContent = profile.username; // Display username
+            span.textContent = profile.username;
         }
 
         walletAddressEl.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
         walletInfo.style.display = 'block';
 
+        // --- YOUR ORIGINAL LOCALSTORAGE AND BALANCE LOGIC (PRESERVED) ---
         localStorage.setItem('walletAddress', publicKey);
         localStorage.setItem('walletType', walletId);
         localStorage.setItem('username', profile.username);
@@ -2064,7 +2082,7 @@ async function connectWallet(walletId) {
 
     } catch (error) {
         console.error(`Error connecting ${walletId} wallet:`, error);
-        alert(`Failed to connect wallet. Please ensure your wallet is unlocked and try again.`);
+        alert(`Failed to connect wallet: ${error.message}`);
     }
 }
 function hideWalletInfo() {
