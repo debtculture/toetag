@@ -898,14 +898,19 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .copyable-address-sleek:hover {
     background-color: #444;
 }
 
-.copyable-address-sleek .address-text {
+.copyable-address-sleek.copied {
+    background-color: #1e4620; /* Dark green background */
+    color: #55ff55; /* Bright green text */
+}
+
+.copyable-address-sleek .address-text-short {
     margin-right: 8px;
 }
 
@@ -1225,12 +1230,13 @@ a:hover, button:hover, .hover-underline:hover, .join-rebellion:hover, .hof-arrow
     <div class="tokenomics">
         <h2>Tokenomics</h2>
         <div class="ca-container">
-        <span class="ca-label">Contract Address</span>
-        <span class="copyable-address-sleek" onclick="copyAddress(this)" title="Click to copy">
-            <span class="address-text">9NQc...W82pump</span>
-            <span class="copy-icon">&#128203;</span>
-        </span>
-    </div>
+            <span class="ca-label">Contract Address</span>
+            <span class="copyable-address-sleek" onclick="copySleekAddress(this)" title="Click to copy">
+                <span class="address-text-short">9NQc...W82pump</span>
+                <span class="copy-icon">&#128203;</span>
+                <span class="full-address-text" style="display: none;">9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump</span>
+            </span>
+        </div>
         <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"><li>&#9989; Contract Renounced</li><li>&#9989; Deflationary by Design</li><li>&#9989; LP Torched</li><li>&#9989; Immutable Supply</li></ul>
 
 
@@ -2354,6 +2360,28 @@ function toggleSocialBubbles() {
     button.classList.toggle('active', isActive);
     button.setAttribute('aria-expanded', isActive);
     console.log('ToggleSocialBubbles: isActive =', isActive, 'Bubbles classList =', bubbles.classList.toString());
+}
+
+function copySleekAddress(element) {
+    // 1. Find the hidden span and get the full address
+    const addressToCopy = element.querySelector('.full-address-text').textContent.trim();
+
+    // 2. Copy the full address to the clipboard
+    navigator.clipboard.writeText(addressToCopy).then(() => {
+        // 3. Provide visual feedback
+        const originalHTML = element.innerHTML; // Save the original content (icon and short address)
+        element.classList.add('copied');
+        element.textContent = 'Copied!'; // Change text to "Copied!"
+
+        // 4. Revert back to the original state after 2 seconds
+        setTimeout(() => {
+            element.innerHTML = originalHTML;
+            element.classList.remove('copied');
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy address: ', err);
+        alert('Failed to copy address.');
+    });
 }
 </script>
 
