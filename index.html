@@ -1707,7 +1707,7 @@ window.onload = fetchTokenomicsData;
     // Initialize Supabase
     const supabaseUrl = 'https://ewptttudghjpxrqfznlh.supabase.co';
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3cHR0dHVkZ2hqcHhycWZ6bmxoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMTM4MTYsImV4cCI6MjA3MzY4OTgxNn0.jvS3pjMDdPR1npVaJikAIW07w8_lOqWL2mqek5KEdyY';
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
 window.ethereum = undefined;
 
@@ -2003,7 +2003,7 @@ async function connectWallet(walletId) {
         // --- NEW SUPABASE LOGIC STARTS HERE ---
 
         // 1. Check if a profile exists for this wallet
-        let { data: profile, error } = await supabase
+        let { data: profile, error } = await supabaseClient
             .from('profiles')
             .select('username')
             .eq('wallet_address', publicKey)
@@ -2018,7 +2018,7 @@ async function connectWallet(walletId) {
         if (!profile) {
             const username = prompt("Welcome! It looks like you're new here. Please choose a username:");
             if (username && username.trim() !== '') { // If user provides a username and doesn't cancel
-                const { data: newProfile, error: insertError } = await supabase
+                const { data: newProfile, error: insertError } = await supabaseClient
                     .from('profiles')
                     .insert([{ wallet_address: publicKey, username: username }])
                     .select()
