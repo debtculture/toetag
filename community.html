@@ -20,7 +20,7 @@
         body {
             background: #121212;
             color: #fff;
-            font-family: 'Inter', Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
@@ -62,7 +62,8 @@
             color: #fff;
             text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555;
             margin-bottom: 40px;
-            font-weight: 900;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
             animation: neon-flicker 1.5s infinite alternate;
         }
         @keyframes neon-flicker {
@@ -104,100 +105,64 @@
             100% { box-shadow: 0 0 5px #ff5555; }
         }
         .footer {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: auto;
-            background-color: rgba(18, 18, 18, 0.5);
-            backdrop-filter: blur(5px);
-            color: #eee;
-            text-align: center;
-            padding: 10px 20px;
-            z-index: 1000;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 85, 85, 0.3);
-            box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
-        }
-        .footer-link {
-            color: #ff5555;
-            text-decoration: none;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
-        }
-        .footer-link:hover {
-            color: #ff7777;
-            text-shadow: 0 0 6px #ff5555, 0 0 12px #ff5555;
-        }
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            background-color: rgba(18, 18, 18, 0.5);
+            backdrop-filter: blur(5px);
+            color: #eee;
+            text-align: center;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 85, 85, 0.3);
+            box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
+            font-family: 'Inter', sans-serif;
+        }
+        .footer-link {
+            color: #ff5555;
+            text-decoration: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .footer-link:hover {
+            color: #ff7777;
+            text-shadow: 0 0 6px #ff5555, 0 0 12px #ff5555;
+        }
 
-        /* Community Section Styles */
-        #community { padding-bottom: 60px; }
-        .hof-carousel { position: relative; max-width: 600px; margin: 0 auto; min-height: 350px; display: flex; align-items: center; justify-content: center; }
-        .hof-rows-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
-        .hof-row-desktop, .hof-row-mobile { display: flex; justify-content: center; gap: 20px; flex-wrap: nowrap; margin-bottom: 40px; }
-        @media (min-width: 769px) { .hof-row-mobile { display: none; } }
-        @media (max-width: 768px) { .hof-row-desktop { display: none; } .hof-row-mobile { gap: 10px; } }
-        .hof-member { position: relative; width: 100px; height: 100px; }
-        .hof-bubble { width: 100%; height: 100%; background-color: #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; border: 2px solid #555; cursor: pointer; position: relative; }
-        .hof-bubble.active-member { border: 2px solid #ff5555; box-shadow: 0 0 15px #ff5555; transform: scale(1.1); }
-        .hof-inner-bubble { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .hof-inner-bubble img { width: 100%; height: 100%; object-fit: cover; }
-        .hof-title { font-size: 0.8rem; color: #fff; margin-top: 5px; text-shadow: 0 0 3px #ff5555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 100%; font-weight: bold; }
-        .hof-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 2rem; color: #ff5555; cursor: pointer; user-select: none; z-index: 10; transition: color 0.3s ease; }
-        .hof-arrow:hover { color: #ff7777; }
-        .hof-left-arrow { left: 20px; }
-        .hof-right-arrow { right: 20px; }
-        .hof-blurb { margin: 40px auto 20px; color: #eee; max-width: 600px; font-size: 1.1rem; }
+        /* Community Section Styles */
+        #community { padding-bottom: 60px; }
+        .hof-carousel { position: relative; max-width: 600px; margin: 0 auto; min-height: 350px; display: flex; align-items: center; justify-content: center; }
+        .hof-rows-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
+        .hof-row-desktop, .hof-row-mobile { display: flex; justify-content: center; gap: 20px; flex-wrap: nowrap; margin-bottom: 40px; }
+        @media (min-width: 769px) { .hof-row-mobile { display: none; } }
+        @media (max-width: 768px) { .hof-row-desktop { display: none; } .hof-row-mobile { gap: 10px; } }
+        .hof-member { position: relative; width: 100px; height: 100px; }
+        .hof-bubble { width: 100%; height: 100%; background-color: #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; border: 2px solid #555; cursor: pointer; position: relative; }
+        .hof-inner-bubble { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .hof-inner-bubble img { width: 100%; height: 100%; object-fit: cover; }
+        .hof-title { font-size: 0.8rem; color: #fff; margin-top: 5px; text-shadow: 0 0 3px #ff5555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 100%; font-weight: bold; font-family: 'Inter', sans-serif; }
+        .hof-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 2rem; color: #ff5555; cursor: pointer; user-select: none; z-index: 10; transition: color 0.3s ease; font-family: 'Inter', sans-serif; }
+        .hof-arrow:hover { color: #ff7777; }
+        .hof-left-arrow { left: 20px; }
+        .hof-right-arrow { right: 20px; }
+        .hof-blurb { margin: 40px auto 20px; color: #eee; max-width: 600px; font-size: 1.1rem; font-family: 'Inter', sans-serif; }
 
         /* Trading Card Styles */
         .trading-card { background: linear-gradient(145deg, #f0e6d2 0%, #d9c9a3 100%); border: 5px solid #ffd700; border-radius: 10px; width: 210px; height: 294px; margin: 0 auto; padding: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
         .trading-card:hover { transform: scale(1.05); box-shadow: 0 0 20px #ff5555, 0 0 30px #ff5555; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .card-level { background: #ff5555; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 5px; font-weight: 700; font-family: 'Inter', sans-serif; line-height: 1; }
-        .card-pfp-square { width: 147px; height: 147px; margin: 0 auto; border: 3px solid #000; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); flex-shrink: 0; }
-        .pfp-link { display: block; width: 100%; height: 100%; }
-        .card-pfp-square img { width: 100%; height: 100%; object-fit: cover; }
-        .card-stats { text-align: center; margin-top: 5px; display: flex; flex-direction: column; flex-grow: 1; padding-bottom: 5px; }
-        .hof-name { font-size: 18px; font-weight: 700; color: #000; font-family: 'Inter', sans-serif; }
-        .divider { width: 80%; height: 1px; background: #000; margin: 0 auto; margin-top: auto; }
-        .special-ability { margin-top: 5px; }
-        .ability-title { font-size: 12px; font-weight: 700; color: #000; font-family: 'Inter', sans-serif; text-align: center; }
-        .ability-content { font-size: 12px; color: #333; font-family: 'Inter', sans-serif; text-align: center; min-height: 15px; }
-        .card-info-icon { font-size: 16px; color: #000; cursor: pointer; font-weight: bold; line-height: 1; }
-        .badge-info-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #1a1a1a;
-            color: #eee;
-            padding: 15px;
-            border-radius: 10px;
-            z-index: 1001;
-            border: 1px solid #ff5555;
-            box-shadow: 0 0 20px #ff5555;
-            max-width: 90%;
-            width: 300px;
-        }
-        .badge-info-popup h4 {
-            margin-bottom: 10px;
-            color: #ff5555;
-        }
-        .badge-info-popup ul {
-            list-style: none;
-        }
-        .badge-info-popup li {
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-        .badge-info-popup .close-btn {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
+        .card-level { background: #ff5555; color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 5px; font-weight: bold; font-family: 'Arial', sans-serif; line-height: 1; }
+        .card-pfp-square { width: 147px; height: 147px; margin: 0 auto; border: 3px solid #000; border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); flex-shrink: 0; }
+        .pfp-link { display: block; width: 100%; height: 100%; }
+        .card-pfp-square img { width: 100%; height: 100%; object-fit: cover; }
+        .card-stats { text-align: center; margin-top: 5px; display: flex; flex-direction: column; flex-grow: 1; padding-bottom: 5px; }
+        .hof-name { font-size: 18px; font-weight: bold; color: #000; font-family: 'Arial', sans-serif; }
+        .divider { width: 80%; height: 1px; background: #000; margin: 0 auto; margin-top: auto; }
+        .special-ability { margin-top: 5px; }
+        .ability-title { font-size: 12px; font-weight: bold; color: #000; font-family: 'Arial', sans-serif; text-align: center; }
+        .ability-content { font-size: 12px; color: #333; font-family: 'Arial', sans-serif; text-align: center; min-height: 15px; }
         
         /* Badge Styles */
         .hof-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 5px 0; flex-grow: 1; overflow-y: auto; }
@@ -225,16 +190,16 @@
         .trading-card .hof-badges .badge-single, .trading-card .hof-badges .badge-shiller, .trading-card .hof-badges .badge-meme { background: linear-gradient(145deg, #ff5555, #cc4444) !important; border: 1px solid #ff5555 !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #ff5555 !important; }
         
         /* Badge Glossary Styles */
-        .badge-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; }
-        .badge-glossary-header:hover { background: linear-gradient(90deg, #ff7777, #ff9999); }
-        .badge-glossary-header::after { content: '▼'; position: absolute; right: 15px; font-size: 1rem; transition: transform 0.3s ease; }
-        .badge-glossary-header.active::after { transform: rotate(180deg); }
-        .badge-glossary-content { max-height: 0; overflow: hidden; background: #1e1e1e; border-radius: 5px; transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease; padding: 0 15px; box-sizing: border-box; max-width: 600px; width: 100%; margin: 0 auto; }
-        .badge-glossary-content.active { padding: 15px; }
-        .badge-grid { display: flex; flex-direction: column; gap: 20px; }
-        .badge-row { display: flex; justify-content: space-around; align-items: center; gap: 8px; flex-wrap: nowrap; max-width: 480px; margin: 0 auto; }
-        .badge-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100px; height: 90px; }
-        .badge-name { font-size: 0.8rem; max-width: 80px; height: 40px; line-height: 1.3; padding-top: 4px; }
+        .badge-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; font-family: 'Inter', sans-serif; }
+        .badge-glossary-header:hover { background: linear-gradient(90deg, #ff7777, #ff9999); }
+        .badge-glossary-header::after { content: '▼'; position: absolute; right: 15px; font-size: 1rem; transition: transform 0.3s ease; }
+        .badge-glossary-header.active::after { transform: rotate(180deg); }
+        .badge-glossary-content { max-height: 0; overflow: hidden; background: #1e1e1e; border-radius: 5px; transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease; padding: 0 15px; box-sizing: border-box; max-width: 600px; width: 100%; margin: 0 auto; }
+        .badge-glossary-content.active { padding: 15px; }
+        .badge-grid { display: flex; flex-direction: column; gap: 20px; }
+        .badge-row { display: flex; justify-content: space-around; align-items: center; gap: 8px; flex-wrap: nowrap; max-width: 480px; margin: 0 auto; }
+        .badge-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100px; height: 90px; }
+        .badge-name { font-size: 0.8rem; max-width: 80px; height: 40px; line-height: 1.3; padding-top: 4px; font-family: 'Inter', sans-serif; }
         .badge-glossary-content .badge { width: 40px; height: 40px; flex-shrink: 0; }
         .badge-wrapper .badge-container { display: flex; justify-content: center; align-items: center; height: 40px; width: 100%; }
         .badge-arrow { font-size: 1.2rem; color: #ff5555; margin: 0 5px; width: 20px; display: flex; align-items: center; justify-content: center; height: 40px; transform: translateY(-23px); }
@@ -280,11 +245,6 @@
 <body>
     <canvas id="matrix-bg"></canvas>
     <canvas id="matrix-rain"></canvas>
-    <div id="badge-info-popup" class="badge-info-popup" role="dialog" aria-modal="true">
-        <span class="close-btn" onclick="hideBadgeInfo()" title="Close" aria-label="Close">&times;</span>
-        <h4 id="badge-info-title"></h4>
-        <ul id="badge-info-list"></ul>
-    </div>
     <div class="content-wrapper">
         <div class="back-home-container">
             <a class="back-home" href="index.html" aria-label="Back to Home">
@@ -301,7 +261,6 @@
                         <div class="card-header">
                             <div class="hof-name"></div>
                             <div class="card-level">Lv. 99</div>
-                                <div class="card-info-icon">ⓘ</div>
                         </div>
                         <div class="card-pfp-square">
                             <a href="#" target="_blank" class="pfp-link">
@@ -404,29 +363,6 @@
             { name: 'Denzel', holderSince: '05/10/2024', xLink: 'https://x.com/0xDnxl', img: 'https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032699/Denzel_bmt4td.jpg', badges: [{ type: 'spaces', tier: 'silver' }, { type: 'holding', tier: 'bronze' }] },
             { name: 'Tree', holderSince: '05/10/2024', xLink: 'https://x.com/TheresaWeik', img: 'https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032771/Tree_bggo4f.jpg', badges: [{ type: 'spaces', tier: 'silver' }, { type: 'holding', tier: 'bronze' }] }
         ];
-        const badgeDescriptions = {
-            spaces: {
-                bronze: 'Orbiter: Consistently shows up to X Spaces.',
-                silver: 'Cosmonaut: Regularly engages in Spaces conversations.',
-                gold: 'Star Commander: Leads conversations in $DEBT Spaces.',
-                amethyst: 'Supernova: Hosts $DEBT-focused X Spaces.'
-            },
-            burn: {
-                bronze: 'Pyro: Burned 100,000+ $DEBT.',
-                silver: 'Arsonist: Burned 1,000,000+ $DEBT.',
-                gold: 'Inferno: Burned 10,000,000+ $DEBT.',
-                amethyst: 'Ashbringer: Burned 100,000,000+ $DEBT.'
-            },
-            holding: {
-                bronze: 'Cold Wallet: Held $DEBT for 1+ month.',
-                silver: 'Iron Grip: Held $DEBT for 3+ months.',
-                gold: 'Steel Reserve: Held $DEBT for 6+ months, solid stack.',
-                amethyst: 'Diamond Hands: Held $DEBT for 1 year+, unshakeable holder.'
-            },
-            shiller: { single: 'Cold Blooded Shiller: Hardcore $DEBT promoter on social media.' },
-            meme: { single: 'Meme Machine: Creates dank $DEBT memes.' },
-            year1: { single: 'Year 1: Heavily involved in the project during its first year.' }
-        };
 
         function updateCommunityCarousel() {
             const featuredCard = document.querySelector('#hof-featured .trading-card');
@@ -480,58 +416,20 @@
             else { content.style.maxHeight = '0'; content.style.padding = '0 15px'; }
         }
 
-        function showBadgeInfo() {
-            const member = members[currentCommunityIndex];
-            const popup = document.getElementById('badge-info-popup');
-            const title = document.getElementById('badge-info-title');
-            const list = document.getElementById('badge-info-list');
-
-            title.textContent = `${member.name}'s Badges`;
-            list.innerHTML = '';
-
-            if (member.badges && member.badges.length > 0) {
-                member.badges.forEach(badge => {
-                    const description = badgeDescriptions[badge.type]?.[badge.tier] || 'No description available.';
-                    const listItem = document.createElement('li');
-                    listItem.textContent = description;
-                    list.appendChild(listItem);
-                });
-            } else {
-                list.innerHTML = '<li>This member has no badges yet.</li>';
-            }
-            popup.style.display = 'block';
-        }
-
-        function hideBadgeInfo() {
-            const popup = document.getElementById('badge-info-popup');
-            popup.style.display = 'none';
-        }
-        
-        window.addEventListener('load', () => {
-            initializeMatrix();
-            startMatrixRain();
-            updateCommunityCarousel();
-            resetCommunityAutoRotate();
-            
-            document.querySelectorAll('.hof-member').forEach(memberEl => {
-                memberEl.addEventListener('click', () => {
-                    currentCommunityIndex = parseInt(memberEl.dataset.index);
-                    updateCommunityCarousel();
-                    resetCommunityAutoRotate();
-                });
-            });
-
-            document.querySelector('.card-info-icon').addEventListener('click', showBadgeInfo);
-
-            // Hide popup if clicking outside of it
-            document.addEventListener('click', function(event) {
-                const popup = document.getElementById('badge-info-popup');
-                const infoIcon = document.querySelector('.card-info-icon');
-                if (popup.style.display === 'block' && !popup.contains(event.target) && !infoIcon.contains(event.target)) {
-                    hideBadgeInfo();
-                }
-            });
-        });
+        window.addEventListener('load', () => {
+            initializeMatrix();
+            startMatrixRain();
+            updateCommunityCarousel();
+            resetCommunityAutoRotate();
+            
+            document.querySelectorAll('.hof-member').forEach(memberEl => {
+                memberEl.addEventListener('click', () => {
+                    currentCommunityIndex = parseInt(memberEl.dataset.index);
+                    updateCommunityCarousel();
+                    resetCommunityAutoRotate();
+                });
+            });
+        });
     </script>
 </body>
 </html>
