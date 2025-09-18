@@ -7,9 +7,6 @@
     <meta name="keywords" content="Debt Culture, $DEBT, community, crypto, memecoin, Solana, Hall of Fame">
     <meta name="author" content="Autopsy">
     <title>Debt Culture - Community</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
     <style>
         * {
@@ -105,22 +102,21 @@
             100% { box-shadow: 0 0 5px #ff5555; }
         }
         .footer {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: auto;
-            background-color: rgba(18, 18, 18, 0.5);
-            backdrop-filter: blur(5px);
-            color: #eee;
-            text-align: center;
-            padding: 10px 20px;
-            z-index: 1000;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 85, 85, 0.3);
-            box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
-            font-family: 'Inter', sans-serif;
-        }
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            background-color: rgba(18, 18, 18, 0.5);
+            backdrop-filter: blur(5px);
+            color: #eee;
+            text-align: center;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 85, 85, 0.3);
+            box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
+        }
         .footer-link {
             color: #ff5555;
             text-decoration: none;
@@ -140,15 +136,14 @@
         @media (max-width: 768px) { .hof-row-desktop { display: none; } .hof-row-mobile { gap: 10px; } }
         .hof-member { position: relative; width: 100px; height: 100px; }
         .hof-bubble { width: 100%; height: 100%; background-color: #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; border: 2px solid #555; cursor: pointer; position: relative; }
-        .hof-bubble.active-member { border: 2px solid #ff5555; box-shadow: 0 0 15px #ff5555; transform: scale(1.1); }
         .hof-inner-bubble { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .hof-inner-bubble img { width: 100%; height: 100%; object-fit: cover; }
-        .hof-title { font-size: 0.8rem; color: #fff; margin-top: 5px; text-shadow: 0 0 3px #ff5555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 100%; font-weight: bold; font-family: 'Inter', sans-serif; }
-        .hof-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 2rem; color: #ff5555; cursor: pointer; user-select: none; z-index: 10; transition: color 0.3s ease; }
-        .hof-arrow:hover { color: #ff7777; }
-        .hof-left-arrow { left: 20px; }
-        .hof-right-arrow { right: 20px; }
-        .hof-blurb { margin: 40px auto 20px; color: #eee; max-width: 600px; font-size: 1.1rem; font-family: 'Inter', sans-serif; }
+        .hof-title { font-size: 0.8rem; color: #fff; margin-top: 5px; text-shadow: 0 0 3px #ff5555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 100%; font-weight: bold; }
+        .hof-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 2rem; color: #ff5555; cursor: pointer; user-select: none; z-index: 10; transition: color 0.3s ease; }
+        .hof-arrow:hover { color: #ff7777; }
+        .hof-left-arrow { left: 20px; }
+        .hof-right-arrow { right: 20px; }
+        .hof-blurb { margin: 40px auto 20px; color: #eee; max-width: 600px; font-size: 1.1rem; }
 
         /* Trading Card Styles */
         .trading-card { background: linear-gradient(145deg, #f0e6d2 0%, #d9c9a3 100%); border: 5px solid #ffd700; border-radius: 10px; width: 210px; height: 294px; margin: 0 auto; padding: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); position: relative; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
@@ -191,16 +186,16 @@
         .trading-card .hof-badges .badge-single, .trading-card .hof-badges .badge-shiller, .trading-card .hof-badges .badge-meme { background: linear-gradient(145deg, #ff5555, #cc4444) !important; border: 1px solid #ff5555 !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #ff5555 !important; }
         
         /* Badge Glossary Styles */
-        .badge-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; font-family: 'Inter', sans-serif; }
-        .badge-glossary-header:hover { background: linear-gradient(90deg, #ff7777, #ff9999); }
-        .badge-glossary-header::after { content: '▼'; position: absolute; right: 15px; font-size: 1rem; transition: transform 0.3s ease; }
-        .badge-glossary-header.active::after { transform: rotate(180deg); }
-        .badge-glossary-content { max-height: 0; overflow: hidden; background: #1e1e1e; border-radius: 5px; transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease; padding: 0 15px; box-sizing: border-box; max-width: 600px; width: 100%; margin: 0 auto; }
-        .badge-glossary-content.active { padding: 15px; }
-        .badge-grid { display: flex; flex-direction: column; gap: 20px; }
-        .badge-row { display: flex; justify-content: space-around; align-items: center; gap: 8px; flex-wrap: nowrap; max-width: 480px; margin: 0 auto; }
-        .badge-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100px; height: 90px; }
-        .badge-name { font-size: 0.8rem; max-width: 80px; height: 40px; line-height: 1.3; padding-top: 4px; font-family: 'Inter', sans-serif; }
+        .badge-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; }
+        .badge-glossary-header:hover { background: linear-gradient(90deg, #ff7777, #ff9999); }
+        .badge-glossary-header::after { content: '▼'; position: absolute; right: 15px; font-size: 1rem; transition: transform 0.3s ease; }
+        .badge-glossary-header.active::after { transform: rotate(180deg); }
+        .badge-glossary-content { max-height: 0; overflow: hidden; background: #1e1e1e; border-radius: 5px; transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease; padding: 0 15px; box-sizing: border-box; max-width: 600px; width: 100%; margin: 0 auto; }
+        .badge-glossary-content.active { padding: 15px; }
+        .badge-grid { display: flex; flex-direction: column; gap: 20px; }
+        .badge-row { display: flex; justify-content: space-around; align-items: center; gap: 8px; flex-wrap: nowrap; max-width: 480px; margin: 0 auto; }
+        .badge-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100px; height: 90px; }
+        .badge-name { font-size: 0.8rem; max-width: 80px; height: 40px; line-height: 1.3; padding-top: 4px; }
         .badge-glossary-content .badge { width: 40px; height: 40px; flex-shrink: 0; }
         .badge-wrapper .badge-container { display: flex; justify-content: center; align-items: center; height: 40px; width: 100%; }
         .badge-arrow { font-size: 1.2rem; color: #ff5555; margin: 0 5px; width: 20px; display: flex; align-items: center; justify-content: center; height: 40px; transform: translateY(-23px); }
@@ -366,34 +361,25 @@
         ];
 
         function updateCommunityCarousel() {
-            const featuredCard = document.querySelector('#hof-featured .trading-card');
-            const memberData = members[currentCommunityIndex];
-            
-            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
-            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
-            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
-            featuredCard.querySelector('.hof-name').textContent = memberData.name;
-            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
+            const featuredCard = document.querySelector('#hof-featured .trading-card');
+            const memberData = members[currentCommunityIndex];
+            
+            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
+            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
+            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
+            featuredCard.querySelector('.hof-name').textContent = memberData.name;
+            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
 
-            const badgesContainer = featuredCard.querySelector('.hof-badges');
-            badgesContainer.innerHTML = '';
-            if (memberData.badges && memberData.badges.length > 0) {
-                memberData.badges.forEach(badge => {
-                    const badgeEl = document.createElement('div');
-                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
-                    badgesContainer.appendChild(badgeEl);
-                });
-            }
-
-            // Highlight the active member bubble
-            document.querySelectorAll('.hof-member .hof-bubble').forEach(bubble => {
-                bubble.classList.remove('active-member');
-            });
-            const activeMemberEl = document.querySelector(`.hof-member[data-index="${currentCommunityIndex}"] .hof-bubble`);
-            if (activeMemberEl) {
-                activeMemberEl.classList.add('active-member');
-            }
-        }
+            const badgesContainer = featuredCard.querySelector('.hof-badges');
+            badgesContainer.innerHTML = '';
+            if (memberData.badges && memberData.badges.length > 0) {
+                memberData.badges.forEach(badge => {
+                    const badgeEl = document.createElement('div');
+                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
+                    badgesContainer.appendChild(badgeEl);
+                });
+            }
+        }
 
         function rotateHof(direction) {
             if (direction === 'right') { currentCommunityIndex = (currentCommunityIndex + 1) % totalNamedCommunityMembers; } 
