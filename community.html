@@ -422,12 +422,15 @@
             resetCommunityAutoRotate();
             
             document.querySelectorAll('.hof-member').forEach(memberEl => {
-                memberEl.addEventListener('click', () => {
-                    currentCommunityIndex = parseInt(memberEl.dataset.index);
-                    updateCommunityCarousel();
-                    resetCommunityAutoRotate();
-                });
-            });
+                memberEl.addEventListener('click', () => {
+                    currentCommunityIndex = parseInt(memberEl.dataset.index);
+                    updateCommunityCarousel();
+                    resetCommunityAutoRotate();
+                    if (window.innerWidth <= 768) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
         });
     </script>
 </body>
