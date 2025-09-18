@@ -7,9 +7,6 @@
     <meta name="keywords" content="Debt Culture, $DEBT, community, crypto, memecoin, Solana, Hall of Fame">
     <meta name="author" content="Autopsy">
     <title>Debt Culture - Community</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
     <style>
         * {
@@ -18,14 +15,14 @@
             box-sizing: border-box;
         }
         body {
-            background: #121212;
-            color: #fff;
-            font-family: 'Inter', Arial, sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
+            background: #121212;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
         canvas#matrix-bg {
             position: fixed;
             top: 0;
@@ -139,7 +136,6 @@
         @media (max-width: 768px) { .hof-row-desktop { display: none; } .hof-row-mobile { gap: 10px; } }
         .hof-member { position: relative; width: 100px; height: 100px; }
         .hof-bubble { width: 100%; height: 100%; background-color: #333; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); overflow: hidden; border: 2px solid #555; cursor: pointer; position: relative; }
-        .hof-bubble.active-member { border: 2px solid #ff5555; box-shadow: 0 0 15px #ff5555; transform: scale(1.1); }
         .hof-inner-bubble { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .hof-inner-bubble img { width: 100%; height: 100%; object-fit: cover; }
         .hof-title { font-size: 0.8rem; color: #fff; margin-top: 5px; text-shadow: 0 0 3px #ff5555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 100%; font-weight: bold; }
@@ -365,34 +361,25 @@
         ];
 
         function updateCommunityCarousel() {
-            const featuredCard = document.querySelector('#hof-featured .trading-card');
-            const memberData = members[currentCommunityIndex];
-            
-            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
-            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
-            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
-            featuredCard.querySelector('.hof-name').textContent = memberData.name;
-            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
+            const featuredCard = document.querySelector('#hof-featured .trading-card');
+            const memberData = members[currentCommunityIndex];
+            
+            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
+            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
+            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
+            featuredCard.querySelector('.hof-name').textContent = memberData.name;
+            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
 
-            const badgesContainer = featuredCard.querySelector('.hof-badges');
-            badgesContainer.innerHTML = '';
-            if (memberData.badges && memberData.badges.length > 0) {
-                memberData.badges.forEach(badge => {
-                    const badgeEl = document.createElement('div');
-                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
-                    badgesContainer.appendChild(badgeEl);
-                });
-            }
-
-            // Highlight the active member bubble
-            document.querySelectorAll('.hof-member .hof-bubble').forEach(bubble => {
-                bubble.classList.remove('active-member');
-            });
-            const activeMemberEl = document.querySelector(`.hof-member[data-index="${currentCommunityIndex}"] .hof-bubble`);
-            if (activeMemberEl) {
-                activeMemberEl.classList.add('active-member');
-            }
-        }
+            const badgesContainer = featuredCard.querySelector('.hof-badges');
+            badgesContainer.innerHTML = '';
+            if (memberData.badges && memberData.badges.length > 0) {
+                memberData.badges.forEach(badge => {
+                    const badgeEl = document.createElement('div');
+                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
+                    badgesContainer.appendChild(badgeEl);
+                });
+            }
+        }
 
         function rotateHof(direction) {
             if (direction === 'right') { currentCommunityIndex = (currentCommunityIndex + 1) % totalNamedCommunityMembers; } 
