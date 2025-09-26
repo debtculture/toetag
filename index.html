@@ -2463,12 +2463,12 @@
                 </div>
                 <div id="walletList" style="display: flex; flex-direction: column; gap: 10px;">
                 </div>
-                <button onclick="closeWalletModal()" style="background: #ff5555; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; margin-top: 15px; transition: background-color 0.3s;" onmouseover="this.style.background='#ff7777';" onmouseout="this.style.background='#ff5555';">Close</button>
+                <button onclick="closeWalletModal()" class="close-wallet-modal-btn">Close</button>
             </div>
         </div>
 
         <div id="walletInfo" style="display: none;">
-            <button onclick="hideWalletInfo()" class="close-wallet-info" aria-label="Close wallet info">✕</button>
+            <button onclick="hideWalletInfo()" class="close-wallet-info-btn">✕</button>
             <p id="walletAddress">Connected: <span></span></p>
             <p id="debtBalance">Balance: <span>0 $DEBT</span></p>
             <button onclick="disconnectWallet()" class="disconnect-wallet-btn">Disconnect</button>
@@ -2679,7 +2679,7 @@
             filter: brightness(1.2) drop-shadow(0 0 10px #ff5555);
         }
         
-        #walletInfo .close-wallet-info {
+        #walletInfo .close-wallet-info-btn {
             position: absolute;
             top: 5px;
             right: 5px;
@@ -2691,7 +2691,7 @@
             transition: transform 0.3s ease, text-shadow 0.3s ease;
         }
 
-        #walletInfo .close-wallet-info:hover {
+        #walletInfo .close-wallet-info-btn:hover {
             transform: scale(1.2);
             text-shadow: 0 0 10px #ff5555;
         }
@@ -2713,6 +2713,22 @@
             box-shadow: 0 0 15px #ff5555;
         }
         
+        .close-wallet-modal-btn {
+            background: #ff5555;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .close-wallet-modal-btn:hover {
+            background: #ff7777;
+        }
+        
         .hover-effect-header {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -2724,16 +2740,12 @@
 
         /* --- Consolidated Hover/Transition Effects --- */
         .hover-underline,
-        .hamburger,
-        .mobile-menu a,
-        .mobile-menu .expand {
+        .hamburger {
             transition: transform 0.3s ease, text-shadow 0.3s ease, color 0.3s ease;
         }
 
         .hover-underline:hover,
-        .hamburger:hover,
-        .mobile-menu a:hover,
-        .mobile-menu .expand:hover {
+        .hamburger:hover {
             transform: scale(1.05);
             text-shadow: 0 0 10px #ff5555;
         }
@@ -2753,30 +2765,35 @@
 
         function closeMenu() {
             const menu = document.getElementById("mobileMenu");
-            menu.style.display = "none";
-            menu.setAttribute('aria-expanded', 'false');
+            if (menu) {
+                menu.style.display = "none";
+                menu.setAttribute('aria-expanded', 'false');
+            }
         }
 
         function toggleDropdown() {
             const dropdown = document.getElementById("mobileDropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+            }
         }
 
         function scrollToSection(selector) {
             const element = document.querySelector(selector);
-            const headerOffset = 60; // Adjust for fixed header height
-            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            const offsetPosition = elementPosition - headerOffset;
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+            if (element) {
+                const headerOffset = 60;
+                const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         function toggleAccordion(header) {
             const content = header.nextElementSibling;
             const isActive = content.classList.contains('active');
-
             document.querySelectorAll('.accordion-content').forEach(item => {
                 item.classList.remove('active');
                 item.style.maxHeight = '0';
@@ -2784,7 +2801,6 @@
                 item.previousElementSibling.classList.remove('active', 'pulse');
                 item.previousElementSibling.setAttribute('aria-expanded', 'false');
             });
-
             if (!isActive) {
                 content.classList.add('active');
                 content.style.maxHeight = `${content.scrollHeight + 30}px`;
@@ -2799,8 +2815,6 @@
             const sections = document.querySelectorAll('.section');
             const connectors = document.querySelectorAll('.section-connector');
             const windowHeight = window.innerHeight;
-            const isMobile = window.innerWidth <= 768;
-
             sections.forEach(section => {
                 const sectionTop = section.getBoundingClientRect().top;
                 const sectionBottom = section.getBoundingClientRect().bottom;
@@ -2824,7 +2838,6 @@
                     }
                 }
             });
-
             connectors.forEach(connector => {
                 const connectorTop = connector.getBoundingClientRect().top;
                 const connectorBottom = connector.getBoundingClientRect().bottom;
@@ -2869,20 +2882,15 @@
                 phantomLink.target = '_blank';
             } catch (error) {
                 console.error('Error setting Phantom link:', error);
-                phantomLink.href = 'https://phantom.app/'; // Fallback URL
+                phantomLink.href = 'https://phantom.app/';
                 phantomLink.target = '_blank';
             }
         }
 
         function initializeRoadmapPhases() {
-            const isMobile = window.innerWidth <= 768;
             document.querySelectorAll('.future-phase').forEach(phase => {
                 phase.classList.remove('active');
-                if (isMobile) {
-                    localStorage.removeItem(`phase-${phase.querySelector('h2').textContent}`);
-                } else {
-                    localStorage.removeItem(`phase-${phase.querySelector('h2').textContent}`);
-                }
+                localStorage.removeItem(`phase-${phase.querySelector('h2').textContent}`);
                 phase.addEventListener('click', () => {
                     const isActive = phase.classList.toggle('active');
                     localStorage.setItem(`phase-${phase.querySelector('h2').textContent}`, isActive);
@@ -2893,32 +2901,24 @@
         function initializeMatrix() {
             const canvas = document.getElementById('matrix-bg');
             const ctx = canvas.getContext('2d');
-            
+            let columns, drops;
+            const fontSize = 14;
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
                 columns = Math.ceil(canvas.width / fontSize);
-                drops.length = columns;
-                for (let i = 0; i < drops.length; i++) {
-                    if (!drops[i]) drops[i] = 1;
-                }
+                drops = Array(columns).fill(1).map(() => Math.random() * canvas.height / fontSize);
             }
-            
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
-            
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const fontSize = 14;
-            let columns = Math.ceil(canvas.width / fontSize);
-            const drops = Array(columns).fill(1);
-            
+
             function draw() {
                 ctx.fillStyle = 'rgba(18, 18, 18, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#ff5555';
                 ctx.font = `${fontSize}px monospace`;
-                
                 for (let i = 0; i < drops.length; i++) {
                     const text = chars.charAt(Math.floor(Math.random() * chars.length));
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -2931,230 +2931,27 @@
             setInterval(draw, 50);
         }
 
-        // Wallet connection logic
-        const wallets = [{
-            name: 'Phantom',
-            id: 'phantom',
-            icon: 'https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1749488428/Phantom_Wallet_s3cahc.jpg'
-        }, {
-            name: 'Solflare',
-            id: 'solflare',
-            icon: 'https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1749488428/Solflare_Wallet_nxcl95.jpg'
-        }, {
-            name: 'Backpack',
-            id: 'backpack',
-            icon: 'https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1750446379/backpack_rer24o.jpg'
-        }];
-
-        function openWalletModal() {
-            const walletModal = document.getElementById('walletModal');
-            const walletList = document.getElementById('walletList');
-            walletList.innerHTML = '';
-            wallets.forEach(wallet => {
-                const button = document.createElement('button');
-                button.className = 'wallet-option';
-                button.innerHTML = `
-                    <img src="${wallet.icon}" alt="${wallet.name} icon" width="30" height="30" style="margin-right: 10px;">
-                    ${wallet.name}
-                `;
-                button.style.cssText = 'display: flex; align-items: center; justify-content: center; padding: 10px; width: 100%; background: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: background-color 0.3s;';
-                button.onmouseover = () => button.style.background = '#ff5555';
-                button.onmouseout = () => button.style.background = '#333';
-                button.onclick = () => connectWallet(wallet.id);
-                walletList.appendChild(button);
-            });
-            walletModal.style.display = 'flex';
-        }
-
-        function closeWalletModal() {
-            const walletModal = document.getElementById('walletModal');
-            walletModal.style.display = 'none';
-        }
-
-        async function connectWallet(walletId) {
-            const mobileButton = document.getElementById('connectWalletMobile');
-            const desktopBubble = document.getElementById('connectWalletDesktop');
-            const walletInfo = document.getElementById('walletInfo');
-            const walletAddressEl = document.getElementById('walletAddress').querySelector('span');
-            const debtBalanceEl = document.getElementById('debtBalance').querySelector('span');
-            closeWalletModal();
-            try {
-                let provider = null;
-                let walletName = 'Unknown Wallet';
-                const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-                const isInAppBrowser = navigator.userAgent.includes('Phantom') || navigator.userAgent.includes('Solflare') || navigator.userAgent.includes('Backpack');
-                const deepLinks = {
-                    phantom: 'phantom://',
-                    solflare: 'solflare://',
-                    backpack: 'backpack://'
-                };
-                const downloadUrls = {
-                    phantom: 'https://phantom.app/download',
-                    solflare: 'https://solflare.com/download',
-                    backpack: 'https://backpack.app/download'
-                };
-                if (isMobile && !isInAppBrowser) {
-                    const wallet = wallets.find(w => w.id === walletId);
-                    const deepLink = deepLinks[walletId];
-                    const prompt = `Connect with ${wallet.name}?`;
-                    if (confirm(prompt)) {
-                        window.location.href = deepLink;
-                        setTimeout(() => {
-                            if (document.hasFocus()) {
-                                window.open(downloadUrls[walletId], '_blank');
-                            }
-                        }, 1000);
-                    }
-                    return;
-                }
-                if (walletId === 'phantom' && (window.solana?.isPhantom || (isInAppBrowser && navigator.userAgent.includes('Phantom')))) {
-                    provider = window.solana;
-                    walletName = 'Phantom';
-                } else if (walletId === 'solflare' && (window.solflare?.isSolflare || (isInAppBrowser && navigator.userAgent.includes('Solflare')))) {
-                    provider = window.solflare;
-                    walletName = 'Solflare';
-                } else if (walletId === 'backpack' && window.backpack) {
-                    provider = window.backpack;
-                    walletName = 'Backpack';
-                } else {
-                    const wallet = wallets.find(w => w.id === walletId);
-                    const prompt = `No ${wallet.name} detected. Install it now?`;
-                    if (confirm(prompt)) {
-                        window.open(downloadUrls[walletId], '_blank');
-                    }
-                    return;
-                }
-                let publicKey;
-                try {
-                    if (walletId === 'solflare' || walletId === 'backpack') {
-                        await provider.connect();
-                        publicKey = provider.publicKey?.toString();
-                    } else {
-                        await provider.connect();
-                        publicKey = provider.publicKey?.toString();
-                    }
-                } catch (err) {
-                    throw new Error(`${walletName} connection failed: ${err.message}`);
-                }
-                if (!publicKey) {
-                    throw new Error(`Failed to retrieve public key from ${walletName}`);
-                }
-                if (mobileButton) {
-                    mobileButton.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
-                    mobileButton.classList.add('connected');
-                }
-                if (desktopBubble) {
-                    desktopBubble.classList.add('connected');
-                    const span = desktopBubble.querySelector('span');
-                    span.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
-                }
-                walletAddressEl.textContent = `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`;
-                walletInfo.style.display = 'block';
-                localStorage.setItem('walletAddress', publicKey);
-                localStorage.setItem('walletType', walletId);
-                const balance = await getDebtBalance(publicKey);
-                debtBalanceEl.textContent = balance;
-                console.log(`${walletName} connected:`, publicKey);
-                provider.on('accountChanged', async (newPublicKey) => {
-                    if (newPublicKey) {
-                        const newKey = newPublicKey.toString();
-                        walletAddressEl.textContent = `${newKey.slice(0, 4)}...${newKey.slice(-4)}`;
-                        localStorage.setItem('walletAddress', newKey);
-                        const balance = await getDebtBalance(newKey);
-                        debtBalanceEl.textContent = balance;
-                        console.log(`${walletName} account changed:`, newKey);
-                    } else {
-                        disconnectWallet();
-                    }
-                });
-            } catch (error) {
-                console.error(`Error connecting ${walletId} wallet:`, error);
-                alert(`Failed to connect ${walletId}. Ensure your wallet is unlocked and try again.`);
-            }
-        }
-
-        function hideWalletInfo() {
-            const walletInfo = document.getElementById('walletInfo');
-            walletInfo.style.display = 'none';
-        }
-        async function disconnectWallet() {
-            const mobileButton = document.getElementById('connectWalletMobile');
-            const desktopBubble = document.getElementById('connectWalletDesktop');
-            const walletInfo = document.getElementById('walletInfo');
-            const walletType = localStorage.getItem('walletType');
-            try {
-                let provider = null;
-                if (walletType === 'phantom' && window.solana?.isPhantom) {
-                    provider = window.solana;
-                } else if (walletType === 'solflare' && window.solflare?.isSolflare) {
-                    provider = window.solflare;
-                } else if (walletType === 'backpack' && window.backpack) {
-                    provider = window.backpack;
-                }
-                if (provider && provider.disconnect) {
-                    await provider.disconnect();
-                }
-                if (mobileButton) {
-                    mobileButton.textContent = 'Select Wallet';
-                    mobileButton.classList.remove('connected');
-                }
-                if (desktopBubble) {
-                    desktopBubble.classList.remove('connected');
-                    const span = desktopBubble.querySelector('span');
-                    span.textContent = 'Select Wallet';
-                }
-                walletInfo.style.display = 'none';
-                localStorage.removeItem('walletAddress');
-                localStorage.removeItem('walletType');
-                console.log('Wallet disconnected');
-            } catch (error) {
-                console.error('Error disconnecting wallet:', error);
-                alert('Failed to disconnect wallet. Please try again.');
-            }
-        }
-
-        async function getDebtBalance(publicKey) {
-            try {
-                const apiKey = 'c57c8d55-3e55-4160-9d8c-00df2c3fb22e';
-                const url = `https://api.helius.xyz/v0/addresses/${publicKey}/balances?api-key=${apiKey}`;
-                
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                const token = data.tokens.find(t => t.mint === '9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump');
-                
-                if (token && token.amount) {
-                    const balance = token.amount / Math.pow(10, token.decimals);
-                    console.log('Token balance:', balance);
-                    return `${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $DEBT`;
-                } else {
-                    console.log('No $DEBT token found.');
-                    return '0 $DEBT';
-                }
-            } catch (error) {
-                console.error('Error fetching $DEBT balance:', error.message);
-                return '0 $DEBT';
-            }
-        }
-
         function startMatrixRain() {
             const rainCanvas = document.getElementById('matrix-rain');
             const rainCtx = rainCanvas.getContext('2d');
-            rainCanvas.height = window.innerHeight;
-            rainCanvas.width = window.innerWidth;
-            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let columns, drops;
             const fontSize = 14;
-            const columns = rainCanvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(1);
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            function resizeRainCanvas() {
+                rainCanvas.width = window.innerWidth;
+                rainCanvas.height = window.innerHeight;
+                columns = Math.ceil(rainCanvas.width / fontSize);
+                drops = Array(columns).fill(1).map(() => Math.random() * rainCanvas.height / fontSize);
+            }
+            resizeRainCanvas();
+            window.addEventListener('resize', resizeRainCanvas);
 
             function drawRain() {
                 rainCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 rainCtx.fillRect(0, 0, rainCanvas.width, rainCanvas.height);
                 rainCtx.fillStyle = '#999999';
-                rainCtx.font = fontSize + 'px monospace';
+                rainCtx.font = `${fontSize}px monospace`;
                 drops.forEach((y, i) => {
                     const text = chars.charAt(Math.floor(Math.random() * chars.length));
                     rainCtx.fillText(text, i * fontSize, y * fontSize);
@@ -3163,38 +2960,10 @@
                 });
             }
             setInterval(drawRain, 50);
-            window.addEventListener('resize', () => {
-                rainCanvas.height = window.innerHeight;
-                rainCanvas.width = window.innerWidth;
-            });
         }
 
         function initializeAudioPlayer() {
-            const playlist = [{
-                title: "D.E.B.T.",
-                artist: "Ambient Sounds",
-                src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1755035512/Don_t_Ever_Believe_Them_NEW_i3h7wa.mov"
-            }, {
-                title: "Tough Souls",
-                artist: "Ambient Sounds",
-                src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751153796/D.E.B.T._nkijpl.wav"
-            }, {
-                title: "Burn",
-                artist: "Ambient Sounds",
-                src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151703/Burn_c7qcmi.wav"
-            }, {
-                title: "Freedom Fighters",
-                artist: "Ambient Sounds",
-                src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151703/Freedom_Fighters_somsv2.wav"
-            }, {
-                title: "Get Out",
-                artist: "Ambient Sounds",
-                src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151703/Get_Out_oor74k.wav"
-            }, {
-                title: "KABOOM!",
-                artist: "Ambient Sounds",
-                src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151702/KABOOM_pac3lb.wav"
-            }];
+            const playlist = [{ title: "D.E.B.T.", artist: "Ambient Sounds", src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1755035512/Don_t_Ever_Believe_Them_NEW_i3h7wa.mov" }, { title: "Tough Souls", artist: "Ambient Sounds", src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751153796/D.E.B.T._nkijpl.wav" }, { title: "Burn", artist: "Ambient Sounds", src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151703/Burn_c7qcmi.wav" }, { title: "Freedom Fighters", artist: "Ambient Sounds", src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151703/Freedom_Fighters_somsv2.wav" }, { title: "Get Out", artist: "Ambient Sounds", src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151703/Get_Out_oor74k.wav" }, { title: "KABOOM!", artist: "Ambient Sounds", src: "https://res.cloudinary.com/dpvptjn4t/video/upload/f_auto,q_auto/v1751151702/KABOOM_pac3lb.wav" }];
             let currentTrackIndex = 0;
             const audio = document.getElementById('audio');
             const playPauseBtn = document.getElementById('play-pause');
@@ -3221,24 +2990,18 @@
             }
 
             function updateTrackInfo(index) {
-                trackInfoSpan.textContent = `${playlist[index].title} - ${playlist[index].artist}`;
-                trackInfoMobileSpan.textContent = `${playlist[index].title} - ${playlist[index].artist}`;
+                const track = playlist[index];
+                trackInfoSpan.textContent = `${track.title} - ${track.artist}`;
+                trackInfoMobileSpan.textContent = `${track.title} - ${track.artist}`;
             }
 
             function setPlayState(isPlaying) {
-                if (isPlaying) {
-                    playPauseBtn.className = 'audio-btn pause';
-                    playPauseBtnMobile.className = 'audio-btn pause';
-                    audioPlayerMobile.classList.add('playing');
-                    trackInfoSpan.style.animationPlayState = 'running';
-                    trackInfoMobileSpan.style.animationPlayState = 'running';
-                } else {
-                    playPauseBtn.className = 'audio-btn play';
-                    playPauseBtnMobile.className = 'audio-btn play';
-                    audioPlayerMobile.classList.remove('playing');
-                    trackInfoSpan.style.animationPlayState = 'paused';
-                    trackInfoMobileSpan.style.animationPlayState = 'paused';
-                }
+                playPauseBtn.className = isPlaying ? 'audio-btn pause' : 'audio-btn play';
+                playPauseBtnMobile.className = isPlaying ? 'audio-btn pause' : 'audio-btn play';
+                audioPlayerMobile.classList.toggle('playing', isPlaying);
+                const animState = isPlaying ? 'running' : 'paused';
+                trackInfoSpan.style.animationPlayState = animState;
+                trackInfoMobileSpan.style.animationPlayState = animState;
             }
 
             function togglePlayPause() {
@@ -3276,15 +3039,25 @@
                 currentTrackIndex = (currentTrackIndex + direction + playlist.length) % playlist.length;
                 loadTrack(currentTrackIndex);
             }
-
-            logoBtn.addEventListener('click', toggleAudioPlayer);
-            singlePlayButton.addEventListener('click', showFullPlayerAndPlay);
-            playPauseBtn.addEventListener('click', togglePlayPause);
-            playPauseBtnMobile.addEventListener('click', togglePlayPause);
-            prevTrackBtn.addEventListener('click', () => changeTrack(-1));
-            prevTrackBtnMobile.addEventListener('click', () => changeTrack(-1));
-            nextTrackBtn.addEventListener('click', () => changeTrack(1));
-            nextTrackBtnMobile.addEventListener('click', () => changeTrack(1));
+            const eventListeners = [
+                { el: logoBtn,             func: toggleAudioPlayer },
+                { el: singlePlayButton,    func: showFullPlayerAndPlay },
+                { el: playPauseBtn,        func: togglePlayPause },
+                { el: playPauseBtnMobile,  func: togglePlayPause },
+                { el: prevTrackBtn,        func: () => changeTrack(-1) },
+                { el: prevTrackBtnMobile,  func: () => changeTrack(-1) },
+                { el: nextTrackBtn,        func: () => changeTrack(1) },
+                { el: nextTrackBtnMobile,  func: () => changeTrack(1) }
+            ];
+            eventListeners.forEach(listener => {
+                listener.el.addEventListener('click', listener.func);
+                listener.el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        listener.func();
+                    }
+                });
+            });
             audio.addEventListener('play', () => setPlayState(true));
             audio.addEventListener('pause', () => setPlayState(false));
             audio.addEventListener('ended', () => changeTrack(1));
@@ -3292,30 +3065,9 @@
                 console.error('Audio error:', e);
                 changeTrack(1);
             });
-            
-            // Keyboard accessibility
-            [logoBtn, singlePlayButton, playPauseBtn, playPauseBtnMobile, prevTrackBtn, prevTrackBtnMobile, nextTrackBtn, nextTrackBtnMobile].forEach(btn => {
-                btn.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        btn.click();
-                    }
-                });
-            });
         }
 
-        window.addEventListener('load', async () => {
-            initializeAudioPlayer();
-            if (typeof solanaWeb3 === 'undefined') {
-                console.error('solanaWeb3 library is not loaded. Please include it via CDN.');
-            }
-            console.log('Load event fired');
-            initializeMatrix();
-            startMatrixRain();
-            setPhantomLink();
-            initializeRoadmapPhases();
-            window.dispatchEvent(new Event('scroll'));
-            
+        function initializeWalletLogic() {
             const mobileButton = document.getElementById('connectWalletMobile');
             const desktopBubble = document.getElementById('connectWalletDesktop');
 
@@ -3327,10 +3079,11 @@
                     openWalletModal();
                 }
             }
-
             mobileButton.addEventListener('click', () => handleWalletButtonClick(mobileButton));
             desktopBubble.addEventListener('click', () => handleWalletButtonClick(desktopBubble));
+        }
 
+        async function restoreWalletConnection() {
             try {
                 const walletType = localStorage.getItem('walletType');
                 const walletAddress = localStorage.getItem('walletAddress');
@@ -3339,11 +3092,12 @@
                     if (walletType === 'phantom' && window.solana?.isPhantom) provider = window.solana;
                     else if (walletType === 'solflare' && window.solflare?.isSolflare) provider = window.solflare;
                     else if (walletType === 'backpack' && window.backpack) provider = window.backpack;
-
                     if (provider) {
                         const response = await provider.connect({ onlyIfTrusted: true });
                         const publicKey = response.publicKey?.toString() || provider.publicKey?.toString();
                         if (publicKey && publicKey === walletAddress) {
+                            const mobileButton = document.getElementById('connectWalletMobile');
+                            const desktopBubble = document.getElementById('connectWalletDesktop');
                             const walletInfo = document.getElementById('walletInfo');
                             const walletAddressEl = document.getElementById('walletAddress').querySelector('span');
                             const debtBalanceEl = document.getElementById('walletInfo').querySelector('#debtBalance span');
@@ -3362,7 +3116,7 @@
             } catch (error) {
                 console.error('Error restoring wallet connection:', error);
             }
-        });
+        }
 
         function toggleSocialBubbles() {
             const bubbles = document.querySelector('.social-bubbles');
@@ -3388,6 +3142,20 @@
                 alert('Failed to copy address.');
             });
         }
+        
+        window.addEventListener('load', async () => {
+            if (typeof solanaWeb3 === 'undefined') {
+                console.error('solanaWeb3 library is not loaded.');
+            }
+            initializeMatrix();
+            startMatrixRain();
+            initializeAudioPlayer();
+            setPhantomLink();
+            initializeRoadmapPhases();
+            initializeWalletLogic();
+            await restoreWalletConnection();
+            window.dispatchEvent(new Event('scroll'));
+        });
     </script>
 </body>
 </html>
