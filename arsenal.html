@@ -1,1 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The official media arsenal for the Debt Culture ($DEBT) community. Find memes, GIFs, and videos to join the rebellion.">
+    <meta name="keywords" content="Debt Culture, $DEBT, memes, GIFs, videos, content, arsenal, crypto, Solana">
+    <meta name="author" content="Autopsy">
+    <title>Debt Culture - Media Arsenal</title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base & Reset --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #121212;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+        /* --- Matrix Background --- */
+        canvas#matrix-bg, canvas#matrix-rain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none;
+        }
+        canvas#matrix-rain { z-index: -1; opacity: 0.6; }
 
+        /* --- Main Content Wrapper --- */
+        .content-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 80px 20px 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Header & Title --- */
+        header { text-align: center; margin-bottom: 40px; }
+        h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555;
+            animation: neon-flicker 1.5s infinite alternate;
+            font-weight: 900;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #ff9999;
+            text-shadow: 0 0 5px #ff5555;
+            margin-top: 10px;
+        }
+        @keyframes neon-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555; }
+            20%, 24%, 55% { text-shadow: none; }
+        }
+        
+        /* --- Filter Menu --- */
+        .filter-menu {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            background: #1e1e1e;
+            color: #eee;
+            border: 1px solid #ff5555;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+        .filter-btn:hover {
+            background-color: #ff5555;
+            color: #fff;
+        }
+        .filter-btn.active {
+            background-color: #ff5555;
+            color: #fff;
+            box-shadow: 0 0 15px #ff5555;
+        }
+
+        /* --- Media Grid --- */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .media-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+        }
+        .media-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.5s ease-in-out, transform 0.3s ease;
+            opacity: 0;
+        }
+        .media-item img.loaded {
+            opacity: 1;
+        }
+        .media-item:hover img {
+            transform: scale(1.1);
+        }
+        .media-title {
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ccc;
+            text-align: center;
+            background-color: #1e1e1e;
+            flex-shrink: 0;
+        }
+
+        /* --- Item Overlay & Buttons --- */
+        .media-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .media-item:hover .media-overlay {
+            opacity: 1;
+        }
+        .overlay-btn {
+            background: #ff5555;
+            color: #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .overlay-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* --- Back Home & Footer --- */
+        .back-home-container { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+        .back-home { display: flex; align-items: center; gap: 10px; background: #ff5555; color: #fff; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 700; animation: pulseGlow 1.5s infinite ease-in-out; }
+        .back-home:hover { transform: scale(1.1); box-shadow: 0 0 15px #ff5555; }
+        .footer { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); background-color: rgba(18, 18, 18, 0.5); backdrop-filter: blur(5px); padding: 10px 20px; z-index: 1000; border-radius: 8px; border: 1px solid rgba(255, 85, 85, 0.3); box-shadow: 0 0 15px rgba(255, 85, 85, 0.2); }
+        .footer-link { color: #ff5555; text-decoration: none; font-weight: 700; transition: all 0.3s ease; }
+        .footer-link:hover { color: #ff7777; text-shadow: 0 0 6px #ff5555; }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555; }
+            50% { box-shadow: 0 0 25px #ff5555, 0 0 50px #ff5555; }
+            100% { box-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555; }
+        }
+
+        /* --- Responsive & Accessibility --- */
+        @media (max-width: 768px) {
+            .content-wrapper { padding: 80px 10px 60px 10px; }
+            h1 { font-size: 2.2rem; }
+            .media-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .back-home { font-size: 0.8rem; padding: 6px 12px; }
+            .footer { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+            h1, .back-home, .cta-button { animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <canvas id="matrix-rain"></canvas>
+
+    <div class="back-home-container">
+        <a href="index.html" class="back-home" aria-label="Back to Home">⇠ Back</a>
+    </div>
+
+    <div class="content-wrapper">
+        <header>
+            <h1>Media Arsenal</h1>
+            <p class="subtitle">The official propaganda hub of the $DEBT rebellion.</p>
+        </header>
+
+        <div class="filter-menu">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="meme">Memes</button>
+            <button class="filter-btn" data-filter="image">Images</button>
+            <button class="filter-btn" data-filter="gif">GIFs</button>
+            <button class="filter-btn" data-filter="video">Videos</button>
+        </div>
+
+        <div class="media-grid">
+            
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777787/DEBTucation_ygrt3u.webp" alt="$DEBTucation">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777787/DEBTucation_ygrt3u.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">$DEBTucation</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777779/DEBTropolis_uhejks.webp" alt="$DEBTropolis">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777779/DEBTropolis_uhejks.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">$DEBTropolis</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777818/Bearing_the_Weight_v0cv0g.webp" alt="Bearing the Weight">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777818/Bearing_the_Weight_v0cv0g.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Bearing the Weight</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777818/Breaking_the_System_s9lwy3.webp" alt="Breaking the System">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777818/Breaking_the_System_s9lwy3.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Breaking the System</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777822/Broadcasting_the_Truth_bpoli5.webp" alt="Broadcasting the Truth">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777822/Broadcasting_the_Truth_bpoli5.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Broadcasting the Truth</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777823/Circuit_Board_ttlcqv.webp" alt="Circuit Board">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777823/Circuit_Board_ttlcqv.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Circuit Board</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777823/Comic_Book_Alley_lvr9ad.webp" alt="Comic Book Alley">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777823/Comic_Book_Alley_lvr9ad.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Comic Book Alley</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777823/Cosmic_Currency_amrxxm.webp" alt="Cosmic Currency">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777823/Cosmic_Currency_amrxxm.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Cosmic Currency</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777829/Cyberpunk_Reflections_ufdvzd.webp" alt="Cyberpunk Reflections">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777829/Cyberpunk_Reflections_ufdvzd.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Cyberpunk Reflections</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777780/Decentralized_Network_fnhxnk.webp" alt="Decentralized Network">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777780/Decentralized_Network_fnhxnk.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Decentralized Network</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777787/Don_t_Ever_Believe_Them_ltwvta.webp" alt="Don't Ever Believe Them">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777787/Don_t_Ever_Believe_Them_ltwvta.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Don't Ever Believe Them</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777799/Execute_The_Great_Default_yigddv.webp" alt="Execute: The Great Default">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777799/Execute_The_Great_Default_yigddv.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Execute: The Great Default</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777799/Fuel_the_Fire_jruwks.webp" alt="Fuel the Fire">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777799/Fuel_the_Fire_jruwks.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Fuel the Fire</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777799/Graffiti_zwrspi.webp" alt="Graffiti">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777799/Graffiti_zwrspi.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Graffiti</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777803/Join_the_Rebellion_vkjmqo.webp" alt="Join the Rebellion">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777803/Join_the_Rebellion_vkjmqo.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Join the Rebellion</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777803/Matrix_Overgrowth_hkleb2.webp" alt="Matrix Overgrowth">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777803/Matrix_Overgrowth_hkleb2.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Matrix Overgrowth</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777804/Neon_Alley_Sign_on46dr.webp" alt="Neon Alley Sign">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777804/Neon_Alley_Sign_on46dr.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Neon Alley Sign</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777805/Puppet_Strings_t6oude.webp" alt="Puppet Strings">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777805/Puppet_Strings_t6oude.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Puppet Strings</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777787/Rebel_Signal_vpw8es.webp" alt="Rebel Signal">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777787/Rebel_Signal_vpw8es.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Rebel Signal</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777778/Retro_Terminal_mkc69j.webp" alt="Retro Terminal">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777778/Retro_Terminal_mkc69j.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Retro Terminal</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777809/Shatter_the_Chains_rgmzl2.webp" alt="Shatter the Chains">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777809/Shatter_the_Chains_rgmzl2.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Shatter the Chains</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777811/The_System_Is_A_Lie_sianc9.webp" alt="The System is a Lie">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777811/The_System_Is_A_Lie_sianc9.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">The System is a Lie</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777812/The_Vault_k0d9i3.webp" alt="The Vault">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777812/The_Vault_k0d9i3.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">The Vault</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777814/Their_Assets_Are_Ash_fahoa4.webp" alt="Their Assets Are Ash">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777814/Their_Assets_Are_Ash_fahoa4.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Their Assets Are Ash</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777815/Their_Order._Our_Defiance._zjreoc.webp" alt="Their Order. Our Defiance.">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777815/Their_Order._Our_Defiance._zjreoc.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Their Order. Our Defiance.</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777810/The_Blueprint_ylci69.webp" alt="The Blueprint">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777810/The_Blueprint_ylci69.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">The Blueprint</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777818/Treasury_Secure_qneukx.webp" alt="Treasury Secure">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777818/Treasury_Secure_qneukx.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Treasury Secure</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777779/Unplug_the_Matrix_ensdgg.webp" alt="Unplug the Matrix">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777779/Unplug_the_Matrix_ensdgg.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Unplug the Matrix</div>
+            </div>
+            <div class="media-item" data-category="image">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777779/We_Are_The_Glitch_knuil0.webp" alt="We Are the Glitch">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758777779/We_Are_The_Glitch_knuil0.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">We Are the Glitch</div>
+            </div>
+
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Always_Has_Been_tldlsn.png" alt="Always Has Been">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Always_Has_Been_tldlsn.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Always Has Been</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Ancient_Aliens_ucmdit.png" alt="Ancient Aliens">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Ancient_Aliens_ucmdit.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Ancient Aliens</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/Anakin_and_Padme_fjratc.png" alt="Anakin & Padme">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/Anakin_and_Padme_fjratc.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Anakin & Padme</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Assassination_Chain_a0gfco.webp" alt="Assassination Chain">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Assassination_Chain_a0gfco.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Assassination Chain</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Atlas_zf6qle.webp" alt="Atlas">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Atlas_zf6qle.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Atlas</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Buff_Doge_vs_Cheems_hrk8kt.png" alt="Buff Doge vs Cheems">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Buff_Doge_vs_Cheems_hrk8kt.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Buff Doge vs Cheems</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774037/Bus_and_Train_fy9szr.webp" alt="Bus & Train">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774037/Bus_and_Train_fy9szr.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Bus & Train</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Change_My_Mind_fszy8t.png" alt="Change My Mind">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Change_My_Mind_fszy8t.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Change My Mind</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Choose_Wisely_qjf4tw.webp" alt="Choose Wisely">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Choose_Wisely_qjf4tw.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Choose Wisely</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Crossroads_qyczre.webp" alt="Crossroads">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Crossroads_qyczre.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Crossroads</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Crying_MJ_m4n0qi.webp" alt="Crying MJ">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774022/Crying_MJ_m4n0qi.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Crying MJ</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/Daily_Struggle_bix3yq.png" alt="Daily Struggle">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/Daily_Struggle_bix3yq.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Daily Struggle</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/Dancing_Joker_wmgqxu.png" alt="Dancing Joker">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/Dancing_Joker_wmgqxu.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Dancing Joker</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/Distracted_BF_bo5v1f.webp" alt="Distracted Boyfriend">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/Distracted_BF_bo5v1f.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Distracted Boyfriend</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/DRAKEPOSTING_yozizp.webp" alt="Drakeposting">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/DRAKEPOSTING_yozizp.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Drakeposting</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774062/Galaxy_Brain_b7bfke.png" alt="Galaxy Brain">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774062/Galaxy_Brain_b7bfke.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Galaxy Brain</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Gru_s_Plan_upgk2x.webp" alt="Gru's Plan">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Gru_s_Plan_upgk2x.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Gru's Plan</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Hide_the_Pain_Harold_dl9l1w.png" alt="Hide the Pain Harold">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Hide_the_Pain_Harold_dl9l1w.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Hide the Pain Harold</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/I_Am_Once_Again_Asking..._bdb16j.png" alt="I Am Once Again Asking...">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/I_Am_Once_Again_Asking..._bdb16j.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">I Am Once Again Asking...</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/I_Don_t_Want_to_Play_With_You_Anymore_hpgzjg.png" alt="I Don't Want to Play With You Anymore">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774045/I_Don_t_Want_to_Play_With_You_Anymore_hpgzjg.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">I Don't Want to Play With You Anymore</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Is_This_a_Pigeon_jwqzxy.png" alt="Is This a Pigeon?">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Is_This_a_Pigeon_jwqzxy.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Is This a Pigeon?</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774062/Laughing_Leo_cft8xh.png" alt="Laughing Leo">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774062/Laughing_Leo_cft8xh.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Laughing Leo</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774053/Left_Exit_12_Off_Ramp_qdqag0.png" alt="Left Exit 12 Off Ramp">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774053/Left_Exit_12_Off_Ramp_qdqag0.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Left Exit 12 Off Ramp</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/Not_Sure_If_qehmjx.webp" alt="Not Sure If">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/Not_Sure_If_qehmjx.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Not Sure If</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774038/One_Does_Not_Simply_lihcdd.png" alt="One Does Not Simply">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774038/One_Does_Not_Simply_lihcdd.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">One Does Not Simply</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/Panik_Kalm_Panik_gpdbsf.png" alt="Panik Kalm Panik">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774023/Panik_Kalm_Panik_gpdbsf.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Panik Kalm Panik</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774040/Party_Loner_fpou0m.png" alt="Party Loner">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774040/Party_Loner_fpou0m.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Party Loner</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Philosoraptor_f43wfw.webp" alt="Philosoraptor">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Philosoraptor_f43wfw.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Philosoraptor</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Sad_Pablo_Escobar_qudyyf.png" alt="Sad Pablo Escobar">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Sad_Pablo_Escobar_qudyyf.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Sad Pablo Escobar</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Squidward_Window_lau8ar.webp" alt="Squidward Window">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Squidward_Window_lau8ar.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Squidward Window</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Superman_Stopping_Train_v0ckur.webp" alt="Superman Stopping Train">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Superman_Stopping_Train_v0ckur.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Superman Stopping Train</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Surprised_Pikachu_hijfv0.png" alt="Surprised Pikachu">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Surprised_Pikachu_hijfv0.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Surprised Pikachu</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774062/The_First_Rule_of_Fight_Club_xcq43v.png" alt="The First Rule">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774062/The_First_Rule_of_Fight_Club_xcq43v.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">The First Rule</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Think_Mark_Think_n85q9i.png" alt="Think Mark, Think">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Think_Mark_Think_n85q9i.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Think Mark, Think</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Trade_Offer_x8etsm.png" alt="Trade Offer">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Trade_Offer_x8etsm.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Trade Offer</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774038/Undertaker_runvy4.webp" alt="Undertaker">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774038/Undertaker_runvy4.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Undertaker</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774038/UNO_Draw_25_xzd26e.png" alt="Uno Draw 25">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774038/UNO_Draw_25_xzd26e.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Uno Draw 25</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774053/Vince_McMahon_Reaction_mgvwyy.png" alt="Vince McMahon Reaction">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774053/Vince_McMahon_Reaction_mgvwyy.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Vince McMahon Reaction</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Virgin_vs_Chad_zqmvhn.png" alt="Virgin vs Chad">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774044/Virgin_vs_Chad_zqmvhn.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Virgin vs Chad</div>
+            </div>
+            <div class="media-item" data-category="meme">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Woman_Yelling_at_a_Cat_dsv0n9.png" alt="Woman Yelling at a Cat">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758774052/Woman_Yelling_at_a_Cat_dsv0n9.png" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Woman Yelling at a Cat</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Anchorman_bsyg5p.gif" alt="$DEBT Team Assemble!">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Anchorman_bsyg5p.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">$DEBT Team Assemble!</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/DEBT_Dev_ebmehu.gif" alt="$DEBT Dev">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/DEBT_Dev_ebmehu.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">$DEBT Dev</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Brick_Killed_a_Guy_pp8j78.gif" alt="Brick Killed a Guy">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Brick_Killed_a_Guy_pp8j78.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Brick Killed a Guy</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Bus_Train_GIF_ebg1je.gif" alt="Bus & Train (GIF)">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Bus_Train_GIF_ebg1je.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Bus & Train (GIF)</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808709/Cena_RKO_zjd052.gif" alt="Cena RKO">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808709/Cena_RKO_zjd052.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Cena RKO</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Despicable_Meme_anznfx.gif" alt="Despicable Me">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Despicable_Meme_anznfx.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Despicable Me</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Drowning_n8gxnc.gif" alt="Drowning">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Drowning_n8gxnc.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Drowning</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Good_Boys_pbengl.gif" alt="Good Boys">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Good_Boys_pbengl.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Good Boys</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Malcolm_in_the_Middle_setaqr.gif" alt="Malcolm in the Middle">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Malcolm_in_the_Middle_setaqr.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Malcolm in the Middle</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Missed_DEBT_pat5ql.gif" alt="Missed $DEBT">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Missed_DEBT_pat5ql.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Missed $DEBT</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Missed_DEBT_2.0_mawxhv.gif" alt="Missed $DEBT 2.0">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808700/Missed_DEBT_2.0_mawxhv.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Missed $DEBT 2.0</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808720/Despicable_Me_akkbbd.gif" alt="OOOOOOO!">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808720/Despicable_Me_akkbbd.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">OOOOOOO!</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Oprah_xqmcli.gif" alt="Oprah">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Oprah_xqmcli.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Oprah</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808720/Oppenheimer_m0rxxc.gif" alt="Oppenheimer">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808720/Oppenheimer_m0rxxc.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Oppenheimer</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808718/Pineapple_Express_wminiy.gif" alt="Pineapple Express">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808718/Pineapple_Express_wminiy.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Pineapple Express</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808718/Skate_KO_ma19ug.gif" alt="Skate KO">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808718/Skate_KO_ma19ug.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Skate KO</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Smoke_Crack_xht41l.gif" alt="Smoke Crack">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Smoke_Crack_xht41l.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Smoke Crack</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Speed_ATH_pgepov.gif" alt="Speed ATH">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Speed_ATH_pgepov.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Speed ATH</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Spiderman_tp8syn.gif" alt="Spiderman">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Spiderman_tp8syn.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Spiderman</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Step_Brothers_Boat_zslpdt.gif" alt="Step Brothers Boat">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Step_Brothers_Boat_zslpdt.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Step Brothers Boat</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808718/Step_Brothers_Treehouse_p5foxt.gif" alt="Step Brothers Treehouse">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808718/Step_Brothers_Treehouse_p5foxt.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Step Brothers Treehouse</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Super_Mario_wqhnho.webp" alt="Super Mario">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808698/Super_Mario_wqhnho.webp" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Super Mario</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/This_is_Sparta_vv0xpv.gif" alt="This is Sparta">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/This_is_Sparta_vv0xpv.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">This is Sparta</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Train_Save_nugikh.gif" alt="Train Save">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Train_Save_nugikh.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Train Save</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Wolf_Denied_nq2p82.gif" alt="Wolf Denied">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808719/Wolf_Denied_nq2p82.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Wolf Denied</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Zlatan_jgeoyx.gif" alt="Zlatan">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Zlatan_jgeoyx.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Zlatan</div>
+            </div>
+            <div class="media-item" data-category="gif">
+                <div class="media-image-container">
+                    <img data-src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Zuck_USA_ljexha.gif" alt="Zuck USA">
+                    <div class="media-overlay">
+                        <a href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758808699/Zuck_USA_ljexha.gif" target="_blank" rel="noopener noreferrer" class="overlay-btn" title="Download">⬇️</a>
+                    </div>
+                </div>
+                <div class="media-title">Zuck USA</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2025 by <a href="https://x.com/AutopsyT2" target="_blank" rel="noopener noreferrer" class="footer-link">Autopsy</a>. All rights reserved.
+    </footer>
+
+    <script>
+        // Matrix Background Scripts
+        function initializeMatrix() { const canvas = document.getElementById('matrix-bg'); if (!canvas) return; const ctx = canvas.getContext('2d'); let columns, drops, fontSize = 14; function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; columns = Math.ceil(canvas.width / fontSize); drops = Array(columns).fill(1).map(() => (Math.random() * canvas.height/fontSize)); } resizeCanvas(); window.addEventListener('resize', resizeCanvas); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; function draw() { ctx.fillStyle = 'rgba(18, 18, 18, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#ff5555'; ctx.font = `${fontSize}px monospace`; for (let i = 0; i < drops.length; i++) { const text = chars.charAt(Math.floor(Math.random() * chars.length)); ctx.fillText(text, i * fontSize, drops[i] * fontSize); if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; } drops[i]++; } } setInterval(draw, 50); }
+        function startMatrixRain() { const rainCanvas = document.getElementById('matrix-rain'); if (!rainCanvas) return; const rainCtx = rainCanvas.getContext('2d'); let columns, drops, fontSize = 14; function resizeCanvas() { rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight; columns = Math.ceil(rainCanvas.width / fontSize); drops = Array(columns).fill(1).map(() => (Math.random() * rainCanvas.height/fontSize)); } resizeCanvas(); window.addEventListener('resize', resizeCanvas); const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; function drawRain() { rainCtx.fillStyle = 'rgba(0, 0, 0, 0.05)'; rainCtx.fillRect(0, 0, rainCanvas.width, rainCanvas.height); rainCtx.fillStyle = '#999999'; rainCtx.font = fontSize + 'px monospace'; drops.forEach((y, i) => { const text = chars.charAt(Math.floor(Math.random() * chars.length)); rainCtx.fillText(text, i * fontSize, y * fontSize); if (y * fontSize > rainCanvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; }); } setInterval(drawRain, 50); }
+
+        window.addEventListener('load', () => {
+            initializeMatrix();
+            startMatrixRain();
+
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const mediaGrid = document.querySelector('.media-grid');
+            const mediaItems = mediaGrid.querySelectorAll('.media-item');
+
+            // --- Sort Grid Items Alphabetically on Load ---
+            const sortedItems = Array.from(mediaItems).sort((a, b) => {
+                const titleA = a.querySelector('.media-title').textContent.trim().toLowerCase();
+                const titleB = b.querySelector('.media-title').textContent.trim().toLowerCase();
+                if (titleA < titleB) return -1;
+                if (titleA > titleB) return 1;
+                return 0;
+            });
+            // Re-append items to the grid in the new sorted order
+            sortedItems.forEach(item => mediaGrid.appendChild(item));
+            
+            // --- Setup Filter Buttons (with Counts) ---
+            filterButtons.forEach(button => {
+                const filter = button.dataset.filter;
+                let count = 0;
+                if (filter === 'all') {
+                    count = mediaItems.length;
+                } else {
+                    count = document.querySelectorAll(`.media-item[data-category="${filter}"]`).length;
+                }
+                if (count > 0) {
+                    button.textContent += ` (${count})`;
+                }
+
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    sortedItems.forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // --- Lazy Loading Logic ---
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            const imgObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.onload = () => {
+                            img.classList.add('loaded');
+                        };
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            lazyImages.forEach(img => imgObserver.observe(img));
+        });
+    </script>
+</body>
+</html>
