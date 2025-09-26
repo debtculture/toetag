@@ -3081,7 +3081,10 @@
                 }
             }
             mobileButton.addEventListener('click', () => handleWalletButtonClick(mobileButton));
-            desktopBubble.addEventListener('click', () => handleWalletButtonClick(desktopBubble));
+            desktopBubble.addEventListener('click', () => {
+                console.log('Desktop wallet button was clicked!'); // TEST MESSAGE 1
+                handleWalletButtonClick(desktopBubble);
+            });
         }
 
         async function restoreWalletConnection() {
