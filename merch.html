@@ -7,7 +7,7 @@
     <meta name="keywords" content="Debt Culture, $DEBT, merchandise, crypto, memecoin, Solana">
     <meta name="author" content="Autopsy">
     <title>Debt Culture - Merchandise</title>
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
         body {
             background: #121212;
             color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
@@ -59,9 +59,17 @@
             color: #fff;
             text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555;
             margin-bottom: 40px;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             animation: neon-flicker 1.5s infinite alternate;
+        }
+        .merch-tagline {
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: #ff9999;
+          text-shadow: 0 0 5px #ff5555;
+          margin-top: -30px;
+          margin-bottom: 60px;
         }
         @keyframes neon-flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
@@ -101,13 +109,13 @@
             font-size: 1.5rem;
             margin: 10px 0;
             color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
         }
         .merch-item p {
             font-size: 1.2rem;
             color: #ff5555;
             margin-bottom: 10px;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
         }
         .merch-item button {
             background: #333;
@@ -117,7 +125,7 @@
             border-radius: 5px;
             cursor: not-allowed;
             font-size: 1rem;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             transition: background 0.3s ease;
         }
@@ -145,17 +153,24 @@
         }
 
         .merch-submit-btn {
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fff;
-            background-color: #ff5555;
-            border: none;
-            text-decoration: none;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 0 10px #ff5555;
-            opacity: 1;
+          /* --- Appearance --- */
+          display: inline-block;
+          background: #ff5555;
+          color: #fff;
+          border: 2px solid #ff7777;
+          border-radius: 5px;
+          text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+
+          /* --- Size & Spacing --- */
+          padding: 15px 35px;
+          font-size: 1.2rem;
+          font-weight: 700;
+
+          /* --- Effects --- */
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          animation: pulseGlow 2s infinite ease-in-out;
         }
 
         .submit-btn-container {
@@ -163,7 +178,9 @@
         }
 
         .merch-submit-btn:hover {
-            background-color: #ff7777; /* add a hover effect if you want */
+            background-color: #ff7777;
+          transform: scale(1.1);
+          box-shadow: 0 0 25px #ff5555, 0 0 50px #ff5555;
         }
 
         .back-home-container {
@@ -182,7 +199,7 @@
             border-radius: 50px;
             text-decoration: none;
             font-size: 1rem;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: pulseGlow 1.5s infinite ease-in-out;
@@ -224,7 +241,7 @@
         .credit-tag {
             font-size: 0.8rem;
             color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Inter', sans-serif;
             margin-bottom: 10px;
             display: block;
         }
@@ -262,31 +279,27 @@
             opacity: 1;
         }
         .carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #ff5555;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 1rem;
-            font-family: 'Courier New', Courier, monospace;
-            cursor: pointer !important;
-            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            z-index: 10;
-        }
-        .carousel-arrow:hover {
-            background: #ff7777;
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 0 10px #ff5555;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(255, 85, 85, 0.8); /* Slightly transparent */
+          color: #fff;
+          border: 1px solid #fff; /* Adds a crisp border */
+          border-radius: 50%;
+          width: 40px; /* Larger */
+          height: 40px; /* Larger */
+          font-size: 1.5rem; /* Bigger arrow symbol */
+          font-family: 'Inter', sans-serif;
+          cursor: pointer !important;
+          transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+          z-index: 10;
+          line-height: 1; /* Helps center the arrow symbol */
         }
         .carousel-arrow.left {
-            left: -10px;
+          left: 10px; /* Moved inside the image */
         }
         .carousel-arrow.right {
-            right: -10px;
+          right: 10px; /* Moved inside the image */
         }
         @media (max-width: 768px) {
     .merch-carousel {
@@ -322,7 +335,22 @@
         display: none;
     }
 }
+    @media (prefers-reduced-motion: reduce) {
+      /* Turn off all animations and transitions for users who prefer less motion */
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
 
+      /* Specifically disable the named keyframe animations on this page */
+      h1, .back-home, .merch-submit-btn {
+        animation: none !important;
+      }
+    }
     </style>
 </head>
 <body>
@@ -336,12 +364,13 @@
         </div>
         <section id="merch" class="section">
             <h1>Merchandise</h1>
+            <p class="merch-tagline">Wear the rebellion.</p>
             <div class="merch-container">
                 <div class="merch-item">
                     <div class="merch-carousel">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1749663039/Trucker_kld9rv.jpg" alt="Debt Culture Trucker Hat" loading="lazy" class="active">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752022511/Trucker2_p0gh01.jpg" alt="Debt Culture Trucker Hat Side View" loading="lazy">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752022511/trucker3_i8wihj.jpg" alt="Debt Culture Trucker Hat Back View" loading="lazy">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1749663039/Trucker_kld9rv.jpg" alt="Debt Culture Trucker Hat" loading="lazy" class="active">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752022511/Trucker2_p0gh01.jpg" alt="Debt Culture Trucker Hat Side View" loading="lazy">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752022511/trucker3_i8wihj.jpg" alt="Debt Culture Trucker Hat Back View" loading="lazy">
                         <button class="carousel-arrow left" aria-label="Previous Image">←</button>
                         <button class="carousel-arrow right" aria-label="Next Image">→</button>
                     </div>
@@ -352,9 +381,9 @@
                 </div>
                 <div class="merch-item">
                     <div class="merch-carousel">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752015848/candle1_bc7th0.jpg" alt="Debt Culture Candle" loading="lazy" class="active">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752022511/candle_l4mhuw.jpg" alt="Debt Culture Candle Side View" loading="lazy">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752022511/candle2_ln8awc.jpg" alt="Debt Culture Candle Top View" loading="lazy">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752015848/candle1_bc7th0.jpg" alt="Debt Culture Candle" loading="lazy" class="active">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752022511/candle_l4mhuw.jpg" alt="Debt Culture Candle Side View" loading="lazy">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752022511/candle2_ln8awc.jpg" alt="Debt Culture Candle Top View" loading="lazy">
                         <button class="carousel-arrow left" aria-label="Previous Image">←</button>
                         <button class="carousel-arrow right" aria-label="Next Image">→</button>
                     </div>
@@ -365,9 +394,9 @@
                 </div>
                 <div class="merch-item">
                     <div class="merch-carousel">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752016446/Mug_tm7r7b.jpg" alt="Debt Culture Coffee Mug" loading="lazy" class="active">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752022511/Mug2_rkfow9.jpg" alt="Debt Culture Coffee Mug Side View" loading="lazy">
-                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752022512/Mug3_zcnead.jpg" alt="Debt Culture Coffee Mug Handle View" loading="lazy">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752016446/Mug_tm7r7b.jpg" alt="Debt Culture Coffee Mug" loading="lazy" class="active">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752022511/Mug2_rkfow9.jpg" alt="Debt Culture Coffee Mug Side View" loading="lazy">
+                        <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752022512/Mug3_zcnead.jpg" alt="Debt Culture Coffee Mug Handle View" loading="lazy">
                         <button class="carousel-arrow left" aria-label="Previous Image">←</button>
                         <button class="carousel-arrow right" aria-label="Next Image">→</button>
                     </div>
