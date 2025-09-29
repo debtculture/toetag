@@ -8,131 +8,27 @@
     <meta name="author" content="Autopsy">
     <title>Debt Culture - Community</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1748445162/d53de7cc-4e1a-4f44-99c0-4442b755faed_oylcn6.png">
+    <link rel="stylesheet" href="shared-styles.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #121212;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
-        canvas#matrix-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-        canvas#matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.6;
-            pointer-events: none;
-        }
+        /* --- Page-Specific Content Wrapper & Section --- */
         .content-wrapper {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             position: relative;
             z-index: 1;
-            padding-bottom: 60px; /* Space for fixed footer */
+            padding-bottom: 60px;
         }
         .section {
             text-align: center;
-            padding: 60px 20px;
+            padding-top: 60px;
             opacity: 1;
         }
-        h1 {
-             font-size: 3rem;
-             color: #fff;
-             text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555;
-             margin-bottom: 40px;
-             font-family: 'Inter', sans-serif;
-             font-weight: 900;
-             animation: neon-flicker 1.5s infinite alternate;
-        }
-        @keyframes neon-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 0 0 10px #ff5555, 0 0 20px #ff5555, 0 0 30px #ff5555;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
-        }
-        .back-home-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-        .back-home {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #ff5555;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: pulseGlow 1.5s infinite ease-in-out;
-        }
-        .back-home:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px #ff5555;
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 5px #ff5555; }
-            50% { box-shadow: 0 0 20px #ff5555, 0 0 30px #ff5555; }
-            100% { box-shadow: 0 0 5px #ff5555; }
-        }
-        .footer {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: auto;
-            background-color: rgba(18, 18, 18, 0.5);
-            backdrop-filter: blur(5px);
-            color: #eee;
-            text-align: center;
-            padding: 10px 20px;
-            z-index: 1000;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 85, 85, 0.3);
-            box-shadow: 0 0 15px rgba(255, 85, 85, 0.2);
-            font-family: 'Inter', Arial, sans-serif;
-        }
-        .footer-link {
-            color: #ff5555;
-            text-decoration: none;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
-        }
-        .footer-link:hover {
-            color: #ff7777;
-            text-shadow: 0 0 6px #ff5555, 0 0 12px #ff5555;
-        }
 
-        /* Community Section Styles */
-        #community { padding-bottom: 60px; }
+        /* --- Hall of Fame Carousel Styles --- */
         .hof-carousel { position: relative; max-width: 600px; margin: 0 auto; min-height: 350px; display: flex; align-items: center; justify-content: center; }
         .hof-rows-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
         .hof-row-desktop, .hof-row-mobile { display: flex; justify-content: center; gap: 20px; flex-wrap: nowrap; margin-bottom: 40px; }
@@ -174,16 +70,12 @@
         .badge:hover { transform: scale(1.2); box-shadow: 0 0 15px #ff5555, 0 0 25px #ff5555; }
         .badge:hover::after { opacity: 1; visibility: visible; pointer-events: none; }
         .shared-tooltip { display: none; position: fixed; background: #1a1a1a; color: #eee; padding: 6px 12px; border-radius: 5px; font-size: 0.9rem; white-space: normal; max-width: 160px; text-align: center; z-index: 1000; border: 1px solid #ff5555; box-shadow: 0 0 10px #ff5555; transform: translateX(-50%); line-height: 1.2; pointer-events: none; }
-        
-        /* Badge Icons (via CSS pseudo-elements) */
         .badge-spaces::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg); width: 10px; height: 16px; background: #eee; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
         .badge-burn::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 12px; background: #eee; clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
         .badge-holding::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg); width: 10px; height: 10px; background: #eee; }
         .badge-shiller::before { content: 'X'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #eee; font-size: 14px; font-weight: bold; }
         .badge-meme::before { content: '😂'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #eee; font-size: 16px; }
         .badge-year1::before { content: '1'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #eee; font-size: 16px; font-weight: bold; }
-
-        /* Badge Colors on Trading Card */
         .trading-card .hof-badges .badge-amethyst { background: linear-gradient(145deg, #9966cc, #7a52a3) !important; border: 1px solid #9966cc !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #9966cc !important; }
         .trading-card .hof-badges .badge-gold { background: linear-gradient(145deg, #ffd700, #ccac00) !important; border: 1px solid #ffd700 !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #ffd700 !important; }
         .trading-card .hof-badges .badge-silver { background: linear-gradient(145deg, #c0c0c0, #808080) !important; border: 1px solid #c0c0c0 !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #c0c0c0 !important; }
@@ -191,7 +83,7 @@
         .trading-card .hof-badges .badge-single, .trading-card .hof-badges .badge-shiller, .trading-card .hof-badges .badge-meme { background: linear-gradient(145deg, #ff5555, #cc4444) !important; border: 1px solid #ff5555 !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #ff5555 !important; }
         
         /* Badge Glossary Styles */
-        .badge-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; }
+        .badge-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; }
         .badge-glossary-header:hover { background: linear-gradient(90deg, #ff7777, #ff9999); }
         .badge-glossary-header::after { content: '▼'; position: absolute; right: 15px; font-size: 1rem; transition: transform 0.3s ease; }
         .badge-glossary-header.active::after { transform: rotate(180deg); }
@@ -211,7 +103,40 @@
         .badge-glossary-content .badge-amethyst { background: linear-gradient(145deg, #9966cc, #7a52a3) !important; border: 1px solid #9966cc !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #9966cc !important; }
         .badge-glossary-content .badge-single { background: linear-gradient(145deg, #ff5555, #cc4444) !important; border-color: #ff5555 !important; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 0 5px #ff5555 !important; }
         
-        /* Mobile Adjustments */
+        /* Leaderboard Styles */
+        .leaderboard-section { background: rgba(26, 26, 26, 0.7); border: 1px solid #ff5555; border-radius: 10px; padding: 25px; margin-bottom: 60px; backdrop-filter: blur(4px); box-shadow: 0 0 15px rgba(255, 85, 85, 0.3); max-width: 800px; margin-left: auto; margin-right: auto; }
+        .leaderboard-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .leaderboard-tab-btn { background: #1e1e1e; color: #eee; border: 1px solid #ff5555; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; }
+        .leaderboard-tab-btn:hover { background-color: #ff5555; color: #fff; }
+        .leaderboard-tab-btn.active { background-color: #ff5555; color: #fff; box-shadow: 0 0 15px #ff5555; }
+        .leaderboard-table-container { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+        .leaderboard-table { width: 100%; border-collapse: collapse; color: #ccc; }
+        .leaderboard-table th, .leaderboard-table td { padding: 12px 15px; text-align: left; }
+        .leaderboard-table thead th { background-color: #1e1e1e; color: #ff5555; font-size: 1.1rem; font-weight: 700; position: sticky; top: 0; z-index: 2; }
+        .leaderboard-table tbody tr { border-bottom: 1px solid #333; }
+        .leaderboard-table tbody tr:last-child { border-bottom: none; }
+        .leaderboard-table td { font-size: 1rem; }
+        .rank-1 .rank-cell, .rank-1 .user-cell, .rank-1 .points-cell { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
+        .rank-2 .rank-cell, .rank-2 .user-cell, .rank-2 .points-cell { color: #c0c0c0; text-shadow: 0 0 5px #c0c0c0; }
+        .rank-3 .rank-cell, .rank-3 .user-cell, .rank-3 .points-cell { color: #cd7f32; text-shadow: 0 0 5px #cd7f32; }
+        .rank-cell { font-weight: 700; width: 15%; }
+        .user-cell { font-weight: 600; width: 55%; }
+        .points-cell { font-weight: 700; width: 30%; }
+        #leaderboard-loading { font-size: 1.1rem; color: #ff9999; padding: 40px 0; }
+        
+        /* Leaderboard Glossary Styles */
+        .leaderboard-glossary-header { background: linear-gradient(90deg, #ff5555, #ff7777); color: #fff; padding: 15px; border-radius: 5px; cursor: pointer; font-size: 1.2rem; font-weight: bold; text-align: center; position: relative; transition: background 0.3s ease; max-width: 800px; width: 100%; box-sizing: border-box; margin: -40px auto 60px auto; }
+        .leaderboard-glossary-header:hover { background: linear-gradient(90deg, #ff7777, #ff9999); }
+        .leaderboard-glossary-header::after { content: '▼'; position: absolute; right: 15px; font-size: 1rem; transition: transform 0.3s ease; }
+        .leaderboard-glossary-header.active::after { transform: rotate(180deg); }
+        .leaderboard-glossary-content { max-height: 0; overflow: hidden; background: #1e1e1e; border-radius: 5px; transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease; padding: 0 25px; box-sizing: border-box; max-width: 800px; width: 100%; margin: -60px auto 60px auto; text-align: left; }
+        .leaderboard-glossary-content.active { padding: 25px; }
+        .leaderboard-glossary-content h4 { color: #ff7777; font-weight: 700; margin-top: 15px; margin-bottom: 5px; }
+        .leaderboard-glossary-content p, .leaderboard-glossary-content li { font-size: 1rem; color: #ccc; margin-bottom: 10px; }
+        .leaderboard-glossary-content ul { list-style-position: inside; padding-left: 0; }
+        .leaderboard-glossary-content ul li::marker { color: #ff5555; font-weight: bold; }
+
+        /* --- Page-Specific Responsive --- */
         @media (max-width: 1024px) {
             .badge:hover::after, .badge.active-tooltip::after { display: none; }
             .badge:hover { transform: none; box-shadow: none; }
@@ -221,9 +146,6 @@
         @media (max-width: 768px) {
             .section { padding: 40px 10px; }
             h1 { font-size: 2rem; }
-            .back-home-container { top: 10px; left: 10px; }
-            .back-home { font-size: 0.8rem; padding: 6px 12px; gap: 5px; }
-            .footer { display: none; }
             .hof-carousel { min-height: 280px; }
             .hof-member { width: 80px; height: 80px; }
             .hof-arrow { font-size: 1.5rem; top: 50%; }
@@ -240,239 +162,49 @@
             .badge-name { font-size: 0.7rem; max-width: 105px; height: 42px; line-height: 1.2; }
             .badge-arrow, .invisible-arrow { font-size: 1rem; width: 18px; margin: 0; height: 44px; transform: translateY(-24px); }
             .badge-glossary-header { font-size: 1.1rem; padding: 10px; }
+            .leaderboard-glossary-header { font-size: 1.1rem; padding: 10px; }
         }
-        @media (prefers-reduced-motion: reduce) {
-          /* Turn off all animations and transitions */
-          *,
-          *::before,
-          *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-            scroll-behavior: auto !important;
-          }
-
-          /* Specifically disable the named keyframe animations */
-          h1, .back-home {
-            animation: none !important;
-          }
-        }
-        /* --- NEW LEADERBOARD STYLES START --- */
-        .leaderboard-section {
-            background: rgba(26, 26, 26, 0.7);
-            border: 1px solid #ff5555;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 60px; /* Space between leaderboard and HOF */
-            backdrop-filter: blur(4px);
-            box-shadow: 0 0 15px rgba(255, 85, 85, 0.3);
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .leaderboard-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .leaderboard-tab-btn {
-            background: #1e1e1e;
-            color: #eee;
-            border: 1px solid #ff5555;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-        }
-
-        .leaderboard-tab-btn:hover {
-            background-color: #ff5555;
-            color: #fff;
-        }
-
-        .leaderboard-tab-btn.active {
-            background-color: #ff5555;
-            color: #fff;
-            box-shadow: 0 0 15px #ff5555;
-        }
-
-        .leaderboard-table-container {
-            overflow-x: auto;
-            max-height: 400px; /* Makes table scrollable if it gets too long */
-            overflow-y: auto;
-        }
-
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            color: #ccc;
-        }
-
-        .leaderboard-table th, .leaderboard-table td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        .leaderboard-table thead th {
-            background-color: #1e1e1e;
-            color: #ff5555;
-            font-size: 1.1rem;
-            font-weight: 700;
-            position: sticky;
-            top: 0;
-            z-index: 2;
-        }
-
-        .leaderboard-table tbody tr {
-            border-bottom: 1px solid #333;
-        }
-
-        .leaderboard-table tbody tr:last-child {
-            border-bottom: none;
-        }
-        
-        .leaderboard-table td {
-            font-size: 1rem;
-        }
-
-        .rank-1 .rank-cell, .rank-1 .user-cell, .rank-1 .points-cell { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
-        .rank-2 .rank-cell, .rank-2 .user-cell, .rank-2 .points-cell { color: #c0c0c0; text-shadow: 0 0 5px #c0c0c0; }
-        .rank-3 .rank-cell, .rank-3 .user-cell, .rank-3 .points-cell { color: #cd7f32; text-shadow: 0 0 5px #cd7f32; }
-
-        .rank-cell { font-weight: 700; width: 15%; }
-        .user-cell { font-weight: 600; width: 55%; }
-        .points-cell { font-weight: 700; width: 30%; }
-
-        #leaderboard-loading {
-            font-size: 1.1rem;
-            color: #ff9999;
-            padding: 40px 0;
-        }
-        /* --- NEW LEADERBOARD STYLES END --- */
-        /* --- NEW LEADERBOARD GLOSSARY STYLES START --- */
-        .leaderboard-glossary-header {
-            background: linear-gradient(90deg, #ff5555, #ff7777);
-            color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-align: center;
-            position: relative;
-            transition: background 0.3s ease;
-            max-width: 800px;
-            width: 100%;
-            box-sizing: border-box;
-            margin: -40px auto 60px auto; /* Pulls it up to the leaderboard, adds space below */
-            font-family: 'Inter', Arial, sans-serif;
-        }
-
-        .leaderboard-glossary-header:hover {
-            background: linear-gradient(90deg, #ff7777, #ff9999);
-        }
-
-        .leaderboard-glossary-header::after {
-            content: '▼';
-            position: absolute;
-            right: 15px;
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .leaderboard-glossary-header.active::after {
-            transform: rotate(180deg);
-        }
-
-        .leaderboard-glossary-content {
-            max-height: 0;
-            overflow: hidden;
-            background: #1e1e1e;
-            border-radius: 5px;
-            transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
-            padding: 0 25px;
-            box-sizing: border-box;
-            max-width: 800px;
-            width: 100%;
-            margin: -60px auto 60px auto; /* Match positioning */
-            text-align: left;
-        }
-
-        .leaderboard-glossary-content.active {
-            padding: 25px;
-        }
-
-        .leaderboard-glossary-content h4 {
-            color: #ff7777;
-            font-weight: 700;
-            margin-top: 15px;
-            margin-bottom: 5px;
-        }
-        
-        .leaderboard-glossary-content p, .leaderboard-glossary-content li {
-            font-size: 1rem;
-            color: #ccc;
-            margin-bottom: 10px;
-        }
-
-        .leaderboard-glossary-content ul {
-            list-style-position: inside;
-            padding-left: 0;
-        }
-        
-        .leaderboard-glossary-content ul li::marker {
-            color: #ff5555;
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .leaderboard-glossary-header {
-                font-size: 1.1rem;
-                padding: 10px;
-            }
-        }
-        /* --- NEW LEADERBOARD GLOSSARY STYLES END --- */
     </style>
 </head>
 <body>
     <canvas id="matrix-bg"></canvas>
     <canvas id="matrix-rain"></canvas>
-    <div class="content-wrapper">
-        <div class="back-home-container">
-            <a class="back-home" href="index.html" aria-label="Back to Home">
-                <span style="font-size: 1.2rem;">⇠</span> Back
-            </a>
-        </div>
 
-        <section id="community" class="section">
+    <nav class="back-home-container">
+        <a class="back-home" href="index.html" aria-label="Back to Home">
+            <span style="font-size: 1.2rem;">⇠</span> Back
+        </a>
+    </nav>
+
+    <main class="content-wrapper">
+        <header class="section">
             <h1>Community</h1>
-            <div class="leaderboard-section">
-                <div class="leaderboard-tabs">
-                    <button class="leaderboard-tab-btn active" data-period="monthly">Monthly</button>
-                    <button class="leaderboard-tab-btn" data-period="yearly">Yearly</button>
-                    <button class="leaderboard-tab-btn" data-period="all-time">All-Time</button>
-                </div>
-                <div class="leaderboard-table-container">
-                    <table class="leaderboard-table">
-                        <thead>
-                            <tr>
-                                <th class="rank-cell">Rank</th>
-                                <th class="user-cell">Username</th>
-                                <th class="points-cell">Points</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboard-body">
+        </header>
+
+        <section class="leaderboard-section" aria-labelledby="leaderboard-heading">
+            <h2 id="leaderboard-heading" class="visually-hidden">Community Leaderboard</h2>
+            <nav class="leaderboard-tabs" aria-label="Leaderboard time period">
+                <button class="leaderboard-tab-btn active" data-period="monthly">Monthly</button>
+                <button class="leaderboard-tab-btn" data-period="yearly">Yearly</button>
+                <button class="leaderboard-tab-btn" data-period="all-time">All-Time</button>
+            </nav>
+            <div class="leaderboard-table-container">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-cell">Rank</th>
+                            <th class="user-cell">Username</th>
+                            <th class="points-cell">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
                         </tbody>
-                    </table>
-                    <p id="leaderboard-loading">Loading Rebel Standings...</p>
-                </div>
+                </table>
+                <p id="leaderboard-loading">Loading Rebel Standings...</p>
             </div>
+        </section>
+
+        <section class="leaderboard-glossary-container" aria-label="Leaderboard Rules">
             <div class="leaderboard-glossary-header" onclick="toggleLeaderboardGlossary()" tabindex="0" role="button" aria-expanded="false" aria-controls="leaderboardGlossary">
                 Leaderboard: How It Works
             </div>
@@ -485,7 +217,6 @@
                     <li><strong>3rd Place:</strong> 5 Points</li>
                     <li><strong>Participation:</strong> 1 Point</li>
                 </ul>
-
                 <h4>Monthly Payouts</h4>
                 <p>The "Monthly" leaderboard resets at the beginning of each month. Payouts for the previous month's final standings will be distributed within the first three days of the new month.</p>
                 <ul>
@@ -493,11 +224,13 @@
                     <li><strong>🥈 2nd Place:</strong> 50,000 $DEBT</li>
                     <li><strong>🥉 3rd Place:</strong> 25,000 $DEBT</li>
                 </ul>
-
                 <h4>Yearly & All-Time</h4>
                 <p>The "Yearly" and "All-Time" tabs track your long-term performance and legacy within the community. A special "Player of the Year" prize will be introduced for the 2026 season.</p>
             </div>
-           
+        </section>
+        
+        <section class="section" aria-labelledby="hof-heading">
+            <h2 id="hof-heading" class="visually-hidden">Hall of Fame</h2>
             <div class="hof-carousel">
                 <button class="hof-arrow hof-left-arrow" onclick="rotateHof('left')" aria-label="Previous Community member">⇠</button>
                 <div id="hof-featured">
@@ -507,7 +240,7 @@
                             <div class="card-level">Lv. 99</div>
                         </div>
                         <div class="card-pfp-square">
-                            <a href="#" target="_blank" class="pfp-link">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="pfp-link">
                                 <img src="" alt="" width="150" height="150" loading="lazy">
                             </a>
                         </div>
@@ -530,12 +263,12 @@
                 <div class="hof-row-desktop"><div class="hof-member" data-index="12" data-x-link="https://x.com/DanVibes10"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1747354104/Dan_uu4sey.jpg" alt="Dan profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Dan</div></div><div class="hof-member" data-index="13" data-x-link="https://x.com/PgHYinzer86"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111442/dk_aqpdct.jpg" alt="DK profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">DK</div></div><div class="hof-member" data-index="14" data-x-link="https://x.com/CodyMarmaduke"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758747646/Cody_ab60wn.jpg" alt="Cody profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Cody</div></div><div class="hof-member" data-index="15" data-x-link="https://x.com/rankin56696"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1758111531/rankin_mnn26k.jpg" alt="Rankin profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Rankin</div></div><div class="hof-member" data-index="16" data-x-link="https://x.com/bigsoup6_7"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/scrappy2_ihsso6.jpg" alt="Scrappy profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Scrappy</div></div><div class="hof-member" data-index="17" data-x-link="https://x.com/GirlMia9079"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1754610304/KNg3MAIS_400x400_tmabka.jpg" alt="Mia profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Mia</div></div></div>
                 <div class="hof-row-desktop"><div class="hof-member" data-index="18" data-x-link="https://x.com/ElpatronSFC"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752608182/Elvis_yrnpxh.png" alt="Elvis profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Elvis</div></div><div class="hof-member" data-index="19" data-x-link="https://x.com/Bstr___"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752608094/bstr_knv2eq.jpg" alt="Bstr profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Bstr</div></div><div class="hof-member" data-index="20" data-x-link="https://x.com/GeorgeCdr28874"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1747417142/George_q1e0c2.jpg" alt="George profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">George</div></div><div class="hof-member" data-index="21" data-x-link="https://x.com/Dog66515910"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752948926/Dog2_sb9l5v.jpg" alt="Dog profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Dog</div></div><div class="hof-member" data-index="22" data-x-link="https://x.com/Marilyn_Moanroe"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/Marilyn2_gzdbq2.jpg" alt="Marilyn profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Marilyn</div></div><div class="hof-member" data-index="23" data-x-link="https://x.com/HauskenHelge"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747354104/ZOMBi_obepxi.jpg" alt="ZOMBi profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">ZOMBi</div></div></div>
                 <div class="hof-row-desktop"><div class="hof-member" data-index="24" data-x-link="https://x.com/ipoopcrypto"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111719/cy_sxrobe.jpg" alt="Cyanide profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Cyanide</div></div><div class="hof-member" data-index="25" data-x-link="https://x.com/RecklesUnicorn"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758748132/Demetrius_knntdo.jpg" alt="Demitrieus profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Demitrieus</div></div><div class="hof-member" data-index="26" data-x-link="https://x.com/0x_Ugo"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758747924/Ugo_flbfsw.jpg" alt="Ugo profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Ugo</div></div><div class="hof-member" data-index="27" data-x-link="https://x.com/madgamer1979"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747354104/Coinbud_uwjumu.jpg" alt="Coinbud profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Coinbud</div></div><div class="hof-member" data-index="28" data-x-link="https://x.com/AngelaPatt86456"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111841/momma_tvdmop.jpg" alt="Momma Blu profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Momma Blu</div></div><div class="hof-member" data-index="29" data-x-link="https://x.com/ThurstonWaffles"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032869/Thurston_n6zd2i.jpg" alt="Thurston profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Thurston</div></div></div>
-                <div class="hof-row-desktop"><div class="hof-member" data-index="30" data-x-link="https://x.com/p_r_o_m_o__"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111977/promo_jea2uu.jpg" alt="Michael profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Michael</div></div><div class="hof-member" data-index="31" data-x-link="https://x.com/medraresteaker"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758112105/gnomie_epet05.jpg" alt="Gnomie profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Gnomie</div></div><div class="hof-member" data-index="32" data-x-link="https://x.com/blaze_mb21"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755032499/AJ_s3hfjk.png" alt="AJ profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">AJ</div></div><div class="hof-member" data-index="33" data-x-link="https://x.com/edition1"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032568/George_Eager_ckxq9y.jpg" alt="George Eager profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">George Eager</div></div><div class="hof-member" data-index="34" data-x-link="https://x.com/0xDnxl"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755032699/Denzel_bmt4td.jpg" alt="Denzel profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Denzel</div></div><div class="hof-member" data-index="35" data-x-link="https://x.com/TheresaWeik"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032771/Tree_bggo4f.jpg" alt="Tree profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Tree</div></div></div>
+                <div class="hof-row-desktop"><div class="hof-member" data-index="30" data-x-link="https://x.com/p_r_o_m_o__"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111977/promo_jea2uu.jpg" alt="Michael profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Michael</div></div><div class="hof-member" data-index="31" data-x-link="https://x.com/medraresteaker"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758112105/gnomie_epet05.jpg" alt="Gnomie profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Gnomie</div></div><div class="hof-member" data-index="32" data-x-link="https://x.com/blaze_mb21"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755032499/AJ_s3hfjk.png" alt="AJ profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">AJ</div></div><div class="hof-member" data-index="33" data-x-link="https://x.com/edition1"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755032568/George_Eager_ckxq9y.jpg" alt="George Eager profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">George Eager</div></div><div class="hof-member" data-index="34" data-x-link="https://x.com/0xDnxl"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755032699/Denzel_bmt4td.jpg" alt="Denzel profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Denzel</div></div><div class="hof-member" data-index="35" data-x-link="https://x.com/TheresaWeik"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1755032771/Tree_bggo4f.jpg" alt="Tree profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Tree</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="0" data-x-link="https://x.com/AutopsyT2"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758110923/rKUcuWaF_400x400_d3fqvc.jpg" alt="Autopsy profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Autopsy</div></div><div class="hof-member" data-index="1" data-x-link="https://x.com/catavina17"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1746723030/catavina_dfcvoe.jpg" alt="Catavina profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Catavina</div></div><div class="hof-member" data-index="2" data-x-link="https://x.com/louisedbegin"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/Lou2_kxasor.jpg" alt="Lou profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Lou</div></div><div class="hof-member" data-index="3" data-x-link="https://x.com/Tormund_17"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1746723031/Tormund_pj4hwd.jpg" alt="Tormund profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Tormund</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="4" data-x-link="https://x.com/jpegfein"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755034794/JPEG_rte1vj.jpg" alt="JPEG profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">JPEG</div></div><div class="hof-member" data-index="5" data-x-link="https://x.com/blu_chek"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1746723030/blu_fko02p.jpg" alt="blu profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">blu</div></div><div class="hof-member" data-index="6" data-x-link="https://x.com/drinkonsaturday"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1748906211/Drinks_tibhzd.jpg" alt="Drinks profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Drinks</div></div><div class="hof-member" data-index="7" data-x-link="https://x.com/ReneeBush96829"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747850503/Renee_eekhuh.jpg" alt="Renee profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Renee</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="8" data-x-link="https://x.com/AmbientSound"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1748906930/Ambient_jztyfi.jpg" alt="Ambient profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Ambient</div></div><div class="hof-member" data-index="9" data-x-link="https://x.com/deadend_king"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111318/tom_firsei.jpg" alt="Tom profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Tom</div></div><div class="hof-member" data-index="10" data-x-link="https://x.com/Lunicking178677"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1746723031/Lunic_k1ndzn.jpg" alt="Lunicking profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Lunicking</div></div><div class="hof-member" data-index="11" data-x-link="https://x.com/coryb410"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747354104/Cory_qntp8y.jpg" alt="Cory B profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Cory B</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="12" data-x-link="https://x.com/DanVibes10"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1747354104/Dan_uu4sey.jpg" alt="Dan profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Dan</div></div><div class="hof-member" data-index="13" data-x-link="https://x.com/PgHYinzer86"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111442/dk_aqpdct.jpg" alt="DK profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">DK</div></div><div class="hof-member" data-index="14" data-x-link="https://x.com/CodyMarmaduke"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758747646/Cody_ab60wn.jpg" alt="Cody profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Cody</div></div><div class="hof-member" data-index="15" data-x-link="https://x.com/rankin56696"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1758111531/rankin_mnn26k.jpg" alt="Rankin profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Rankin</div></div></div>
-                <div class="hof-row-mobile"><div class="hof-member" data-index="16" data-x-link="https://x.com/bigsoup6_7"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/scrappy2_ihsso6.jpg" alt="Scrappy profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Scrappy</div></div><div class="hof-member" data-index="17" data-x-link="https://x.com/GirlMia9079"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1754610304/KNg3MAIS_400x400_tmabka.jpg" alt="Mia profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Mia</div></div><div class="hof-member" data-index="18" data-x-link="https://x.com/ElpatronSFC"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752608182/Elvis_yrnpxh.png" alt="Elvis profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Elvis</div></div><div class="hof-member" data-index="19" data-x-link="https://x.com/Bstr___"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1752608094/bstr_knv2eq.jpg" alt="Bstr profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Bstr</div></div></div>
+                <div class="hof-row-mobile"><div class="hof-member" data-index="16" data-x-link="https://x.com/bigsoup6_7"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/scrappy2_ihsso6.jpg" alt="Scrappy profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Scrappy</div></div><div class="hof-member" data-index="17" data-x-link="https://x.com/GirlMia9079"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1754610304/KNg3MAIS_400x400_tmabka.jpg" alt="Mia profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Mia</div></div><div class="hof-member" data-index="18" data-x-link="https://x.com/ElpatronSFC"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752608182/Elvis_yrnpxh.png" alt="Elvis profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Elvis</div></div><div class="hof-member" data-index="19" data-x-link="https://x.com/Bstr___"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752608094/bstr_knv2eq.jpg" alt="Bstr profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Bstr</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="20" data-x-link="https://x.com/GeorgeCdr28874"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1747417142/George_q1e0c2.jpg" alt="George profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">George</div></div><div class="hof-member" data-index="21" data-x-link="https://x.com/Dog66515910"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/Dog2_sb9l5v.jpg" alt="Dog profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Dog</div></div><div class="hof-member" data-index="22" data-x-link="https://x.com/Marilyn_Moanroe"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1752948926/Marilyn2_gzdbq2.jpg" alt="Marilyn profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Marilyn</div></div><div class="hof-member" data-index="23" data-x-link="https://x.com/HauskenHelge"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747354104/ZOMBi_obepxi.jpg" alt="ZOMBi profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">ZOMBi</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="24" data-x-link="https://x.com/ipoopcrypto"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111719/cy_sxrobe.jpg" alt="Cyanide profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Cyanide</div></div><div class="hof-member" data-index="25" data-x-link="https://x.com/RecklesUnicorn"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758748132/Demetrius_knntdo.jpg" alt="Demitrieus profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Demitrieus</div></div><div class="hof-member" data-index="26" data-x-link="https://x.com/0x_Ugo"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758747924/Ugo_flbfsw.jpg" alt="Ugo profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Ugo</div></div><div class="hof-member" data-index="27" data-x-link="https://x.com/madgamer1979"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1747354104/Coinbud_uwjumu.jpg" alt="Coinbud profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Coinbud</div></div></div>
                 <div class="hof-row-mobile"><div class="hof-member" data-index="28" data-x-link="https://x.com/AngelaPatt86456"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111841/momma_tvdmop.jpg" alt="Momma Blu profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Momma Blu</div></div><div class="hof-member" data-index="29" data-x-link="https://x.com/ThurstonWaffles"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1755032869/Thurston_n6zd2i.jpg" alt="Thurston profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Thurston</div></div><div class="hof-member" data-index="30" data-x-link="https://x.com/p_r_o_m_o__"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/f_auto,q_auto/v1758111977/promo_jea2uu.jpg" alt="Michael profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Michael</div></div><div class="hof-member" data-index="31" data-x-link="https://x.com/medraresteaker"><div class="hof-bubble"><div class="hof-inner-bubble"><img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1758112105/gnomie_epet05.jpg" alt="Gnomie profile picture" width="100" height="100" loading="lazy"></div></div><div class="hof-title">Gnomie</div></div></div>
@@ -557,10 +290,37 @@
             </div>
         </section>
 
-        <footer class="footer">© 2025 by <a href="https://x.com/AutopsyT2" target="_blank" class="footer-link">Autopsy</a>. All rights reserved.</footer>
-    </div>
+    </main>
+
+    <footer class="footer">© 2025 by <a href="https://x.com/AutopsyT2" target="_blank" rel="noopener noreferrer" class="footer-link">Autopsy</a>. All rights reserved.</footer>
+    
+    <script defer src="shared-scripts.js"></script>
     <script>
-        // --- NEW LEADERBOARD SCRIPT START ---
+        // This script now only contains logic specific to the community page.
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize Hall of Fame Carousel
+            updateCommunityCarousel();
+            resetCommunityAutoRotate();
+
+            // Initialize Leaderboard
+            setupTabListeners();
+            await fetchLeaderboardData();
+            updateLeaderboard('monthly'); // Load monthly data by default
+
+            // Add click listeners to all HOF member bubbles
+            document.querySelectorAll('.hof-member').forEach(memberEl => {
+                memberEl.addEventListener('click', () => {
+                    currentCommunityIndex = parseInt(memberEl.dataset.index);
+                    updateCommunityCarousel();
+                    resetCommunityAutoRotate();
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('.hof-carousel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            });
+        });
+
+        // --- LEADERBOARD LOGIC ---
         const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQteQaPjXe3IlPsj8KNtr-pY5nZO2WMSNk9jPfMGSMEdmQghWjvXiF0-7Zbi64kHza926Yyg9lhguH-/pub?output=csv';
         let allData = [];
 
@@ -568,7 +328,6 @@
             try {
                 const response = await fetch(SHEET_URL);
                 const csvText = await response.text();
-                // Check if the response is the Google sign-in page (indicates a permission issue)
                 if (csvText.includes('<title>Google Sheets</title>')) {
                     throw new Error("Failed to fetch data. Please ensure your Google Sheet is published to the web as a CSV.");
                 }
@@ -610,7 +369,7 @@
             tbody.innerHTML = ''; // Clear existing rows
 
             if (scores.length === 0) {
-                loadingEl.textContent = 'No data available for this period. Points system will begin in October 2025.';
+                loadingEl.textContent = 'No data available for this period. The rebellion is just beginning.';
                 loadingEl.style.display = 'block';
                 return;
             }
@@ -673,12 +432,8 @@
                 });
             });
         }
-        // --- NEW LEADERBOARD SCRIPT END ---
-        // Matrix Background Scripts
-        function initializeMatrix() { const canvas = document.getElementById('matrix-bg'); if (!canvas) return; const ctx = canvas.getContext('2d'); let columns, drops, fontSize = 14; function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; columns = Math.ceil(canvas.width / fontSize); drops = Array(columns).fill(1).map((_, i) => (Math.random() * canvas.height/fontSize)); } resizeCanvas(); window.addEventListener('resize', resizeCanvas); const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; function draw() { ctx.fillStyle = 'rgba(18, 18, 18, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#ff5555'; ctx.font = `${fontSize}px monospace`; for (let i = 0; i < drops.length; i++) { const text = chars.charAt(Math.floor(Math.random() * chars.length)); ctx.fillText(text, i * fontSize, drops[i] * fontSize); if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; } drops[i]++; } } setInterval(draw, 50); }
-        function startMatrixRain() { const rainCanvas = document.getElementById('matrix-rain'); if (!rainCanvas) return; const rainCtx = rainCanvas.getContext('2d'); let columns, drops, fontSize = 14; function resizeCanvas() { rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight; columns = Math.ceil(rainCanvas.width / fontSize); drops = Array(columns).fill(1).map(() => (Math.random() * rainCanvas.height/fontSize)); } resizeCanvas(); window.addEventListener('resize', resizeCanvas); const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'; function drawRain() { rainCtx.fillStyle = 'rgba(0, 0, 0, 0.05)'; rainCtx.fillRect(0, 0, rainCanvas.width, rainCanvas.height); rainCtx.fillStyle = '#999999'; rainCtx.font = fontSize + 'px monospace'; drops.forEach((y, i) => { const text = chars.charAt(Math.floor(Math.random() * chars.length)); rainCtx.fillText(text, i * fontSize, y * fontSize); if (y * fontSize > rainCanvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; }); } setInterval(drawRain, 50); }
 
-        // Community Carousel Logic
+        // --- HALL OF FAME LOGIC ---
         let currentCommunityIndex = 0;
         const totalNamedCommunityMembers = 36;
         let communityAutoRotateInterval;
@@ -723,32 +478,31 @@
         ];
 
         function updateCommunityCarousel() {
-            const featuredCard = document.querySelector('#hof-featured .trading-card');
-            const memberData = members[currentCommunityIndex];
-            
-            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
-            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
-            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
-            featuredCard.querySelector('.hof-name').textContent = memberData.name;
-            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
+            const featuredCard = document.querySelector('#hof-featured .trading-card');
+            const memberData = members[currentCommunityIndex];
+            
+            featuredCard.querySelector('.pfp-link').href = memberData.xLink;
+            featuredCard.querySelector('.card-pfp-square img').src = memberData.img;
+            featuredCard.querySelector('.card-pfp-square img').alt = `${memberData.name} profile picture`;
+            featuredCard.querySelector('.hof-name').textContent = memberData.name;
+            featuredCard.querySelector('.ability-content').textContent = memberData.holderSince;
 
-            const badgesContainer = featuredCard.querySelector('.hof-badges');
-            badgesContainer.innerHTML = '';
-            if (memberData.badges && memberData.badges.length > 0) {
-                memberData.badges.forEach(badge => {
-                    const badgeEl = document.createElement('div');
-                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
-                    badgesContainer.appendChild(badgeEl);
-                });
-            }
+            const badgesContainer = featuredCard.querySelector('.hof-badges');
+            badgesContainer.innerHTML = '';
+            if (memberData.badges && memberData.badges.length > 0) {
+                memberData.badges.forEach(badge => {
+                    const badgeEl = document.createElement('div');
+                    badgeEl.className = `badge badge-${badge.type} badge-${badge.tier}`;
+                    badgesContainer.appendChild(badgeEl);
+                });
+            }
 
-            // Highlight the active member bubble
-            document.querySelectorAll('.hof-member .hof-bubble').forEach(bubble => {
-                bubble.classList.remove('active-member');
-            });
-            const activeMemberElements = document.querySelectorAll(`.hof-member[data-index="${currentCommunityIndex}"] .hof-bubble`);
-            activeMemberElements.forEach(el => el.classList.add('active-member'));
-        }
+            document.querySelectorAll('.hof-member .hof-bubble').forEach(bubble => {
+                bubble.classList.remove('active-member');
+            });
+            const activeMemberElements = document.querySelectorAll(`.hof-member[data-index="${currentCommunityIndex}"] .hof-bubble`);
+            activeMemberElements.forEach(el => el.classList.add('active-member'));
+        }
 
         function rotateHof(direction) {
             if (direction === 'right') { currentCommunityIndex = (currentCommunityIndex + 1) % totalNamedCommunityMembers; } 
@@ -759,7 +513,10 @@
 
         function resetCommunityAutoRotate() {
             clearInterval(communityAutoRotateInterval);
-            communityAutoRotateInterval = setInterval(() => { currentCommunityIndex = (currentCommunityIndex + 1) % totalNamedCommunityMembers; updateCommunityCarousel(); }, 10000);
+            communityAutoRotateInterval = setInterval(() => { 
+                currentCommunityIndex = (currentCommunityIndex + 1) % totalNamedCommunityMembers; 
+                updateCommunityCarousel(); 
+            }, 10000);
         }
 
         function toggleLeaderboardGlossary() {
@@ -783,33 +540,14 @@
             const isActive = content.classList.toggle('active');
             header.classList.toggle('active', isActive);
             header.setAttribute('aria-expanded', isActive);
-            if (isActive) { content.style.maxHeight = content.scrollHeight + 30 + 'px'; content.style.padding = '15px'; } 
-            else { content.style.maxHeight = '0'; content.style.padding = '0 15px'; }
+            if (isActive) { 
+                content.style.maxHeight = content.scrollHeight + 30 + 'px'; 
+                content.style.padding = '15px'; 
+            } else { 
+                content.style.maxHeight = '0'; 
+                content.style.padding = '0 15px'; 
+            }
         }
-
-        window.addEventListener('load', async () => { // <-- ADD 'async' HERE
-            initializeMatrix();
-            startMatrixRain();
-            updateCommunityCarousel();
-            resetCommunityAutoRotate();
-
-            // --- PASTE THESE 3 NEW LINES ---
-            setupTabListeners();
-            await fetchLeaderboardData();
-            updateLeaderboard('monthly'); // Load monthly data by default
-            // --- END OF NEW LINES ---
-
-            document.querySelectorAll('.hof-member').forEach(memberEl => {
-                memberEl.addEventListener('click', () => {
-                    currentCommunityIndex = parseInt(memberEl.dataset.index);
-                    updateCommunityCarousel();
-                    resetCommunityAutoRotate();
-                    if (window.innerWidth <= 768) {
-                        document.querySelector('.hof-carousel').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                });
-            });
-        });
     </script>
 </body>
 </html>
