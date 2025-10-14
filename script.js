@@ -77,6 +77,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 4. FAQ ACCORDION LOGIC ---
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    if (accordionHeaders) {
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isActive = header.classList.contains('active');
+
+                // Close all other accordions
+                accordionHeaders.forEach(h => {
+                    h.classList.remove('active');
+                    h.nextElementSibling.style.maxHeight = null;
+                });
+
+                // Open the clicked one if it wasn't already open
+                if (!isActive) {
+                    header.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    }
 });
 
 // --- MATRIX EFFECT FUNCTION ---
