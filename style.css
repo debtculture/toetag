@@ -504,3 +504,81 @@ body {
     color: var(--text-secondary);
     font-size: 1.1rem;
 }
+
+/* --- DASHBOARD PAGE STYLES --- */
+.chart-section {
+    padding: 0;
+    overflow: hidden; /* Ensures the iframe corners are rounded */
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 65vh; /* Makes the chart nice and tall */
+}
+
+.chart-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.calculator-section {
+    max-width: 600px; /* Make calculator narrower */
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.calc-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.calc-input-group label {
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.calc-input-group input {
+    background-color: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-family: var(--font-main);
+}
+
+.calc-output {
+    text-align: center;
+    margin-top: 1rem;
+    background: var(--dark-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.calc-output h3 {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.calc-output p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--main-red);
+    margin-top: 0.5rem;
+}
+
+.detailed-tokenomics-section .dashboard-item {
+    text-align: left; /* Align text left for more detail */
+}
