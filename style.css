@@ -582,3 +582,154 @@ body {
 .detailed-tokenomics-section .dashboard-item {
     text-align: left; /* Align text left for more detail */
 }
+
+/* --- COMMUNITY PAGE STYLES --- */
+.hof-carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.hof-arrow {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hof-arrow:hover {
+    background-color: var(--main-red);
+    color: var(--text-primary);
+    border-color: var(--main-red);
+}
+
+.trading-card {
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    width: 250px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+    color: var(--text-primary);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--main-red);
+}
+
+.card-pfp-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.card-pfp-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-info h4 {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.card-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 32px;
+}
+
+.badge {
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    position: relative;
+}
+.badge-spaces { background-image: url('YOUR_SPACES_BADGE_ICON_URL'); }
+.badge-burn { background-image: url('YOUR_BURN_BADGE_ICON_URL'); }
+/* Add URLs for other badge icons as needed */
+
+
+.hof-selector-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hof-bubble {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hof-bubble img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hof-bubble.active, .hof-bubble:hover {
+    border-color: var(--main-red);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--main-red);
+}
+
+.community-hub-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 4rem auto;
+}
+
+.hub-card {
+    margin: 0;
+}
+
+.disabled-button {
+    background-color: var(--border-color);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+.disabled-button:hover {
+    transform: none;
+    background-color: var(--border-color);
+}
+
+
+@media (max-width: 768px) {
+    .community-hub-links {
+        grid-template-columns: 1fr;
+    }
+}
