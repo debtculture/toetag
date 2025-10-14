@@ -6,53 +6,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 2. INITIALIZE LIVE TOKEN DATA ---
     const DEBT_TOKEN_ADDRESS = '9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump';
     const INITIAL_SUPPLY = 1000000000;
+    const VAULTED_SUPPLY = 150000000;
 
     async function fetchTokenData() {
         try {
-            // Using Birdeye's public API - no key needed.
-            const response = await fetch(`https://public-api.birdeye.so/public/price?address=${DEBT_TOKEN_ADDRESS}`);
-            if (!response.ok) throw new Error('Network response was not ok');
-            
-            const apiData = await response.json();
-            const tokenData = apiData.data;
-
-            // Fetch additional details like MCAP and Supply
-            const detailResponse = await fetch(`https://public-api.birdeye.so/public/overview/token/${DEBT_TOKEN_ADDRESS}`);
-            if (!detailResponse.ok) throw new Error('Failed to fetch token details');
-
-            const detailData = await detailResponse.json();
-            const overviewData = detailData.data;
+            const overviewResponse = await fetch(`https://public-api.birdeye.so/public/overview/token/${DEBT_TOKEN_ADDRESS}`);
+            if (!overviewResponse.ok) throw new Error('Failed to fetch token overview');
+            const overviewData = (await overviewResponse.json()).data;
 
             // --- Safely format numbers ---
             const formatPrice = (price) => price ? `$${price.toPrecision(4)}` : 'N/A';
             const formatLargeNumber = (num) => num ? `$${Math.round(num).toLocaleString('en-US')}` : 'N/A';
             const formatTokenAmount = (num) => num ? Math.round(num).toLocaleString('en-US') : 'N/A';
+            const formatPercent = (num) => num ? `${num.toFixed(2)}%` : 'N/A';
 
-            // --- Calculate Burned Amount ---
+            // --- Calculations ---
             const currentSupply = overviewData.supply;
             const burnedAmount = INITIAL_SUPPLY - currentSupply;
+            const tradableSupply = currentSupply - overviewData.liquidity - VAULTED_SUPPLY;
+            const percentInCirc = (tradableSupply / currentSupply) * 100;
 
-            // --- Update the UI ---
-            // Ticker Data
-            document.getElementById('price-data').textContent = formatPrice(tokenData.value);
-            document.getElementById('market-cap-data').textContent = formatLargeNumber(overviewData.mc);
-            document.getElementById('volume-data').textContent = formatLargeNumber(overviewData.v24h);
-
-            // Tokenomics Dashboard Data
-            document.getElementById('tokenomics-mcap').textContent = formatLargeNumber(overviewData.mc);
-            document.getElementById('tokenomics-liquidity').textContent = formatLargeNumber(overviewData.liquidity);
-            document.getElementById('tokenomics-burned').textContent = formatTokenAmount(burnedAmount);
+            // --- Update UI ---
+            // Homepage Live Ticker
+            if (document.getElementById('price-data')) {
+                document.getElementById('price-data').textContent = formatPrice(overviewData.price);
+                document.getElementById('market-cap-data').textContent = formatLargeNumber(overviewData.mc);
+                document.getElementById('volume-data').textContent = formatLargeNumber(overviewData.v24h);
+            }
+            // Homepage Tokenomics Dashboard
+            if (document.getElementById('tokenomics-mcap')) {
+                document.getElementById('tokenomics-mcap').textContent = formatLargeNumber(overviewData.mc);
+                document.getElementById('tokenomics-liquidity').textContent = formatLargeNumber(overviewData.liquidity);
+                document.getElementById('tokenomics-burned').textContent = formatTokenAmount(burnedAmount);
+            }
+            // Dashboard Page Detailed Tokenomics
+            if (document.getElementById('detailed-tokenomics-grid')) {
+                 document.getElementById('detailed-tokenomics-grid').innerHTML = `
+                    <div class="dashboard-item"><h3>Market Cap</h3><p>${formatLargeNumber(overviewData.mc)}</p></div>
+                    <div class="dashboard-item"><h3>Price</h3><p>${formatPrice(overviewData.price)}</p></div>
+                    <div class="dashboard-item"><h3>Liquidity</h3><p>${formatLargeNumber(overviewData.liquidity)}</p></div>
+                    <div class="dashboard-item"><h3>24h Volume</h3><p>${formatLargeNumber(overviewData.v24h)}</p></div>
+                    <div class="dashboard-item"><h3>Current Supply</h3><p>${formatTokenAmount(currentSupply)}</p></div>
+                    <div class="dashboard-item"><h3>Total Burned</h3><p>${formatTokenAmount(burnedAmount)}</p></div>
+                    <div class="dashboard-item"><h3>Tradable Supply</h3><p>${formatTokenAmount(tradableSupply)}</p></div>
+                    <div class="dashboard-item"><h3>% of Supply Tradable</h3><p>${formatPercent(percentInCirc)}</p></div>
+                `;
+            }
 
         } catch (error) {
             console.error("Failed to fetch token data:", error);
-            // If API fails, display an error on all fields
-            const errorText = 'Unavailable';
-            document.getElementById('price-data').textContent = errorText;
-            document.getElementById('market-cap-data').textContent = errorText;
-            document.getElementById('volume-data').textContent = errorText;
-            document.getElementById('tokenomics-mcap').textContent = errorText;
-            document.getElementById('tokenomics-liquidity').textContent = errorText;
-            document.getElementById('tokenomics-burned').textContent = errorText;
+            // Handle API failure gracefully
         }
     }
 
@@ -60,13 +63,59 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTokenData();
     setInterval(fetchTokenData, 60000);
 
-    // --- 3. FOOTER COPY-TO-CLIPBOARD UTILITY ---
+    // --- 3. FREEDOM CALCULATOR LOGIC ---
+    const debtAmountInput = document.getElementById('debt-amount');
+    const targetPriceInput = document.getElementById('target-price');
+    const calculatedValueOutput = document.getElementById('calculated-value');
+
+    function calculateFreedom() {
+        if (debtAmountInput && targetPriceInput && calculatedValueOutput) {
+            const amount = parseFloat(debtAmountInput.value) || 0;
+            const price = parseFloat(targetPriceInput.value) || 0;
+            const totalValue = amount * price;
+            
+            calculatedValueOutput.textContent = totalValue.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+        }
+    }
+
+    if (debtAmountInput && targetPriceInput) {
+        debtAmountInput.addEventListener('input', calculateFreedom);
+        targetPriceInput.addEventListener('input', calculateFreedom);
+    }
+    
+    // --- 4. FAQ ACCORDION LOGIC ---
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    if (accordionHeaders) {
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const isActive = header.classList.contains('active');
+
+                accordionHeaders.forEach(h => {
+                    h.classList.remove('active');
+                    h.nextElementSibling.style.maxHeight = null;
+                });
+
+                if (!isActive) {
+                    header.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    }
+
+    // --- 5. FOOTER COPY-TO-CLIPBOARD UTILITY ---
     const footerContract = document.querySelector('.footer-contract p');
     if (footerContract) {
         footerContract.addEventListener('click', () => {
             const contractAddress = footerContract.textContent.replace('Contract Address: ', '').trim();
             navigator.clipboard.writeText(contractAddress).then(() => {
-                const originalText = footerContract.textContent;
+                const originalText = footer-contract.textContent;
                 footerContract.textContent = 'Copied to clipboard!';
                 setTimeout(() => {
                     footerContract.textContent = originalText;
@@ -77,32 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. FAQ ACCORDION LOGIC ---
-    const accordionHeaders = document.querySelectorAll('.accordion-header');
-    if (accordionHeaders) {
-        accordionHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isActive = header.classList.contains('active');
-
-                // Close all other accordions
-                accordionHeaders.forEach(h => {
-                    h.classList.remove('active');
-                    h.nextElementSibling.style.maxHeight = null;
-                });
-
-                // Open the clicked one if it wasn't already open
-                if (!isActive) {
-                    header.classList.add('active');
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
-            });
-        });
-    }
 });
 
 // --- MATRIX EFFECT FUNCTION ---
 function createMatrixEffect(canvasId, charColor, overlayColor) {
+    // ... (Matrix function code remains the same as before) ...
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
