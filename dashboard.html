@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$DEBT - Live Dashboard</title>
+    <meta name="description" content="Live data dashboard for the $DEBT token. View the real-time chart, calculate potential gains, and track key tokenomics.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="icon" type="image/x-icon" href="YOUR_FAVICON_URL_HERE">
+    </head>
+<body>
+    <div id="matrix-bg"></div>
+
+    <header class="main-header">
+        <nav class="navbar">
+            <a href="index.html" class="nav-logo">
+                <img src="https://res.cloudinary.com/dpvptjn4t/image/upload/v1760447629/X_PFP_vbnubt.webp" alt="$DEBT Logo"> </a>
+            <div class="nav-links">
+                <a href="mission.html">Mission</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="community.html">Community</a>
+                <a href="arsenal.html">Arsenal</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://raydium.io/swap/?inputMint=So11111111111111111111111111111111111111112&outputMint=9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump" target="_blank" rel="noopener noreferrer" class="cta-button">Buy $DEBT</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="glitch" data-text="LIVE INTEL">LIVE INTEL</h1>
+                <p class="subtitle">Real-time data for the digital rebellion. Analyze, calculate, and plan your path to freedom.</p>
+            </div>
+        </section>
+
+        <section class="chart-section content-block">
+            <h2>Live Chart</h2>
+            <div class="chart-container">
+                <iframe src="https://dexscreener.com/solana/9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump?embed=1&theme=dark"></iframe>
+            </div>
+        </section>
+
+        <section class="calculator-section content-block">
+            <h2>$DEBT Freedom Calculator</h2>
+            <div class="calculator">
+                <div class="calc-input-group">
+                    <label for="debt-amount">Your $DEBT Holdings:</label>
+                    <input type="number" id="debt-amount" placeholder="e.g., 1000000">
+                </div>
+                <div class="calc-input-group">
+                    <label for="target-price">Target Price for Freedom (USD):</label>
+                    <input type="number" id="target-price" placeholder="e.g., 0.01">
+                </div>
+                <div class="calc-output">
+                    <h3>Your Potential War Chest:</h3>
+                    <p id="calculated-value">$0.00</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="detailed-tokenomics-section content-block">
+            <h2>Detailed Tokenomics</h2>
+            <div id="detailed-tokenomics-grid" class="dashboard-grid">
+                </div>
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-contract">
+            <p>Contract Address: `9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump`</p>
+        </div>
+        <div class="footer-links">
+             <a href="https://dexscreener.com/solana/9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump" target="_blank">DexScreener</a>
+            <a href="https://rugcheck.xyz/tokens/9NQc7BnhfLbNwVFXrVsymEdqEFRuv5e1k7CuQW82pump" target="_blank">RugCheck</a>
+        </div>
+        <p class="copyright">&copy; 2025 Debt Culture. All Rights Reserved. Not financial advice.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
